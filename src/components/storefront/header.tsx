@@ -138,6 +138,17 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
 
         {/* Desktop right actions */}
         <div className="hidden md:flex items-center gap-2">
+          {/* Admin button — only visible to admins */}
+          {userRole === "admin" && (
+            <Link
+              href="/admin"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-[#1E293B] rounded-md hover:bg-[#334155] transition-colors"
+            >
+              <Shield className="h-3.5 w-3.5" />
+              Admin
+            </Link>
+          )}
+
           {/* Search */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
@@ -282,6 +293,17 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
         )}
       >
         <nav className="px-4 py-3 space-y-1">
+          {/* Admin button — only visible to admins on mobile */}
+          {userRole === "admin" && (
+            <Link
+              href="/admin"
+              className="flex items-center gap-2 px-3 py-2.5 text-sm font-semibold text-white bg-[#1E293B] rounded-md mb-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              <Shield className="h-4 w-4" />
+              Admin Panel
+            </Link>
+          )}
           <Link
             href="/products"
             className="block px-3 py-2.5 text-sm font-medium text-[#1E293B] rounded-md hover:bg-gray-50"
