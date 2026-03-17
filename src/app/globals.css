@@ -13,6 +13,11 @@
   }
 }
 
+/* Prevent double-tap/double-click zoom on all elements */
+html {
+  touch-action: manipulation;
+}
+
 body {
   background: #ffffff;
   color: #1e293b;

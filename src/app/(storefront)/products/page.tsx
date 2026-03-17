@@ -71,14 +71,30 @@ export default async function ProductsPage({ searchParams }: Props) {
   const globalMinPrice = Math.floor(Number(priceMinRow?.price ?? 0));
   const globalMaxPrice = Math.ceil(Number(priceMaxRow?.price ?? 100000));
 
-  // Resolve category slugs to IDs
+  // Resolve category slugs to IDs — when a parent is selected, include its children too
   let categoryIds: string[] = [];
   if (categorySlugs.length > 0) {
-    const { data: matchedCats } = await supabase
-      .from("categories")
-      .select("id")
-      .in("slug", categorySlugs);
-    categoryIds = matchedCats?.map((c) => c.id) ?? [];
+    const selectedSlugs = new Set(categorySlugs);
+    for (const parent of categories) {
+      if (selectedSlugs.has(parent.slug)) {
+        categoryIds.push(parent.id);
+        // Include all children of this parent
+        if (parent.children) {
+          for (const child of parent.children) {
+            categoryIds.push(child.id);
+          }
+        }
+      } else if (parent.children) {
+        // Check if any child is selected individually
+        for (const child of parent.children) {
+          if (selectedSlugs.has(child.slug)) {
+            categoryIds.push(child.id);
+          }
+        }
+      }
+    }
+    // Deduplicate
+    categoryIds = [...new Set(categoryIds)];
   }
 
   // Build product query

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Category } from "@/types";
 
@@ -19,12 +19,13 @@ export function FilterSidebar({
 }: FilterSidebarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const activeCategories = searchParams.get("category")?.split(",").filter(Boolean) ?? [];
   const [priceMin, setPriceMin] = useState(searchParams.get("minPrice") ?? "");
   const [priceMax, setPriceMax] = useState(searchParams.get("maxPrice") ?? "");
 
-  // Navigate with updated params
+  // Navigate with updated params — use replace + transition for snappy UX
   const navigate = useCallback(
     (overrides: { categories?: string[]; minPrice?: string; maxPrice?: string }) => {
       const params = new URLSearchParams();
@@ -38,7 +39,10 @@ export function FilterSidebar({
       if (search) params.set("search", search);
       const sort = searchParams.get("sort");
       if (sort) params.set("sort", sort);
-      router.push(`/products?${params.toString()}`);
+      // Reset to page 1 on filter change
+      startTransition(() => {
+        router.push(`/products?${params.toString()}`, { scroll: false });
+      });
     },
     [activeCategories, priceMin, priceMax, searchParams, router]
   );
@@ -80,7 +84,9 @@ export function FilterSidebar({
     const params = new URLSearchParams();
     const search = searchParams.get("search");
     if (search) params.set("search", search);
-    router.push(`/products${params.toString() ? `?${params.toString()}` : ""}`);
+    startTransition(() => {
+      router.push(`/products${params.toString() ? `?${params.toString()}` : ""}`, { scroll: false });
+    });
   }
 
   const hasFilters = activeCategories.length > 0 || priceMin || priceMax;
