@@ -113,7 +113,22 @@ export default async function ProductsPage({ searchParams }: Props) {
     query = query.lte("price", maxPriceFilter);
   }
   if (search) {
-    query = query.ilike("name", `%${search}%`);
+    // Find categories matching the search term so we can include their products
+    const { data: matchingCats } = await supabase
+      .from("categories")
+      .select("id")
+      .ilike("name", `%${search}%`);
+    const matchingCatIds = matchingCats?.map((c) => c.id) ?? [];
+
+    if (matchingCatIds.length > 0) {
+      // Search product name, description, OR products in matching categories
+      query = query.or(
+        `name.ilike.%${search}%,description.ilike.%${search}%,category_id.in.(${matchingCatIds.join(",")})`
+      );
+    } else {
+      // No category matches — just search name and description
+      query = query.or(`name.ilike.%${search}%,description.ilike.%${search}%`);
+    }
   }
 
   // Sort
