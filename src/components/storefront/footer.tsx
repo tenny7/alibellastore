@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Instagram, Facebook, Twitter, ShoppingBag, MessageCircle } from "lucide-react";
+import { FooterAccountLinks } from "./footer-account-links";
 import type { Category } from "@/types";
 
 interface FooterProps {
@@ -115,26 +116,10 @@ export function Footer({
             </ul>
           </div>
 
-          {/* Account */}
+          {/* Account — auth-aware */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Account</h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
-                  Sign In
-                </Link>
-              </li>
-              <li>
-                <Link href="/signup" className="text-sm text-gray-400 hover:text-white transition-colors">
-                  Create Account
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile" className="text-sm text-gray-400 hover:text-white transition-colors">
-                  My Profile
-                </Link>
-              </li>
-            </ul>
+            <FooterAccountLinks />
           </div>
         </div>
       </div>
