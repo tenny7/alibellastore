@@ -42,25 +42,32 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
   useEffect(() => {
     const supabase = createClient();
 
+    function fetchRole(userId: string) {
+      supabase
+        .from("users")
+        .select("role")
+        .eq("id", userId)
+        .single()
+        .then(({ data, error }) => {
+          if (error) console.error("[Header] role fetch error:", error.message);
+          setUserRole(data?.role || null);
+        });
+    }
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
-      if (user) {
-        supabase
-          .from("users")
-          .select("role")
-          .eq("id", user.id)
-          .single()
-          .then(({ data }) => {
-            setUserRole(data?.role || null);
-          });
-      }
+      if (user) fetchRole(user.id);
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (!session?.user) setUserRole(null);
+      if (session?.user) {
+        fetchRole(session.user.id);
+      } else {
+        setUserRole(null);
+      }
     });
 
     return () => subscription.unsubscribe();
