@@ -21,15 +21,29 @@ export function FilterSidebar({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const activeCategories = searchParams.get("category")?.split(",").filter(Boolean) ?? [];
+  // Optimistic local state for categories — syncs from URL but updates instantly on click
+  const urlCategories = searchParams.get("category")?.split(",").filter(Boolean) ?? [];
+  const [localCategories, setLocalCategories] = useState<string[]>(urlCategories);
+
+  // Keep local state in sync when URL changes (e.g. back/forward navigation)
+  const urlKey = urlCategories.join(",");
+  const prevUrlKey = useRef(urlKey);
+  if (urlKey !== prevUrlKey.current) {
+    prevUrlKey.current = urlKey;
+    // Only sync if local state doesn't match (avoids overriding optimistic state)
+    if (localCategories.join(",") !== urlKey) {
+      setLocalCategories(urlCategories);
+    }
+  }
+
   const [priceMin, setPriceMin] = useState(searchParams.get("minPrice") ?? "");
   const [priceMax, setPriceMax] = useState(searchParams.get("maxPrice") ?? "");
 
-  // Navigate with updated params — use replace + transition for snappy UX
+  // Navigate with updated params — use transition so it doesn't block UI
   const navigate = useCallback(
     (overrides: { categories?: string[]; minPrice?: string; maxPrice?: string }) => {
       const params = new URLSearchParams();
-      const cats = overrides.categories ?? activeCategories;
+      const cats = overrides.categories ?? localCategories;
       if (cats.length > 0) params.set("category", cats.join(","));
       const min = overrides.minPrice ?? priceMin;
       const max = overrides.maxPrice ?? priceMax;
@@ -44,15 +58,16 @@ export function FilterSidebar({
         router.push(`/products?${params.toString()}`, { scroll: false });
       });
     },
-    [activeCategories, priceMin, priceMax, searchParams, router]
+    [localCategories, priceMin, priceMax, searchParams, router]
   );
 
-  // Toggle category and navigate immediately
+  // Toggle category: update local state INSTANTLY, then navigate in background
   function toggleCategory(slug: string) {
-    const next = activeCategories.includes(slug)
-      ? activeCategories.filter((s) => s !== slug)
-      : [...activeCategories, slug];
-    navigate({ categories: next });
+    const next = localCategories.includes(slug)
+      ? localCategories.filter((s) => s !== slug)
+      : [...localCategories, slug];
+    setLocalCategories(next); // Instant checkbox update
+    navigate({ categories: next }); // Background navigation
   }
 
   // Debounced price filter
@@ -81,6 +96,7 @@ export function FilterSidebar({
   function clearFilters() {
     setPriceMin("");
     setPriceMax("");
+    setLocalCategories([]);
     const params = new URLSearchParams();
     const search = searchParams.get("search");
     if (search) params.set("search", search);
@@ -89,7 +105,7 @@ export function FilterSidebar({
     });
   }
 
-  const hasFilters = activeCategories.length > 0 || priceMin || priceMax;
+  const hasFilters = localCategories.length > 0 || priceMin || priceMax;
 
   // Count helper: sum parent + children counts
   function getCategoryCount(cat: Category): number {
@@ -109,13 +125,18 @@ export function FilterSidebar({
         <h3 className="text-sm font-semibold text-[#1E293B] uppercase tracking-wider mb-3">
           Categories
         </h3>
+        {isPending && (
+          <div className="h-0.5 w-full bg-primary/20 rounded overflow-hidden mb-2">
+            <div className="h-full w-1/3 bg-primary rounded animate-[shimmer_1s_ease-in-out_infinite]" />
+          </div>
+        )}
         <div className="space-y-1">
           {categories.map((cat) => (
             <div key={cat.id}>
               <label className="flex items-center gap-2.5 cursor-pointer group py-1">
                 <input
                   type="checkbox"
-                  checked={activeCategories.includes(cat.slug)}
+                  checked={localCategories.includes(cat.slug)}
                   onChange={() => toggleCategory(cat.slug)}
                   className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
@@ -136,7 +157,7 @@ export function FilterSidebar({
                     >
                       <input
                         type="checkbox"
-                        checked={activeCategories.includes(child.slug)}
+                        checked={localCategories.includes(child.slug)}
                         onChange={() => toggleCategory(child.slug)}
                         className="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary"
                       />

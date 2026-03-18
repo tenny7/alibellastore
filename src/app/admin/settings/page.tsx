@@ -149,14 +149,14 @@ export default function AdminSettingsPage() {
               label="Homepage Hero Title"
               value={heroTitle}
               onChange={(e) => setHeroTitle(e.target.value)}
-              placeholder="e.g. Elevate Your Lifestyle (leave blank for default)"
+              placeholder={heroTitle || "Elevate Your Lifestyle"}
             />
             <Textarea
               id="heroSubtitle"
               label="Homepage Hero Subtitle"
               value={heroSubtitle}
               onChange={(e) => setHeroSubtitle(e.target.value)}
-              placeholder="e.g. Discover quality products... (leave blank for default)"
+              placeholder={heroSubtitle || "Discover quality products powered by secure mobile payments. Shop with confidence across Rwanda."}
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>

@@ -262,8 +262,21 @@ export default async function OrderDetailPage({ params }: Props) {
         </div>
       )}
 
-      {/* WhatsApp contact */}
-      <div className="text-center">
+      {/* Cancel / WhatsApp contact */}
+      <div className="flex flex-col items-center gap-3">
+        {!isCancelled && order.status !== "delivered" && (
+          <a
+            href={`https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(
+              `Hi, I would like to cancel my order ${order.order_number}. Please assist.`
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-2.5 border border-red-200 text-red-600 rounded-lg font-medium hover:bg-red-50 transition-colors text-sm"
+          >
+            <XCircle className="h-4 w-4" />
+            Request Cancellation
+          </a>
+        )}
         <a
           href={`https://wa.me/${settings.whatsapp_number}?text=${whatsappMsg}`}
           target="_blank"
