@@ -4,17 +4,19 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { OrderStatusBadge, PaymentStatusBadge } from "@/components/admin/order-status-badge";
 import { Pagination } from "@/components/ui/pagination";
+import { OrderSearchBar } from "@/components/admin/order-search-bar";
 import { formatCurrency } from "@/lib/utils";
 import { getSiteSettings } from "@/lib/settings";
 
 interface Props {
-  searchParams: Promise<{ page?: string; status?: string }>;
+  searchParams: Promise<{ page?: string; status?: string; q?: string }>;
 }
 
 export default async function AdminOrdersPage({ searchParams }: Props) {
   const params = await searchParams;
   const page = parseInt(params.page ?? "1");
   const status = params.status;
+  const searchQuery = params.q?.trim() ?? "";
   const limit = 20;
 
   const [supabase, settings] = await Promise.all([
@@ -38,6 +40,11 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
     .select("*, customer:users(name, email)", { count: "exact" });
 
   if (status) query = query.eq("status", status);
+  if (searchQuery) {
+    query = query.or(
+      `order_number.ilike.%${searchQuery}%,customer_name.ilike.%${searchQuery}%,customer_phone.ilike.%${searchQuery}%`
+    );
+  }
 
   const from = (page - 1) * limit;
   const to = from + limit - 1;
@@ -60,7 +67,10 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E293B] mb-6">Orders</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-[#1E293B]">Orders</h1>
+        <OrderSearchBar defaultValue={searchQuery} />
+      </div>
 
       {/* Status filter pills — scrollable on mobile */}
       <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide pb-1">

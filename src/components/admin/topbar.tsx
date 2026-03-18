@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Menu, ChevronRight, LogOut, Settings } from "lucide-react";
+import { Menu, ChevronRight, LogOut, Settings, ExternalLink } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useSidebar } from "./sidebar-context";
 import type { User } from "@/types";
@@ -89,7 +89,17 @@ export function Topbar({ user }: TopbarProps) {
         </nav>
       </div>
 
-      {/* Right: user dropdown */}
+      {/* Right: view store + user dropdown */}
+      <div className="flex items-center gap-2">
+        <Link
+          href="/"
+          target="_blank"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 border border-[#E2E8F0] rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <ExternalLink className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">View Store</span>
+        </Link>
+
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -129,6 +139,7 @@ export function Topbar({ user }: TopbarProps) {
             </button>
           </div>
         )}
+      </div>
       </div>
     </header>
   );
