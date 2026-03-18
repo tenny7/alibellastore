@@ -97,11 +97,11 @@ export default async function ProductsPage({ searchParams }: Props) {
     categoryIds = [...new Set(categoryIds)];
   }
 
-  // Build product query
+  // Build product query — include out_of_stock so they show as greyed out
   let query = supabase
     .from("products")
     .select("*, category:categories(*)", { count: "exact" })
-    .eq("status", "active");
+    .in("status", ["active", "out_of_stock"]);
 
   if (categoryIds.length > 0) {
     query = query.in("category_id", categoryIds);

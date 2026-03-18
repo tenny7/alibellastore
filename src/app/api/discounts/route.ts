@@ -6,13 +6,21 @@ export async function GET() {
   await requireAdmin();
 
   const supabase = createAdminClient();
+
+  // Auto-deactivate expired discounts that are still marked active
+  await supabase
+    .from("discounts")
+    .update({ is_active: false })
+    .eq("is_active", true)
+    .lt("expires_at", new Date().toISOString());
+
   const { data, error } = await supabase
     .from("discounts")
     .select("*")
     .order("created_at", { ascending: false });
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch discounts" }, { status: 500 });
   }
 
   return NextResponse.json(data);
@@ -41,7 +49,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to create discount" }, { status: 500 });
   }
 
   return NextResponse.json(data, { status: 201 });

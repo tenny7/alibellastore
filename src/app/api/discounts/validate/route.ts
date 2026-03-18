@@ -32,6 +32,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This discount is not yet active" }, { status: 400 });
   }
   if (now > new Date(discount.expires_at)) {
+    // Auto-deactivate the expired discount
+    await supabase
+      .from("discounts")
+      .update({ is_active: false })
+      .eq("id", discount.id);
     return NextResponse.json({ error: "This discount has expired" }, { status: 400 });
   }
   if (discount.max_usage !== null && discount.usage_count >= discount.max_usage) {
