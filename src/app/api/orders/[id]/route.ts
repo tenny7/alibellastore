@@ -36,6 +36,14 @@ export async function GET(
   return NextResponse.json(order);
 }
 
+// Only allow admins to update these order fields
+const ALLOWED_ORDER_FIELDS = new Set([
+  "status",
+  "payment_status",
+  "shipping_address",
+  "notes",
+]);
+
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -44,17 +52,29 @@ export async function PATCH(
   const { id } = await params;
   const body = await request.json();
 
+  // Whitelist: only allow known fields
+  const sanitized: Record<string, unknown> = {};
+  for (const key of Object.keys(body)) {
+    if (ALLOWED_ORDER_FIELDS.has(key)) {
+      sanitized[key] = body[key];
+    }
+  }
+
+  if (Object.keys(sanitized).length === 0) {
+    return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+  }
+
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .from("orders")
-    .update(body)
+    .update(sanitized)
     .eq("id", id)
     .select()
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update order" }, { status: 500 });
   }
 
   // Send status update notification + email if status changed

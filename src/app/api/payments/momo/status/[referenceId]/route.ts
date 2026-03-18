@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { getTransactionStatus } from "@/lib/momo/client";
 import { rateLimit } from "@/lib/rate-limit";
 import { createNotification } from "@/lib/notifications";
@@ -14,7 +15,17 @@ export async function GET(
   const limited = rateLimit(_request, { key: "momo-status", limit: 20, windowSeconds: 60 });
   if (limited) return limited;
 
+  // AUTH: Require authenticated user
+  const user = await getAuthenticatedUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { referenceId } = await params;
+
+  if (!referenceId || typeof referenceId !== "string") {
+    return NextResponse.json({ error: "Invalid referenceId" }, { status: 400 });
+  }
 
   try {
     const tx = await getTransactionStatus(referenceId);
@@ -28,6 +39,11 @@ export async function GET(
         .select("*")
         .eq("momo_reference_id", referenceId)
         .single();
+
+      // AUTH: Verify the user owns this order (admins can check any)
+      if (order && user.role !== "admin" && order.customer_id !== user.id) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
 
       if (order && order.payment_status !== "successful") {
         let paymentStatus: PaymentStatus = "pending";
@@ -79,7 +95,7 @@ export async function GET(
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("[MoMo] getTransactionStatus error:", message);
     return NextResponse.json(
-      { error: "Failed to check payment status", details: message },
+      { error: "Failed to check payment status" },
       { status: 500 }
     );
   }

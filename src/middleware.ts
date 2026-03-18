@@ -4,7 +4,22 @@ import { updateSession } from "@/lib/supabase/middleware";
 // Paths that receive external webhooks (skip CSRF check)
 const WEBHOOK_PATHS = ["/api/payments/momo/callback"];
 
+// Max request body size (1 MB) — file uploads handled separately
+const MAX_BODY_SIZE = 1 * 1024 * 1024;
+
 export async function middleware(request: NextRequest) {
+  // Block oversized request bodies (except uploads which have their own limits)
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && !request.nextUrl.pathname.startsWith("/api/upload")) {
+    const size = parseInt(contentLength, 10);
+    if (!Number.isNaN(size) && size > MAX_BODY_SIZE) {
+      return NextResponse.json(
+        { error: "Request body too large" },
+        { status: 413 }
+      );
+    }
+  }
+
   // CSRF protection: block cross-origin state-changing requests
   if (["POST", "PUT", "PATCH", "DELETE"].includes(request.method)) {
     const isWebhook = WEBHOOK_PATHS.some((p) => request.nextUrl.pathname.startsWith(p));

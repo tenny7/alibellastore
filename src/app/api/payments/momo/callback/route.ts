@@ -11,18 +11,33 @@ export async function POST(request: NextRequest) {
   const limited = rateLimit(request, { key: "momo-callback", limit: 30, windowSeconds: 60 });
   if (limited) return limited;
 
-  // Webhook secret verification (optional — set MOMO_WEBHOOK_SECRET in production)
+  // Webhook secret verification — REQUIRED in production
   const webhookSecret = process.env.MOMO_WEBHOOK_SECRET;
+  const isSandbox = process.env.MOMO_ENVIRONMENT !== "production";
+
   if (webhookSecret) {
     const providedSecret = request.headers.get("x-webhook-secret");
     if (providedSecret !== webhookSecret) {
       console.error("[MoMo callback] Invalid webhook secret");
       return NextResponse.json({ received: true }, { status: 403 });
     }
+  } else if (!isSandbox) {
+    // In production, webhook secret MUST be set
+    console.error("[MoMo callback] MOMO_WEBHOOK_SECRET not configured in production!");
+    return NextResponse.json({ received: true }, { status: 500 });
   }
 
-  const body = await request.json();
-  const { externalId, status, financialTransactionId } = body;
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ received: true }, { status: 400 });
+  }
+
+  const externalId = typeof body.externalId === "string" ? body.externalId : null;
+  const status = typeof body.status === "string" ? body.status : null;
+  const financialTransactionId =
+    typeof body.financialTransactionId === "string" ? body.financialTransactionId : null;
 
   if (!externalId || !status) {
     console.error("[MoMo callback] Missing externalId or status");
@@ -64,7 +79,7 @@ export async function POST(request: NextRequest) {
     .update({
       payment_status: paymentStatus,
       status: orderStatus,
-      momo_transaction_id: financialTransactionId || null,
+      momo_transaction_id: financialTransactionId,
     })
     .eq("id", order.id);
 
@@ -91,7 +106,7 @@ export async function POST(request: NextRequest) {
   // Send payment confirmation email when successful
   if (paymentStatus === "successful") {
     sendPaymentConfirmation({
-      to: order.customer_phone, // We'll also need the email — fetch from user
+      to: order.customer_phone,
       customerName: order.customer_name,
       orderNumber: order.order_number,
       amount: Number(order.total),
@@ -106,7 +121,7 @@ export async function POST(request: NextRequest) {
       .eq("id", order.customer_id)
       .single();
 
-    if (customer?.email) {
+    if (customer?.email && !customer.email.endsWith("@phone.local")) {
       sendPaymentConfirmation({
         to: customer.email,
         customerName: order.customer_name,
