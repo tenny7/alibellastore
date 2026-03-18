@@ -108,13 +108,13 @@ export default async function OrderDetailPage({ params }: Props) {
           <p className="font-medium text-[#DC2626]">Order Cancelled</p>
         </div>
       ) : (
-        <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
+        <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 sm:p-6 mb-6">
           <h2 className="font-semibold text-[#1E293B] mb-4">Order Status</h2>
-          <div className="flex items-center justify-between relative px-4">
+          <div className="flex items-center justify-between relative px-1 sm:px-4">
             {/* Progress line — runs between first and last icon centers */}
-            <div className="absolute top-4 h-0.5 bg-gray-200" style={{ left: "10%", right: "10%" }} />
+            <div className="absolute top-3 sm:top-4 h-0.5 bg-gray-200" style={{ left: "10%", right: "10%" }} />
             <div
-              className="absolute top-4 h-0.5 bg-primary transition-all"
+              className="absolute top-3 sm:top-4 h-0.5 bg-primary transition-all"
               style={{
                 left: "10%",
                 width: `${currentStep > 0 ? (currentStep / (ORDER_STEPS.length - 1)) * 80 : 0}%`,
@@ -127,19 +127,19 @@ export default async function OrderDetailPage({ params }: Props) {
               return (
                 <div
                   key={step.key}
-                  className="relative flex flex-col items-center z-10"
+                  className="relative flex flex-col items-center z-10 w-12 sm:w-auto"
                 >
                   <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors ${
+                    className={`flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 transition-colors ${
                       isActive
                         ? "bg-primary border-primary text-white"
                         : "bg-white border-gray-300 text-gray-400"
                     }`}
                   >
-                    <StepIcon className="h-4 w-4" />
+                    <StepIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
                   <span
-                    className={`mt-2 text-xs font-medium text-center ${
+                    className={`mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium text-center leading-tight ${
                       isActive ? "text-primary" : "text-gray-400"
                     }`}
                   >
