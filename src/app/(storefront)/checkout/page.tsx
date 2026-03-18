@@ -309,13 +309,13 @@ export default function CheckoutPage() {
           <h1 className="text-2xl font-bold text-[#1E293B] mb-2">Checkout</h1>
 
           {/* Progress bar */}
-          <div className="flex items-center mb-8">
+          <div className="flex items-center justify-center mb-8">
             {STEPS.map((s, i) => {
               const isCompleted = i < currentStepIdx;
               const isCurrent = i === currentStepIdx;
               return (
-                <div key={s.key} className="flex items-center flex-1">
-                  <div className="flex items-center gap-2">
+                <div key={s.key} className="flex items-center">
+                  <div className="flex flex-col items-center gap-1">
                     <div
                       className={cn(
                         "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
@@ -330,7 +330,7 @@ export default function CheckoutPage() {
                     </div>
                     <span
                       className={cn(
-                        "text-sm font-medium hidden sm:block",
+                        "text-xs font-medium hidden sm:block",
                         isCurrent ? "text-[#1E293B]" : "text-gray-400"
                       )}
                     >
@@ -340,7 +340,7 @@ export default function CheckoutPage() {
                   {i < STEPS.length - 1 && (
                     <div
                       className={cn(
-                        "flex-1 h-0.5 mx-3",
+                        "w-16 sm:w-24 h-0.5 mx-2 sm:mx-3",
                         i < currentStepIdx ? "bg-[#16A34A]" : "bg-gray-200"
                       )}
                     />
