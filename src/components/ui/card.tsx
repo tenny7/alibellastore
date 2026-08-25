@@ -10,7 +10,7 @@ export function Card({ children, className, hover }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-[#E2E8F0] bg-white p-6 overflow-hidden transition-shadow",
+        "rounded-lg border border-surface-border bg-surface p-6 overflow-hidden transition-shadow",
         hover && "hover:shadow-md",
         className
       )}
@@ -30,7 +30,7 @@ export function CardHeader({ children, className }: CardProps) {
 
 export function CardTitle({ children, className }: CardProps) {
   return (
-    <h3 className={cn("text-lg font-semibold text-[#1E293B]", className)}>
+    <h3 className={cn("text-lg font-semibold text-surface-fg", className)}>
       {children}
     </h3>
   );

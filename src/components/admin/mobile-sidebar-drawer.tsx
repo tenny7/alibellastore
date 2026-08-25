@@ -10,6 +10,10 @@ import {
   ShoppingCart,
   Tag,
   Settings,
+  Truck,
+  Boxes,
+  Users,
+  Banknote,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,9 +21,13 @@ import { useSidebar } from "./sidebar-context";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/products", label: "Products", icon: Package },
-  { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+  { href: "/admin/dispatch", label: "Dispatch", icon: Truck },
+  { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/inventory", label: "Inventory", icon: Boxes },
+  { href: "/admin/categories", label: "Categories", icon: FolderTree },
+  { href: "/admin/customers", label: "Customers", icon: Users },
+  { href: "/admin/payouts", label: "Payouts", icon: Banknote },
   { href: "/admin/discounts", label: "Discounts", icon: Tag },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
@@ -62,18 +70,18 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
 
       {/* Drawer */}
       <aside
-        className="absolute top-0 left-0 bottom-0 w-[280px] bg-[#1E293B] text-white flex flex-col"
+        className="dc-dark absolute bottom-0 left-0 top-0 flex w-[280px] flex-col bg-ink text-cream"
         style={{ animation: "slideInLeft 0.25s ease-out" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-5 border-b border-white/10">
           <div>
-            <h1 className="text-lg font-bold">{storeName}</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Admin Panel</p>
+            <h1 className="font-display tracking-[-0.03em] text-lg font-bold">{storeName}</h1>
+            <p className="text-xs text-surface-muted mt-0.5">Admin Panel</p>
           </div>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-surface-muted hover:text-white hover:bg-surface/10 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -92,8 +100,8 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
                 className={cn(
                   "flex items-center gap-3 px-5 py-3 text-sm transition-colors relative",
                   isActive
-                    ? "text-white bg-white/10"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                    ? "text-white bg-surface/10"
+                    : "text-surface-muted hover:text-white hover:bg-surface/5"
                 )}
               >
                 {isActive && (

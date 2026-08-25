@@ -107,7 +107,7 @@ export default function CategoriesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">Categories</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">Categories</h1>
         <Button onClick={openCreate} className="hidden lg:inline-flex">
           <Plus className="h-4 w-4" />
           Add Category
@@ -117,10 +117,10 @@ export default function CategoriesPage() {
       {loading ? (
         <SkeletonDataView rows={4} cols={4} />
       ) : allCategories.length === 0 ? (
-        <div className="text-center py-12 rounded-lg border border-[#E2E8F0] bg-white">
-          <FolderTree className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium mb-1">No categories yet</p>
-          <p className="text-sm text-gray-400 mb-4">Create your first category to organize products.</p>
+        <div className="text-center py-12 rounded-[20px] border border-surface-border bg-surface">
+          <FolderTree className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+          <p className="text-surface-muted font-medium mb-1">No categories yet</p>
+          <p className="text-sm text-surface-muted mb-4">Create your first category to organize products.</p>
           <Button onClick={openCreate} size="sm">
             <Plus className="h-4 w-4" />
             Create Category
@@ -143,10 +143,10 @@ export default function CategoriesPage() {
                 {allCategories.map((cat) => (
                   <TableRow key={cat.id}>
                     <TableCell className="font-medium">
-                      {cat.level > 0 && <span className="text-gray-400 mr-2">└</span>}
+                      {cat.level > 0 && <span className="text-surface-muted mr-2">└</span>}
                       {cat.name}
                     </TableCell>
-                    <TableCell className="text-gray-500 font-mono text-xs">{cat.slug}</TableCell>
+                    <TableCell className="text-surface-muted font-mono text-xs">{cat.slug}</TableCell>
                     <TableCell>
                       <Badge variant={cat.level === 0 ? "info" : "default"} size="sm">
                         {cat.level === 0 ? "Parent" : "Child"}
@@ -156,13 +156,13 @@ export default function CategoriesPage() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => openEdit(cat)}
-                          className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors"
+                          className="rounded-lg p-1.5 text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(cat.id)}
-                          className="rounded-lg p-1.5 text-gray-400 hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                          className="rounded-lg p-1.5 text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -179,15 +179,15 @@ export default function CategoriesPage() {
             {allCategories.map((cat) => (
               <div
                 key={cat.id}
-                className="rounded-lg border border-[#E2E8F0] bg-white p-4"
+                className="rounded-[20px] border border-surface-border bg-surface p-4"
               >
                 <div className="flex items-center justify-between">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      {cat.level > 0 && <span className="text-gray-300 text-lg">└</span>}
-                      <p className="font-medium text-[#1E293B] text-sm truncate">{cat.name}</p>
+                      {cat.level > 0 && <span className="text-surface-muted text-lg">└</span>}
+                      <p className="font-medium text-surface-fg text-sm truncate">{cat.name}</p>
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5 font-mono">{cat.slug}</p>
+                    <p className="text-xs text-surface-muted mt-0.5 font-mono">{cat.slug}</p>
                   </div>
                   <div className="flex items-center gap-1 ml-2">
                     <Badge variant={cat.level === 0 ? "info" : "default"} size="sm">
@@ -195,13 +195,13 @@ export default function CategoriesPage() {
                     </Badge>
                     <button
                       onClick={() => openEdit(cat)}
-                      className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors"
+                      className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(cat.id)}
-                      className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                      className="p-1.5 rounded-lg text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

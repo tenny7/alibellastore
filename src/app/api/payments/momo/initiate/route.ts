@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const settings = await getSiteSettings();
     const referenceId = await requestToPay({
       amount: order.total,
-      currency: process.env.NEXT_PUBLIC_MOMO_CURRENCY || "RWF",
+      currency: process.env.MOMO_CURRENCY || "RWF",
       externalId: order.order_number,
       payerPhone: order.customer_phone,
       payerMessage: `Payment for order ${order.order_number}`,

@@ -36,15 +36,15 @@ export function MobileFilterDrawer({ open, onClose, children }: MobileFilterDraw
       {/* Drawer */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-[300px] max-w-[85vw] bg-white shadow-xl transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-[300px] max-w-[85vw] bg-surface shadow-xl transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-[#E2E8F0]">
-          <h2 className="text-lg font-semibold text-[#1E293B]">Filters</h2>
+        <div className="flex items-center justify-between p-4 border-b border-surface-border">
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg">Filters</h2>
           <button
             onClick={onClose}
-            className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+            className="p-1 text-surface-muted hover:text-surface-muted transition-colors"
           >
             <X className="h-5 w-5" />
           </button>

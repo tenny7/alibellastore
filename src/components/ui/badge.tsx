@@ -12,7 +12,7 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-gray-100 text-gray-700 border-gray-200",
+  default: "bg-surface-hover text-surface-fg border-gray-200",
   success: "bg-green-50 text-[#16A34A] border-green-200",
   warning: "bg-amber-50 text-[#D97706] border-amber-200",
   danger: "bg-red-50 text-[#DC2626] border-red-200",

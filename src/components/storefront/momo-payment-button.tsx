@@ -123,7 +123,7 @@ export function MoMoPaymentButton({
       <div className="text-center py-4 bg-green-50 border border-green-200 rounded-lg p-6">
         <CheckCircle className="h-12 w-12 mx-auto text-[#16A34A]" />
         <p className="mt-3 font-medium text-[#16A34A]">Payment Successful!</p>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-surface-muted mt-1">
           Redirecting to confirmation...
         </p>
       </div>
@@ -138,7 +138,7 @@ export function MoMoPaymentButton({
           {state === "timed_out" ? "Payment Timed Out" : "Payment Failed"}
         </p>
         {errorMessage && (
-          <p className="text-sm text-gray-500 mt-1">{errorMessage}</p>
+          <p className="text-sm text-surface-muted mt-1">{errorMessage}</p>
         )}
         <button
           onClick={() => {
@@ -159,19 +159,19 @@ export function MoMoPaymentButton({
       <div className="text-center py-8 space-y-4">
         <div className="relative mx-auto w-16 h-16">
           <Loader2 className="h-16 w-16 text-[#FFCB05] animate-spin" />
-          <Phone className="h-6 w-6 text-[#1E293B] absolute inset-0 m-auto" />
+          <Phone className="h-6 w-6 text-surface-fg absolute inset-0 m-auto" />
         </div>
         <div>
-          <p className="font-medium text-[#1E293B]">
+          <p className="font-medium text-surface-fg">
             Approve the payment on your phone
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-surface-muted mt-1">
             A payment request of {formatCurrency(amount, currencyCode)} has been sent to your
             MTN MoMo account. Please check your phone and enter your PIN to
             approve.
           </p>
         </div>
-        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-400">
+        <div className="flex items-center justify-center gap-1.5 text-xs text-surface-muted">
           <Loader2 className="h-3 w-3 animate-spin" />
           Waiting for confirmation...
         </div>
@@ -182,7 +182,7 @@ export function MoMoPaymentButton({
   return (
     <div className="space-y-4 text-center">
       <div className="bg-[#FFF8E1] border border-[#FFECB3] rounded-lg p-4">
-        <p className="text-sm text-[#1E293B]">
+        <p className="text-sm text-surface-fg">
           Click below to send a payment request of{" "}
           <strong>{formatCurrency(amount, currencyCode)}</strong> to your MTN MoMo account.
           You will receive a prompt on your phone to approve.
@@ -196,7 +196,7 @@ export function MoMoPaymentButton({
       >
         {state === "initiating" ? "Sending request..." : `Pay ${formatCurrency(amount, currencyCode)} with MoMo`}
       </Button>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-surface-muted">
         Order #{orderNumber}
       </p>
     </div>

@@ -33,7 +33,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
     <div>
       <Link
         href="/admin/orders"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-4 transition-colors"
+        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-primary mb-4 transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />
         Back to orders
@@ -42,10 +42,10 @@ export default async function AdminOrderDetailPage({ params }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-xl lg:text-2xl font-bold text-[#1E293B]">
+          <h1 className="font-display tracking-[-0.03em] text-xl lg:text-2xl font-bold text-surface-fg">
             Order {order.order_number}
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-surface-muted mt-0.5">
             Placed on {new Date(order.created_at).toLocaleString()}
           </p>
         </div>
@@ -94,14 +94,14 @@ export default async function AdminOrderDetailPage({ params }: Props) {
               {/* Mobile items cards */}
               <div className="sm:hidden space-y-3">
                 {order.order_items?.map((item: { id: string; quantity: number; unit_price: number; product: { name: string } }) => (
-                  <div key={item.id} className="flex items-center justify-between py-2 border-b border-[#E2E8F0] last:border-0">
+                  <div key={item.id} className="flex items-center justify-between py-2 border-b border-surface-border last:border-0">
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-[#1E293B] truncate">{item.product?.name}</p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-sm font-medium text-surface-fg truncate">{item.product?.name}</p>
+                      <p className="text-xs text-surface-muted">
                         {item.quantity} x {formatCurrency(Number(item.unit_price), settings.currency_code)}
                       </p>
                     </div>
-                    <p className="text-sm font-semibold text-[#1E293B] ml-4">
+                    <p className="text-sm font-semibold text-surface-fg ml-4">
                       {formatCurrency(Number(item.unit_price) * item.quantity, settings.currency_code)}
                     </p>
                   </div>
@@ -109,20 +109,20 @@ export default async function AdminOrderDetailPage({ params }: Props) {
               </div>
 
               {/* Summary */}
-              <div className="mt-4 pt-4 border-t border-[#E2E8F0] space-y-1.5 text-sm">
+              <div className="mt-4 pt-4 border-t border-surface-border space-y-1.5 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Subtotal</span>
+                  <span className="text-surface-muted">Subtotal</span>
                   <span>{formatCurrency(Number(order.subtotal), settings.currency_code)}</span>
                 </div>
                 {Number(order.delivery_fee) > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Delivery</span>
+                    <span className="text-surface-muted">Delivery</span>
                     <span>{formatCurrency(Number(order.delivery_fee), settings.currency_code)}</span>
                   </div>
                 )}
                 {Number(order.tax_amount) > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Tax</span>
+                    <span className="text-surface-muted">Tax</span>
                     <span>{formatCurrency(Number(order.tax_amount), settings.currency_code)}</span>
                   </div>
                 )}
@@ -160,16 +160,16 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             <CardContent>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-gray-500">Name</dt>
+                  <dt className="text-surface-muted">Name</dt>
                   <dd className="font-medium">{order.customer_name}</dd>
                 </div>
                 <div>
-                  <dt className="text-gray-500">Phone</dt>
+                  <dt className="text-surface-muted">Phone</dt>
                   <dd>{order.customer_phone}</dd>
                 </div>
                 {(order.customer as { email?: string })?.email && (
                   <div>
-                    <dt className="text-gray-500">Email</dt>
+                    <dt className="text-surface-muted">Email</dt>
                     <dd>{(order.customer as { email: string }).email}</dd>
                   </div>
                 )}
@@ -184,8 +184,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             <CardContent>
               <p className="text-sm">{order.shipping_address}</p>
               {order.notes && (
-                <div className="mt-3 pt-3 border-t border-[#E2E8F0]">
-                  <p className="text-xs text-gray-500 mb-1">Notes</p>
+                <div className="mt-3 pt-3 border-t border-surface-border">
+                  <p className="text-xs text-surface-muted mb-1">Notes</p>
                   <p className="text-sm">{order.notes}</p>
                 </div>
               )}
@@ -199,18 +199,18 @@ export default async function AdminOrderDetailPage({ params }: Props) {
             <CardContent>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-gray-500">Status</dt>
+                  <dt className="text-surface-muted">Status</dt>
                   <dd><PaymentStatusBadge status={order.payment_status} /></dd>
                 </div>
                 {order.momo_reference_id && (
                   <div>
-                    <dt className="text-gray-500">MoMo Reference</dt>
+                    <dt className="text-surface-muted">MoMo Reference</dt>
                     <dd className="font-mono text-xs break-all">{order.momo_reference_id}</dd>
                   </div>
                 )}
                 {order.momo_transaction_id && (
                   <div>
-                    <dt className="text-gray-500">Transaction ID</dt>
+                    <dt className="text-surface-muted">Transaction ID</dt>
                     <dd className="font-mono text-xs break-all">{order.momo_transaction_id}</dd>
                   </div>
                 )}

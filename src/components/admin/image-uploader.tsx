@@ -53,14 +53,14 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-surface-fg">
         Product Images
       </label>
       <div className="flex gap-3">
         {images.map((url, index) => (
           <div
             key={url}
-            className="relative w-24 h-24 border border-[#E2E8F0] rounded-lg overflow-hidden"
+            className="relative w-24 h-24 border border-surface-border rounded-lg overflow-hidden"
           >
             <Image src={url} alt="" fill className="object-cover" />
             <button
@@ -75,11 +75,11 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
         {images.length < MAX_IMAGES_PER_PRODUCT && (
           <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
             {uploading ? (
-              <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+              <Loader2 className="h-6 w-6 animate-spin text-surface-muted" />
             ) : (
               <>
-                <Upload className="h-6 w-6 text-gray-400" />
-                <span className="text-xs text-gray-400 mt-1">Upload</span>
+                <Upload className="h-6 w-6 text-surface-muted" />
+                <span className="text-xs text-surface-muted mt-1">Upload</span>
               </>
             )}
             <input
@@ -92,7 +92,7 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
           </label>
         )}
       </div>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-surface-muted">
         Up to {MAX_IMAGES_PER_PRODUCT} images. JPEG, PNG, WebP. Max{" "}
         {MAX_IMAGE_SIZE_MB}MB each.
       </p>

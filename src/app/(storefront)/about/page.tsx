@@ -8,16 +8,16 @@ export default async function AboutPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold text-[#1E293B] mb-4">
+      <h1 className="font-display tracking-[-0.03em] text-3xl font-bold text-surface-fg mb-4">
         About {settings.store_name}
       </h1>
-      <p className="text-gray-600 text-lg mb-10 max-w-2xl">
+      <p className="text-surface-muted text-lg mb-10 max-w-2xl">
         {settings.store_description || "Your trusted online store in Rwanda. We bring you quality products with simple, secure payments through MTN Mobile Money."}
       </p>
 
       {/* How it works */}
       <section className="mb-12">
-        <h2 className="text-xl font-semibold text-[#1E293B] mb-6">
+        <h2 className="font-display tracking-[-0.02em] text-xl font-bold text-surface-fg mb-6">
           How It Works
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -45,24 +45,24 @@ export default async function AboutPage() {
           ].map((step) => (
             <div
               key={step.title}
-              className="rounded-lg border border-[#E2E8F0] bg-white p-5"
+              className="rounded-[20px] border border-surface-border bg-surface p-5"
             >
               <step.icon className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-semibold text-[#1E293B] mb-1">
+              <h3 className="font-semibold text-surface-fg mb-1">
                 {step.title}
               </h3>
-              <p className="text-sm text-gray-500">{step.desc}</p>
+              <p className="text-sm text-surface-muted">{step.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Contact */}
-      <section className="rounded-lg border border-[#E2E8F0] bg-white p-8">
-        <h2 className="text-xl font-semibold text-[#1E293B] mb-4">
+      <section className="rounded-[20px] border border-surface-border bg-surface p-8">
+        <h2 className="font-display tracking-[-0.02em] text-xl font-bold text-surface-fg mb-4">
           Contact Us
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-surface-muted mb-6">
           Have a question about a product or your order? We&apos;re happy to
           help.
         </p>
@@ -78,7 +78,7 @@ export default async function AboutPage() {
           </a>
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#E2E8F0] px-6 py-3 text-[#1E293B] font-medium hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-surface-border px-6 py-3 text-surface-fg font-medium hover:bg-surface-hover transition-colors"
           >
             <ShoppingBag className="h-5 w-5" />
             Browse Products

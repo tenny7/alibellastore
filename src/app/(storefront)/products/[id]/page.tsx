@@ -162,16 +162,16 @@ export default async function ProductDetailPage({ params }: Props) {
             </Link>
           )}
 
-          <h1 className="text-2xl md:text-3xl font-bold text-[#1E293B] mb-3">
+          <h1 className="font-display tracking-[-0.03em] text-2xl md:text-3xl font-bold text-surface-fg mb-3">
             {product.name}
           </h1>
 
-          <p className="text-2xl font-bold text-[#1E293B] mb-6">
+          <p className="text-2xl font-bold text-surface-fg mb-6">
             {formatCurrency(Number(product.price), settings.currency_code)}
           </p>
 
           {product.description && (
-            <p className="text-gray-600 leading-relaxed mb-8">
+            <p className="text-surface-muted leading-relaxed mb-8">
               {product.description}
             </p>
           )}
@@ -186,9 +186,9 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           {/* Delivery info banner */}
-          <div className="flex items-start gap-3 rounded-lg bg-[#F0F9FF] border border-[#BAE6FD] p-3.5 mb-6">
-            <Truck className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-            <div className="text-sm text-[#1E293B]">
+          <div className="flex items-start gap-3 mb-6 rounded-[14px] border border-purple/25 bg-purple/10 p-3.5">
+            <Truck className="mt-0.5 h-5 w-5 shrink-0 text-purple" />
+            <div className="text-sm text-surface-fg">
               {deliveryFee === 0 ? (
                 <p className="font-medium text-[#16A34A]">Free delivery on all orders</p>
               ) : (
@@ -201,7 +201,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   </p>
                 </>
               )}
-              <p className="text-gray-500 text-xs mt-0.5">Kigali: 1-2 days &middot; Other cities: 2-5 days</p>
+              <p className="text-surface-muted text-xs mt-0.5">Kigali: 1-2 days &middot; Other cities: 2-5 days</p>
             </div>
           </div>
 
@@ -214,7 +214,7 @@ export default async function ProductDetailPage({ params }: Props) {
       {relatedProducts && relatedProducts.length > 0 && (
         <section className="mt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-[#1E293B]">You May Also Like</h2>
+            <h2 className="font-display tracking-[-0.02em] text-xl font-bold text-surface-fg">You May Also Like</h2>
             {product.category && (
               <Link
                 href={`/products?category=${product.category.slug}`}

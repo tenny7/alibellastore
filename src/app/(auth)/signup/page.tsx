@@ -64,8 +64,8 @@ export default function SignupPage() {
   return (
     <Card>
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">{storeName}</h1>
-        <p className="text-sm text-gray-500 mt-1">Create your account</p>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">{storeName}</h1>
+        <p className="text-sm text-surface-muted mt-1">Create your account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -123,7 +123,7 @@ export default function SignupPage() {
         </Button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-gray-500">
+      <p className="mt-4 text-center text-sm text-surface-muted">
         Already have an account?{" "}
         <Link href="/login" className="text-primary hover:underline font-medium">
           Sign in

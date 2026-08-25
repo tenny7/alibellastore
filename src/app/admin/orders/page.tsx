@@ -68,7 +68,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
   return (
     <div>
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">Orders</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">Orders</h1>
         <OrderSearchBar defaultValue={searchQuery} />
       </div>
 
@@ -81,12 +81,12 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium border transition-all ${
               (status ?? "") === f.value
                 ? "bg-primary text-white border-primary shadow-sm"
-                : "bg-white text-gray-600 border-[#E2E8F0] hover:border-gray-300 hover:bg-gray-50"
+                : "bg-surface text-surface-muted border-surface-border hover:border-gray-300 hover:bg-surface-hover"
             }`}
           >
             {f.label}
             <span className={`ml-1.5 text-xs ${
-              (status ?? "") === f.value ? "text-white/70" : "text-gray-400"
+              (status ?? "") === f.value ? "text-white/70" : "text-surface-muted"
             }`}>
               {f.count}
             </span>
@@ -119,7 +119,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                     <TableCell>
                       <div>
                         <p className="font-medium">{order.customer_name}</p>
-                        <p className="text-xs text-gray-500">{order.customer_phone}</p>
+                        <p className="text-xs text-surface-muted">{order.customer_phone}</p>
                       </div>
                     </TableCell>
                     <TableCell className="font-medium">
@@ -131,7 +131,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                     <TableCell>
                       <PaymentStatusBadge status={order.payment_status} />
                     </TableCell>
-                    <TableCell className="text-gray-500 text-xs">
+                    <TableCell className="text-surface-muted text-xs">
                       {new Date(order.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="text-right">
@@ -154,31 +154,31 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
               <Link
                 key={order.id}
                 href={`/admin/orders/${order.id}`}
-                className="block rounded-lg border border-[#E2E8F0] bg-white p-4 hover:shadow-sm transition-shadow"
+                className="block rounded-[20px] border border-surface-border bg-surface p-4 hover:shadow-sm transition-shadow"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-mono text-xs font-medium text-[#1E293B]">
+                  <span className="font-mono text-xs font-medium text-surface-fg">
                     {order.order_number}
                   </span>
                   <OrderStatusBadge status={order.status} />
                 </div>
                 <div className="flex items-center justify-between mb-1.5">
                   <div>
-                    <p className="text-sm font-medium text-[#1E293B]">{order.customer_name}</p>
-                    <p className="text-xs text-gray-400">{order.customer_phone}</p>
+                    <p className="text-sm font-medium text-surface-fg">{order.customer_name}</p>
+                    <p className="text-xs text-surface-muted">{order.customer_phone}</p>
                   </div>
-                  <p className="text-sm font-semibold text-[#1E293B]">
+                  <p className="text-sm font-semibold text-surface-fg">
                     {formatCurrency(Number(order.total), settings.currency_code)}
                   </p>
                 </div>
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#E2E8F0]">
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-surface-border">
                   <div className="flex items-center gap-2">
                     <PaymentStatusBadge status={order.payment_status} />
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-surface-muted">
                       {new Date(order.created_at).toLocaleDateString()}
                     </span>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-gray-300" />
+                  <ChevronRight className="h-4 w-4 text-surface-muted" />
                 </div>
               </Link>
             ))}
@@ -191,10 +191,10 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
           />
         </>
       ) : (
-        <div className="text-center py-12 rounded-lg border border-[#E2E8F0] bg-white">
-          <ShoppingCart className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium mb-1">No orders found</p>
-          <p className="text-sm text-gray-400">
+        <div className="text-center py-12 rounded-[20px] border border-surface-border bg-surface">
+          <ShoppingCart className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+          <p className="text-surface-muted font-medium mb-1">No orders found</p>
+          <p className="text-sm text-surface-muted">
             {status ? "Try selecting a different status filter." : "Orders will appear here once customers place them."}
           </p>
         </div>

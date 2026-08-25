@@ -27,8 +27,8 @@ export default async function EditProductPage({ params }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E293B] mb-6">Edit Product</h1>
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6">
+      <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-6">Edit Product</h1>
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6">
         <ProductForm product={product} categories={categories ?? []} />
       </div>
     </div>

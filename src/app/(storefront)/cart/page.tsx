@@ -19,11 +19,11 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <ShoppingCart className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-        <h1 className="text-2xl font-bold text-[#1E293B] mb-2">
+        <ShoppingCart className="h-16 w-16 mx-auto text-surface-muted mb-4" />
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-2">
           Your cart is empty
         </h1>
-        <p className="text-gray-500 mb-6">
+        <p className="text-surface-muted mb-6">
           Add some products to get started.
         </p>
         <Link href="/products">
@@ -35,7 +35,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-[#1E293B] mb-6">Shopping Cart</h1>
+      <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-6">Your bag</h1>
 
       <div className="grid lg:grid-cols-3 gap-8">
         {/* Cart items */}
@@ -43,9 +43,9 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex gap-4 rounded-lg border border-[#E2E8F0] bg-white p-4"
+              className="flex gap-4 rounded-[20px] border border-surface-border bg-surface p-4"
             >
-              <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+              <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-surface-hover shrink-0">
                 {item.image ? (
                   <Image
                     src={item.image}
@@ -54,17 +54,17 @@ export default function CartPage() {
                     className="object-cover"
                   />
                 ) : (
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-300 text-xs">
+                  <div className="absolute inset-0 flex items-center justify-center text-surface-muted text-xs">
                     N/A
                   </div>
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-[#1E293B] truncate">
+                <h3 className="text-sm font-medium text-surface-fg truncate">
                   {item.name}
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-surface-muted mt-1">
                   {formatCurrency(item.price, currencyCode)} each
                 </p>
 
@@ -72,7 +72,7 @@ export default function CartPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                      className="rounded border border-[#E2E8F0] p-1 hover:bg-gray-50"
+                      className="rounded border border-surface-border p-1 hover:bg-surface-hover"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
@@ -81,19 +81,19 @@ export default function CartPage() {
                     </span>
                     <button
                       onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                      className="rounded border border-[#E2E8F0] p-1 hover:bg-gray-50"
+                      className="rounded border border-surface-border p-1 hover:bg-surface-hover"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <p className="text-sm font-bold text-[#1E293B]">
+                    <p className="text-sm font-bold text-surface-fg">
                       {formatCurrency(item.price * item.quantity, currencyCode)}
                     </p>
                     <button
                       onClick={() => removeItem(item.productId)}
-                      className="text-gray-400 hover:text-[#DC2626]"
+                      className="text-surface-muted hover:text-[#DC2626]"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -105,7 +105,7 @@ export default function CartPage() {
 
           <button
             onClick={clearCart}
-            className="text-sm text-gray-500 hover:text-[#DC2626] transition-colors"
+            className="text-sm text-surface-muted hover:text-[#DC2626] transition-colors"
           >
             Clear cart
           </button>
@@ -113,22 +113,22 @@ export default function CartPage() {
 
         {/* Order summary */}
         <div className="lg:col-span-1">
-          <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 sticky top-24">
-            <h2 className="text-lg font-semibold text-[#1E293B] mb-4">
+          <div className="rounded-[20px] border border-surface-border bg-surface p-6 sticky top-24">
+            <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mb-4">
               Order Summary
             </h2>
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">
+                <span className="text-surface-muted">
                   Subtotal ({items.reduce((s, i) => s + i.quantity, 0)} items)
                 </span>
                 <span className="font-medium">{formatCurrency(getTotal(), currencyCode)}</span>
               </div>
             </div>
-            <div className="border-t border-[#E2E8F0] pt-4 mb-6">
+            <div className="border-t border-surface-border pt-4 mb-6">
               <div className="flex justify-between">
-                <span className="font-semibold text-[#1E293B]">Total</span>
-                <span className="text-xl font-bold text-[#1E293B]">
+                <span className="font-semibold text-surface-fg">Total</span>
+                <span className="text-xl font-bold text-surface-fg">
                   {formatCurrency(getTotal(), currencyCode)}
                 </span>
               </div>

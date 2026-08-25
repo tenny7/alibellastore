@@ -56,18 +56,18 @@ export function Modal({ open, onClose, title, children, className, size = "md" }
     >
       <div
         className={cn(
-          "w-full rounded-t-xl sm:rounded-lg border border-[#E2E8F0] bg-white shadow-lg max-h-[90vh] flex flex-col",
+          "w-full rounded-t-xl sm:rounded-lg border border-surface-border bg-surface shadow-lg max-h-[90vh] flex flex-col",
           sizeStyles[size],
           className
         )}
         style={{ animation: "slideInUp 0.2s ease-out" }}
       >
         {title && (
-          <div className="flex items-center justify-between border-b border-[#E2E8F0] px-5 sm:px-6 py-4 shrink-0">
-            <h2 className="text-lg font-semibold text-[#1E293B]">{title}</h2>
+          <div className="flex items-center justify-between border-b border-surface-border px-5 sm:px-6 py-4 shrink-0">
+            <h2 className="text-lg font-semibold text-surface-fg">{title}</h2>
             <button
               onClick={onClose}
-              className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+              className="rounded-lg p-1 text-surface-muted hover:bg-surface-hover hover:text-surface-muted transition-colors"
             >
               <X className="h-5 w-5" />
             </button>

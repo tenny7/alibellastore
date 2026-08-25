@@ -74,7 +74,7 @@ export default async function OrderDetailPage({ params }: Props) {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <Link
         href="/orders"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-6"
+        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-primary mb-6"
       >
         <ChevronLeft className="h-4 w-4" />
         Back to Orders
@@ -82,10 +82,10 @@ export default async function OrderDetailPage({ params }: Props) {
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#1E293B]">
+          <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">
             Order {order.order_number}
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-surface-muted">
             Placed on{" "}
             {new Date(order.created_at).toLocaleDateString("en-RW", {
               year: "numeric",
@@ -108,8 +108,8 @@ export default async function OrderDetailPage({ params }: Props) {
           <p className="font-medium text-[#DC2626]">Order Cancelled</p>
         </div>
       ) : (
-        <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 sm:p-6 mb-6">
-          <h2 className="font-semibold text-[#1E293B] mb-4">Order Status</h2>
+        <div className="rounded-[20px] border border-surface-border bg-surface p-4 sm:p-6 mb-6">
+          <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Order Status</h2>
           <div className="flex items-center justify-between relative px-1 sm:px-4">
             {/* Progress line — runs between first and last icon centers */}
             <div className="absolute top-3 sm:top-4 h-0.5 bg-gray-200" style={{ left: "10%", right: "10%" }} />
@@ -133,14 +133,14 @@ export default async function OrderDetailPage({ params }: Props) {
                     className={`flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 transition-colors ${
                       isActive
                         ? "bg-primary border-primary text-white"
-                        : "bg-white border-gray-300 text-gray-400"
+                        : "bg-surface border-gray-300 text-surface-muted"
                     }`}
                   >
                     <StepIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
                   <span
                     className={`mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium text-center leading-tight ${
-                      isActive ? "text-primary" : "text-gray-400"
+                      isActive ? "text-primary" : "text-surface-muted"
                     }`}
                   >
                     {step.label}
@@ -153,8 +153,8 @@ export default async function OrderDetailPage({ params }: Props) {
       )}
 
       {/* Items */}
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
-        <h2 className="font-semibold text-[#1E293B] mb-4">Items</h2>
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6 mb-6">
+        <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Items</h2>
         <div className="space-y-4">
           {order.order_items?.map(
             (item: {
@@ -164,7 +164,7 @@ export default async function OrderDetailPage({ params }: Props) {
               product: { id: string; name: string; images: string[] };
             }) => (
               <div key={item.id} className="flex items-center gap-3">
-                <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-[#E2E8F0]">
+                <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-surface-hover shrink-0 border border-surface-border">
                   {item.product?.images?.[0] ? (
                     <Image
                       src={item.product.images[0]}
@@ -174,7 +174,7 @@ export default async function OrderDetailPage({ params }: Props) {
                       sizes="56px"
                     />
                   ) : (
-                    <div className="flex items-center justify-center h-full text-gray-300 text-xs">
+                    <div className="flex items-center justify-center h-full text-surface-muted text-xs">
                       No img
                     </div>
                   )}
@@ -182,15 +182,15 @@ export default async function OrderDetailPage({ params }: Props) {
                 <div className="flex-1 min-w-0">
                   <Link
                     href={`/products/${item.product?.id}`}
-                    className="text-sm font-medium text-[#1E293B] hover:text-primary truncate block"
+                    className="text-sm font-medium text-surface-fg hover:text-primary truncate block"
                   >
                     {item.product?.name}
                   </Link>
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-surface-muted">
                     {formatCurrency(Number(item.unit_price), settings.currency_code)} x {item.quantity}
                   </p>
                 </div>
-                <span className="text-sm font-medium text-[#1E293B]">
+                <span className="text-sm font-medium text-surface-fg">
                   {formatCurrency(Number(item.unit_price) * item.quantity, settings.currency_code)}
                 </span>
               </div>
@@ -198,9 +198,9 @@ export default async function OrderDetailPage({ params }: Props) {
           )}
         </div>
 
-        <div className="border-t border-[#E2E8F0] mt-4 pt-4 space-y-1">
+        <div className="border-t border-surface-border mt-4 pt-4 space-y-1">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Subtotal</span>
+            <span className="text-surface-muted">Subtotal</span>
             <span>{formatCurrency(Number(order.subtotal), settings.currency_code)}</span>
           </div>
           {Number(order.discount_amount) > 0 && (
@@ -217,26 +217,26 @@ export default async function OrderDetailPage({ params }: Props) {
       </div>
 
       {/* Delivery info */}
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
-        <h2 className="font-semibold text-[#1E293B] mb-3">Delivery Info</h2>
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6 mb-6">
+        <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-3">Delivery Info</h2>
         <dl className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <dt className="text-gray-500">Name</dt>
+            <dt className="text-surface-muted">Name</dt>
             <dd>{order.customer_name}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-gray-500">Phone</dt>
+            <dt className="text-surface-muted">Phone</dt>
             <dd>{order.customer_phone}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-gray-500">Address</dt>
+            <dt className="text-surface-muted">Address</dt>
             <dd className="text-right max-w-[200px]">
               {order.shipping_address}
             </dd>
           </div>
           {order.notes && (
             <div className="flex justify-between">
-              <dt className="text-gray-500">Notes</dt>
+              <dt className="text-surface-muted">Notes</dt>
               <dd className="text-right max-w-[200px]">{order.notes}</dd>
             </div>
           )}
@@ -245,15 +245,15 @@ export default async function OrderDetailPage({ params }: Props) {
 
       {/* Payment info */}
       {order.momo_transaction_id && (
-        <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
-          <h2 className="font-semibold text-[#1E293B] mb-3">Payment</h2>
+        <div className="rounded-[20px] border border-surface-border bg-surface p-6 mb-6">
+          <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-3">Payment</h2>
           <dl className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <dt className="text-gray-500">Method</dt>
+              <dt className="text-surface-muted">Method</dt>
               <dd>MTN Mobile Money</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-gray-500">Transaction ID</dt>
+              <dt className="text-surface-muted">Transaction ID</dt>
               <dd className="font-mono text-xs">
                 {order.momo_transaction_id}
               </dd>

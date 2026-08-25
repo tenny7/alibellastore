@@ -12,13 +12,13 @@ export default async function PrivacyPage() {
     <div className="max-w-3xl mx-auto px-4 py-6">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Privacy Policy" }]} />
 
-      <h1 className="text-2xl font-bold text-[#1E293B] mb-6">Privacy Policy</h1>
+      <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-6">Privacy Policy</h1>
 
-      <div className="prose prose-gray max-w-none space-y-6 text-gray-600 text-sm leading-relaxed">
+      <div className="prose prose-gray max-w-none space-y-6 text-surface-muted text-sm leading-relaxed">
         <p>Last updated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">1. Information We Collect</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">1. Information We Collect</h2>
           <p>We collect the following information when you use our platform:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Name, email address, and phone number when you create an account</li>
@@ -29,7 +29,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">2. How We Use Your Information</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">2. How We Use Your Information</h2>
           <p>Your information is used to:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Process and fulfill your orders</li>
@@ -40,7 +40,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">3. Information Sharing</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">3. Information Sharing</h2>
           <p>
             We do not sell your personal information. We share data only with trusted third parties
             necessary to operate our service:
@@ -52,7 +52,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">4. Data Security</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">4. Data Security</h2>
           <p>
             We implement industry-standard security measures to protect your information. Payment
             processing is handled entirely by MTN MoMo&apos;s secure platform — we never store your
@@ -61,7 +61,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">5. Cookies</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">5. Cookies</h2>
           <p>
             We use essential cookies to maintain your shopping session and authentication. We do not
             use third-party tracking cookies.
@@ -69,7 +69,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">6. Your Rights</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">6. Your Rights</h2>
           <p>You have the right to:</p>
           <ul className="list-disc pl-5 space-y-1 mt-2">
             <li>Access the personal information we hold about you</li>
@@ -83,7 +83,7 @@ export default async function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-semibold text-[#1E293B] mt-8 mb-3">7. Changes to This Policy</h2>
+          <h2 className="font-display tracking-[-0.02em] text-lg font-bold text-surface-fg mt-8 mb-3">7. Changes to This Policy</h2>
           <p>
             We may update this privacy policy periodically. We will notify you of significant changes
             through our platform or via email. Continued use of {storeName} after changes constitutes

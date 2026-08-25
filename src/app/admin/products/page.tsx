@@ -63,7 +63,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">Products</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">Products</h1>
         <Link href="/admin/products/new" className="hidden lg:block">
           <Button>
             <Plus className="h-4 w-4" />
@@ -122,13 +122,13 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                           />
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
+                        <div className="w-10 h-10 rounded bg-surface-hover flex items-center justify-center text-surface-muted text-xs">
                           N/A
                         </div>
                       )}
                     </TableCell>
                     <TableCell className="font-medium">{product.name}</TableCell>
-                    <TableCell className="text-gray-500">
+                    <TableCell className="text-surface-muted">
                       {(product.category as { name: string })?.name ?? "—"}
                     </TableCell>
                     <TableCell>{formatCurrency(Number(product.price), settings.currency_code)}</TableCell>
@@ -159,7 +159,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="rounded-lg border border-[#E2E8F0] bg-white p-4"
+                className="rounded-[20px] border border-surface-border bg-surface p-4"
               >
                 <div className="flex gap-3">
                   {product.images?.[0] ? (
@@ -172,24 +172,24 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                       />
                     </div>
                   ) : (
-                    <div className="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 shrink-0">
+                    <div className="w-14 h-14 rounded-lg bg-surface-hover flex items-center justify-center text-surface-muted shrink-0">
                       <Package className="h-6 w-6" />
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-2">
-                      <p className="font-medium text-[#1E293B] text-sm truncate">
+                      <p className="font-medium text-surface-fg text-sm truncate">
                         {product.name}
                       </p>
                       <Badge variant={statusVariant[product.status]} size="sm" dot>
                         {product.status.replace("_", " ")}
                       </Badge>
                     </div>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-xs text-surface-muted mt-0.5">
                       {(product.category as { name: string })?.name ?? "—"}
                     </p>
                     <div className="flex items-center justify-between mt-2">
-                      <p className="font-semibold text-sm text-[#1E293B]">
+                      <p className="font-semibold text-sm text-surface-fg">
                         {formatCurrency(Number(product.price), settings.currency_code)}
                       </p>
                       <div className="flex items-center gap-2">
@@ -215,10 +215,10 @@ export default async function AdminProductsPage({ searchParams }: Props) {
           />
         </>
       ) : (
-        <div className="text-center py-12 rounded-lg border border-[#E2E8F0] bg-white">
-          <Package className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium mb-1">No products found</p>
-          <p className="text-sm text-gray-400 mb-4">
+        <div className="text-center py-12 rounded-[20px] border border-surface-border bg-surface">
+          <Package className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+          <p className="text-surface-muted font-medium mb-1">No products found</p>
+          <p className="text-sm text-surface-muted mb-4">
             {search || categoryId || statusFilter
               ? "Try adjusting your filters."
               : "Add your first product to get started."}

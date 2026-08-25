@@ -53,7 +53,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-16 text-center text-gray-500">
+      <div className="max-w-xl mx-auto px-4 py-16 text-center text-surface-muted">
         Loading...
       </div>
     );
@@ -62,7 +62,7 @@ export default function ProfilePage() {
   return (
     <div className="max-w-xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">My Profile</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">My Profile</h1>
         <Link
           href="/orders"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
@@ -72,14 +72,14 @@ export default function ProfilePage() {
         </Link>
       </div>
 
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 space-y-5">
-        <div className="flex items-center gap-3 pb-4 border-b border-[#E2E8F0]">
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6 space-y-5">
+        <div className="flex items-center gap-3 pb-4 border-b border-surface-border">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
             <User className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <p className="font-medium text-[#1E293B]">{name || "Customer"}</p>
-            <p className="text-sm text-gray-500">{email}</p>
+            <p className="font-medium text-surface-fg">{name || "Customer"}</p>
+            <p className="text-sm text-surface-muted">{email}</p>
           </div>
         </div>
 

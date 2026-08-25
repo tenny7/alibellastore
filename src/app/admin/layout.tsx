@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-[#F8FAFC]">
+      <div className="dc-dark flex h-screen bg-canvas text-surface-fg">
         <Sidebar storeName={settings.store_name} />
         <div className="flex-1 flex flex-col overflow-hidden">
           <Topbar user={user} />

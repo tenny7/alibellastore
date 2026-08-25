@@ -21,17 +21,17 @@ export function QuickActionButton({
     <Link
       href={href}
       className={cn(
-        "flex items-center gap-3 rounded-lg border border-[#E2E8F0] bg-white p-4 transition-all hover:shadow-md hover:border-primary/20 active:scale-[0.98] group",
+        "group flex items-center gap-3 rounded-[18px] border border-cream/[0.09] bg-ink p-4 transition-all hover:border-cream/20 active:scale-[0.98]",
         className
       )}
     >
-      <div className="rounded-lg bg-blue-50 p-2.5 group-hover:bg-blue-100 transition-colors">
-        <Icon className="h-5 w-5 text-primary" />
+      <div className="rounded-[10px] bg-purple/15 p-2.5 text-lilac transition-colors group-hover:bg-purple/25">
+        <Icon className="h-5 w-5" />
       </div>
       <div>
-        <p className="text-sm font-medium text-[#1E293B]">{label}</p>
+        <p className="text-sm font-bold text-cream">{label}</p>
         {description && (
-          <p className="text-xs text-gray-400 mt-0.5">{description}</p>
+          <p className="mt-0.5 text-xs text-cream/45">{description}</p>
         )}
       </div>
     </Link>

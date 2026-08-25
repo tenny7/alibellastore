@@ -36,20 +36,20 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
       {currentPage > 1 ? (
         <Link
           href={buildUrl(currentPage - 1)}
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
+          className="rounded-lg p-2 text-surface-muted hover:bg-surface-hover"
           aria-label="Previous page"
         >
           <ChevronLeft className="h-4 w-4" />
         </Link>
       ) : (
-        <span className="rounded-lg p-2 text-gray-300">
+        <span className="rounded-lg p-2 text-surface-muted">
           <ChevronLeft className="h-4 w-4" />
         </span>
       )}
 
       {pages.map((page, i) =>
         page === "..." ? (
-          <span key={`dots-${i}`} className="px-2 text-gray-400">
+          <span key={`dots-${i}`} className="px-2 text-surface-muted">
             ...
           </span>
         ) : (
@@ -60,7 +60,7 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
               "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
               currentPage === page
                 ? "bg-primary text-white"
-                : "text-gray-600 hover:bg-gray-100"
+                : "text-surface-muted hover:bg-surface-hover"
             )}
           >
             {page}
@@ -71,13 +71,13 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
       {currentPage < totalPages ? (
         <Link
           href={buildUrl(currentPage + 1)}
-          className="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
+          className="rounded-lg p-2 text-surface-muted hover:bg-surface-hover"
           aria-label="Next page"
         >
           <ChevronRight className="h-4 w-4" />
         </Link>
       ) : (
-        <span className="rounded-lg p-2 text-gray-300">
+        <span className="rounded-lg p-2 text-surface-muted">
           <ChevronRight className="h-4 w-4" />
         </span>
       )}

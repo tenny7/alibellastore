@@ -10,7 +10,7 @@ export function Skeleton({ className }: SkeletonProps) {
 
 export function SkeletonRow({ cols = 5 }: { cols?: number }) {
   return (
-    <tr className="border-b border-[#E2E8F0]">
+    <tr className="border-b border-surface-border">
       {Array.from({ length: cols }).map((_, i) => (
         <td key={i} className="px-4 py-3">
           <div className="h-4 animate-pulse rounded bg-gray-200 w-3/4" />
@@ -22,7 +22,7 @@ export function SkeletonRow({ cols = 5 }: { cols?: number }) {
 
 export function SkeletonCard() {
   return (
-    <div className="rounded-lg border border-[#E2E8F0] bg-white p-4 animate-pulse">
+    <div className="rounded-[20px] border border-surface-border bg-surface p-4 animate-pulse">
       <div className="flex items-center justify-between mb-3">
         <div className="h-4 bg-gray-200 rounded w-1/3" />
         <div className="h-5 bg-gray-200 rounded-full w-16" />
@@ -37,9 +37,9 @@ export function SkeletonCard() {
 
 export function SkeletonTable({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) {
   return (
-    <div className="hidden lg:block rounded-lg border border-[#E2E8F0] overflow-hidden">
+    <div className="hidden lg:block rounded-lg border border-surface-border overflow-hidden">
       <table className="w-full">
-        <thead className="bg-gray-50">
+        <thead className="bg-surface-hover">
           <tr>
             {Array.from({ length: cols }).map((_, i) => (
               <th key={i} className="px-4 py-3">

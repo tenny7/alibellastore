@@ -122,7 +122,7 @@ export function FilterSidebar({
     <div className="space-y-6">
       {/* Categories */}
       <div>
-        <h3 className="text-sm font-semibold text-[#1E293B] uppercase tracking-wider mb-3">
+        <h3 className="text-sm font-semibold text-surface-fg uppercase tracking-wider mb-3">
           Categories
         </h3>
         {isPending && (
@@ -140,10 +140,10 @@ export function FilterSidebar({
                   onChange={() => toggleCategory(cat.slug)}
                   className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />
-                <span className="text-sm text-gray-600 group-hover:text-[#1E293B] flex-1 font-medium">
+                <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1 font-medium">
                   {cat.name}
                 </span>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-surface-muted">
                   ({getCategoryCount(cat)})
                 </span>
               </label>
@@ -161,10 +161,10 @@ export function FilterSidebar({
                         onChange={() => toggleCategory(child.slug)}
                         className="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary"
                       />
-                      <span className="text-sm text-gray-500 group-hover:text-[#1E293B] flex-1">
+                      <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1">
                         {child.name}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-surface-muted">
                         ({categoryCounts[child.id] ?? 0})
                       </span>
                     </label>
@@ -178,7 +178,7 @@ export function FilterSidebar({
 
       {/* Price Range */}
       <div>
-        <h3 className="text-sm font-semibold text-[#1E293B] uppercase tracking-wider mb-3">
+        <h3 className="text-sm font-semibold text-surface-fg uppercase tracking-wider mb-3">
           Price Range
         </h3>
         <div className="flex items-center gap-2">
@@ -188,16 +188,16 @@ export function FilterSidebar({
             onChange={(e) => handlePriceChange("min", e.target.value)}
             placeholder={String(minPrice)}
             min={0}
-            className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           />
-          <span className="text-gray-400 text-sm shrink-0">&mdash;</span>
+          <span className="text-surface-muted text-sm shrink-0">&mdash;</span>
           <input
             type="number"
             value={priceMax}
             onChange={(e) => handlePriceChange("max", e.target.value)}
             placeholder={String(maxPrice)}
             min={0}
-            className="w-full rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
           />
         </div>
       </div>
@@ -206,7 +206,7 @@ export function FilterSidebar({
       {hasFilters && (
         <button
           onClick={clearFilters}
-          className="w-full text-sm text-gray-500 hover:text-[#1E293B] py-2 transition-colors"
+          className="w-full text-sm text-surface-muted hover:text-surface-fg py-2 transition-colors"
         >
           Clear all filters
         </button>
