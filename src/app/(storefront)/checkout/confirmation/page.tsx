@@ -17,7 +17,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   if (!orderId) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500">No order found.</p>
+        <p className="text-surface-muted">No order found.</p>
         <Link href="/">
           <Button className="mt-4">Continue Shopping</Button>
         </Link>
@@ -39,7 +39,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   if (!order) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <p className="text-gray-500">Order not found.</p>
+        <p className="text-surface-muted">Order not found.</p>
         <Link href="/">
           <Button className="mt-4">Continue Shopping</Button>
         </Link>
@@ -88,14 +88,14 @@ export default async function ConfirmationPage({ searchParams }: Props) {
         <h1 className={`text-2xl font-bold mt-4 ${config.color}`}>
           {config.label}
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-surface-muted mt-2">
           Order <span className="font-mono font-bold">{order.order_number}</span>
         </p>
       </div>
 
       {/* Order details */}
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
-        <h2 className="font-semibold text-[#1E293B] mb-4">Order Details</h2>
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6 mb-6">
+        <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Order Details</h2>
 
         <div className="space-y-3 mb-4">
           {order.order_items?.map((item: { id: string; quantity: number; unit_price: number; product: { name: string } }) => (
@@ -110,20 +110,20 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           ))}
         </div>
 
-        <div className="border-t border-[#E2E8F0] pt-3 space-y-1">
+        <div className="border-t border-surface-border pt-3 space-y-1">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Subtotal</span>
+            <span className="text-surface-muted">Subtotal</span>
             <span>{formatCurrency(Number(order.subtotal), settings.currency_code)}</span>
           </div>
           {Number(order.delivery_fee) > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Delivery</span>
+              <span className="text-surface-muted">Delivery</span>
               <span>{formatCurrency(Number(order.delivery_fee), settings.currency_code)}</span>
             </div>
           )}
           {Number(order.tax_amount) > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Tax</span>
+              <span className="text-surface-muted">Tax</span>
               <span>{formatCurrency(Number(order.tax_amount), settings.currency_code)}</span>
             </div>
           )}
@@ -141,19 +141,19 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       </div>
 
       {/* Delivery info */}
-      <div className="rounded-lg border border-[#E2E8F0] bg-white p-6 mb-6">
-        <h2 className="font-semibold text-[#1E293B] mb-3">Delivery Info</h2>
+      <div className="rounded-[20px] border border-surface-border bg-surface p-6 mb-6">
+        <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-3">Delivery Info</h2>
         <dl className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <dt className="text-gray-500">Name</dt>
+            <dt className="text-surface-muted">Name</dt>
             <dd>{order.customer_name}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-gray-500">Phone</dt>
+            <dt className="text-surface-muted">Phone</dt>
             <dd>{order.customer_phone}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-gray-500">Address</dt>
+            <dt className="text-surface-muted">Address</dt>
             <dd className="text-right max-w-[200px]">{order.shipping_address}</dd>
           </div>
         </dl>

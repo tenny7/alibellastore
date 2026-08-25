@@ -14,8 +14,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
 
   if (!images || images.length === 0) {
     return (
-      <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border border-[#E2E8F0]">
-        <div className="absolute inset-0 flex items-center justify-center text-gray-300">
+      <div className="relative aspect-square rounded-xl overflow-hidden bg-surface-hover border border-surface-border">
+        <div className="absolute inset-0 flex items-center justify-center text-surface-muted">
           No image
         </div>
       </div>
@@ -36,7 +36,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                   "relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors",
                   i === activeIndex
                     ? "border-primary"
-                    : "border-[#E2E8F0] hover:border-gray-300"
+                    : "border-surface-border hover:border-gray-300"
                 )}
               >
                 <Image
@@ -50,7 +50,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             ))}
           </div>
         )}
-        <div className="relative flex-1 aspect-square rounded-xl overflow-hidden bg-gray-100 border border-[#E2E8F0]">
+        <div className="relative flex-1 aspect-square rounded-xl overflow-hidden bg-surface-hover border border-surface-border">
           <Image
             src={images[activeIndex]}
             alt={productName}
@@ -64,7 +64,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
 
       {/* Mobile/Tablet: main image on top, horizontal thumbnails below */}
       <div className="lg:hidden space-y-3">
-        <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 border border-[#E2E8F0]">
+        <div className="relative aspect-square rounded-xl overflow-hidden bg-surface-hover border border-surface-border">
           <Image
             src={images[activeIndex]}
             alt={productName}
@@ -84,7 +84,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                   "relative w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-colors",
                   i === activeIndex
                     ? "border-primary"
-                    : "border-[#E2E8F0] hover:border-gray-300"
+                    : "border-surface-border hover:border-gray-300"
                 )}
               >
                 <Image

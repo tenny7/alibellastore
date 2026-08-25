@@ -187,11 +187,11 @@ export default async function ProductsPage({ searchParams }: Props) {
           {/* Top bar: title, count, mobile filters, sort */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-[#1E293B]">
+              <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">
                 {search ? `Results for "${search}"` : "All Products"}
               </h1>
               {count !== null && count !== undefined && (
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-sm text-surface-muted mt-0.5">
                   {count} product{count !== 1 ? "s" : ""}
                 </p>
               )}

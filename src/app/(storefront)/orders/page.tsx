@@ -74,7 +74,7 @@ export default function OrdersPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">My Orders</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">My Orders</h1>
         <Link
           href="/profile"
           className="text-sm text-primary hover:underline"
@@ -95,7 +95,7 @@ export default function OrdersPage() {
             className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
               filter === opt.value
                 ? "bg-primary text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                : "bg-surface-hover text-surface-muted hover:bg-gray-200"
             }`}
           >
             {opt.label}
@@ -104,12 +104,12 @@ export default function OrdersPage() {
       </div>
 
       {loading ? (
-        <div className="text-center py-16 text-gray-500">Loading orders...</div>
+        <div className="text-center py-16 text-surface-muted">Loading orders...</div>
       ) : orders.length === 0 ? (
         <div className="text-center py-16">
-          <Package className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 mb-1">No orders found</p>
-          <p className="text-sm text-gray-400">
+          <Package className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+          <p className="text-surface-muted mb-1">No orders found</p>
+          <p className="text-sm text-surface-muted">
             {filter !== "all"
               ? "Try a different filter."
               : "Start shopping to see your orders here."}
@@ -129,11 +129,11 @@ export default function OrdersPage() {
               <Link
                 key={order.id}
                 href={`/orders/${order.id}`}
-                className="flex items-center justify-between rounded-lg border border-[#E2E8F0] bg-white p-4 hover:border-primary/30 transition-colors"
+                className="flex items-center justify-between rounded-[20px] border border-surface-border bg-surface p-4 hover:border-primary/30 transition-colors"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-sm font-semibold text-[#1E293B]">
+                    <span className="font-mono text-sm font-semibold text-surface-fg">
                       {order.order_number}
                     </span>
                     <span
@@ -142,7 +142,7 @@ export default function OrdersPage() {
                       {statusInfo.label}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-surface-muted">
                     {new Date(order.created_at).toLocaleDateString("en-RW", {
                       year: "numeric",
                       month: "short",
@@ -154,10 +154,10 @@ export default function OrdersPage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[#1E293B]">
+                  <span className="font-semibold text-surface-fg">
                     {formatCurrency(Number(order.total), currencyCode)}
                   </span>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                  <ChevronRight className="h-4 w-4 text-surface-muted" />
                 </div>
               </Link>
             );

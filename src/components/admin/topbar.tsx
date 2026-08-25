@@ -57,12 +57,12 @@ export function Topbar({ user }: TopbarProps) {
   });
 
   return (
-    <header className="h-14 lg:h-16 border-b border-[#E2E8F0] bg-white px-4 lg:px-6 flex items-center justify-between shrink-0">
+    <header className="flex h-14 shrink-0 items-center justify-between border-b border-cream/[0.08] bg-ink px-4 lg:h-16 lg:px-6">
       {/* Left: hamburger + breadcrumbs */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={() => setMobileOpen(true)}
-          className="lg:hidden p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+          className="rounded-lg p-1.5 text-cream/60 transition-colors hover:bg-cream/[0.08] hover:text-cream lg:hidden"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -71,15 +71,15 @@ export function Topbar({ user }: TopbarProps) {
         <nav className="hidden sm:flex items-center gap-1 text-sm min-w-0">
           {breadcrumbs.map((crumb, i) => (
             <span key={crumb.href} className="flex items-center gap-1 min-w-0">
-              {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-gray-300 shrink-0" />}
+              {i > 0 && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-cream/25" />}
               {i === breadcrumbs.length - 1 ? (
-                <span className="text-[#1E293B] font-medium truncate capitalize">
+                <span className="truncate font-medium capitalize text-cream">
                   {crumb.label}
                 </span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="text-gray-400 hover:text-primary transition-colors truncate capitalize"
+                  className="truncate capitalize text-cream/45 transition-colors hover:text-cream"
                 >
                   {crumb.label}
                 </Link>
@@ -94,7 +94,7 @@ export function Topbar({ user }: TopbarProps) {
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 border border-[#E2E8F0] rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-1.5 rounded-[10px] border border-cream/[0.14] px-3 py-2 text-xs font-bold text-cream/75 transition-colors hover:bg-cream/[0.08] hover:text-cream"
         >
           <ExternalLink className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">View Store</span>
@@ -103,28 +103,28 @@ export function Topbar({ user }: TopbarProps) {
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-cream/[0.07] transition-colors"
         >
           <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white text-sm font-medium">
             {user.name.charAt(0).toUpperCase()}
           </div>
-          <span className="hidden sm:block text-sm font-medium text-[#1E293B] max-w-[120px] truncate">
+          <span className="hidden max-w-[120px] truncate text-sm font-medium text-cream sm:block">
             {user.name}
           </span>
         </button>
 
         {dropdownOpen && (
           <div
-            className="absolute right-0 top-full mt-1 w-56 rounded-lg border border-[#E2E8F0] bg-white shadow-lg py-1 z-50"
+            className="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-cream/[0.12] bg-ink-raised py-1.5 shadow-[0_18px_44px_rgba(11,10,18,.5)]"
             style={{ animation: "scaleIn 0.15s ease-out" }}
           >
-            <div className="px-4 py-3 border-b border-[#E2E8F0]">
-              <p className="text-sm font-medium text-[#1E293B] truncate">{user.name}</p>
-              <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            <div className="border-b border-cream/[0.1] px-4 py-3">
+              <p className="truncate text-sm font-medium text-cream">{user.name}</p>
+              <p className="text-xs text-cream/45 truncate">{user.email}</p>
             </div>
             <Link
               href="/admin/settings"
-              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-surface-muted hover:bg-cream/[0.07] transition-colors"
               onClick={() => setDropdownOpen(false)}
             >
               <Settings className="h-4 w-4" />

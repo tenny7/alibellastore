@@ -12,52 +12,42 @@ interface StatsCardProps {
   className?: string;
 }
 
-const colorConfig: Record<ColorVariant, { border: string; iconBg: string; iconText: string }> = {
-  blue: {
-    border: "border-t-primary",
-    iconBg: "bg-blue-50",
-    iconText: "text-primary",
-  },
-  green: {
-    border: "border-t-[#16A34A]",
-    iconBg: "bg-green-50",
-    iconText: "text-[#16A34A]",
-  },
-  amber: {
-    border: "border-t-[#D97706]",
-    iconBg: "bg-amber-50",
-    iconText: "text-[#D97706]",
-  },
-  purple: {
-    border: "border-t-purple-500",
-    iconBg: "bg-purple-50",
-    iconText: "text-purple-500",
-  },
+// Design KPI card: uppercase label + delta chip, display-face numeral, muted sub.
+// The colour variants now tint only the icon/trend chip — the card itself is ink.
+const colorConfig: Record<ColorVariant, string> = {
+  blue: "bg-purple/15 text-lilac",
+  green: "bg-[#16A34A]/15 text-[#5BE49B]",
+  amber: "bg-[#D97706]/15 text-[#FFC773]",
+  purple: "bg-purple/15 text-lilac",
 };
 
-export function StatsCard({ title, value, icon: Icon, trend, color = "blue", className }: StatsCardProps) {
-  const config = colorConfig[color];
-
+export function StatsCard({
+  title,
+  value,
+  icon: Icon,
+  trend,
+  color = "blue",
+  className,
+}: StatsCardProps) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-[#E2E8F0] border-t-[3px] bg-white p-5 transition-all hover:shadow-md",
-        config.border,
+        "rounded-[20px] border border-cream/[0.09] bg-ink p-5 transition-colors hover:border-cream/20",
         className
       )}
     >
-      <div className="flex items-center justify-between">
-        <div className="min-w-0">
-          <p className="text-sm text-gray-500">{title}</p>
-          <p className="mt-1 text-2xl font-bold text-[#1E293B] truncate">{value}</p>
-          {trend && (
-            <p className="mt-1 text-xs text-gray-500">{trend}</p>
-          )}
-        </div>
-        <div className={cn("rounded-xl p-3 shrink-0", config.iconBg)}>
-          <Icon className={cn("h-6 w-6", config.iconText)} />
-        </div>
+      <div className="flex items-center justify-between gap-3">
+        <span className="font-display text-xs font-medium uppercase tracking-[0.12em] text-cream/45">
+          {title}
+        </span>
+        <span className={cn("flex h-7 w-7 items-center justify-center rounded-[7px]", colorConfig[color])}>
+          <Icon className="h-[15px] w-[15px]" />
+        </span>
       </div>
+      <div className="mt-4 truncate font-display text-[30px] font-bold leading-none tracking-[-0.03em] text-cream">
+        {value}
+      </div>
+      {trend && <div className="mt-2.5 text-[12.5px] text-cream/40">{trend}</div>}
     </div>
   );
 }

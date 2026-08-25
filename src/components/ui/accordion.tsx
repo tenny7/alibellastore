@@ -20,19 +20,19 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
   );
 
   return (
-    <div className="divide-y divide-[#E2E8F0] border-y border-[#E2E8F0]">
+    <div className="divide-y divide-surface-border border-y border-surface-border">
       {items.map((item, i) => {
         const isOpen = openIndex === i;
         return (
           <div key={i}>
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between py-4 text-sm font-medium text-[#1E293B] hover:text-primary transition-colors"
+              className="flex w-full items-center justify-between py-4 text-sm font-medium text-surface-fg hover:text-primary transition-colors"
             >
               {item.title}
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200",
+                  "h-4 w-4 shrink-0 text-surface-muted transition-transform duration-200",
                   isOpen && "rotate-180"
                 )}
               />
@@ -44,7 +44,7 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
               )}
             >
               <div className="overflow-hidden">
-                <div className="text-sm text-gray-600 leading-relaxed">
+                <div className="text-sm text-surface-muted leading-relaxed">
                   {item.content}
                 </div>
               </div>

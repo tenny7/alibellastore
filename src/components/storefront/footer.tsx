@@ -25,33 +25,40 @@ export function Footer({
   const hasSocials = instagramUrl || facebookUrl || twitterUrl;
 
   return (
-    <footer className="border-t border-[#E2E8F0] bg-[#1E293B] text-gray-300 mt-auto">
+    <footer className="mt-auto rounded-t-[40px] bg-ink text-cream">
       {/* Main footer grid */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+      <div className="mx-auto max-w-[1320px] px-6 pb-11 pt-14 md:px-10">
+        <div className="grid grid-cols-1 gap-10 border-b border-cream/[0.12] pb-11 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))]">
           {/* Brand */}
           <div>
-            <Link href="/" className="flex items-center gap-2 mb-3">
-              <ShoppingBag className="h-5 w-5 text-primary" />
-              <span className="text-lg font-bold text-white">{storeName}</span>
+            <Link href="/" className="mb-4 flex items-center gap-2.5">
+              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
+                <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
+              </span>
+              <span className="font-display text-lg font-bold tracking-[-0.02em] text-cream">
+                {storeName}
+              </span>
             </Link>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="max-w-[280px] font-display text-[26px] font-bold leading-[1.08] tracking-[-0.03em] text-cream">
+              Get the drop before it sells out.
+            </p>
+            <p className="mt-4 max-w-[320px] text-sm leading-relaxed text-cream/60">
               {storeDescription || "Your trusted online store. Quality products with secure MoMo payments."}
             </p>
             {hasSocials && (
-              <div className="flex items-center gap-3 mt-4">
+              <div className="mt-6 flex items-center gap-2.5">
                 {instagramUrl && (
-                  <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                  <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
                     <Instagram className="h-5 w-5" />
                   </a>
                 )}
                 {facebookUrl && (
-                  <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                  <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
                     <Facebook className="h-5 w-5" />
                   </a>
                 )}
                 {twitterUrl && (
-                  <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                  <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
                     <Twitter className="h-5 w-5" />
                   </a>
                 )}
@@ -61,10 +68,10 @@ export function Footer({
 
           {/* Shop */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Shop</h3>
+            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Shop</h3>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/products" className="text-sm text-gray-400 hover:text-white transition-colors">
+                <Link href="/products" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
                   All Products
                 </Link>
               </li>
@@ -72,7 +79,7 @@ export function Footer({
                 <li key={cat.id}>
                   <Link
                     href={`/products?category=${cat.slug}`}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-[14.5px] text-cream/70 transition-colors hover:text-cream"
                   >
                     {cat.name}
                   </Link>
@@ -83,10 +90,10 @@ export function Footer({
 
           {/* Support */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Support</h3>
+            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Support</h3>
             <ul className="space-y-2.5">
               <li>
-                <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">
+                <Link href="/about" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
                   About Us
                 </Link>
               </li>
@@ -96,7 +103,7 @@ export function Footer({
                     href={`https://wa.me/${whatsappNumber}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors"
+                    className="flex items-center gap-1.5 text-[14.5px] text-cream/70 transition-colors hover:text-cream"
                   >
                     <MessageCircle className="h-3.5 w-3.5" />
                     WhatsApp Support
@@ -104,12 +111,12 @@ export function Footer({
                 </li>
               )}
               <li>
-                <Link href="/orders" className="text-sm text-gray-400 hover:text-white transition-colors">
+                <Link href="/orders" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
                   Track Order
                 </Link>
               </li>
               <li>
-                <Link href="/return-policy" className="text-sm text-gray-400 hover:text-white transition-colors">
+                <Link href="/return-policy" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
                   Returns & Refunds
                 </Link>
               </li>
@@ -118,27 +125,25 @@ export function Footer({
 
           {/* Account — auth-aware */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Account</h3>
+            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Account</h3>
             <FooterAccountLinks />
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} {storeName}. All rights reserved.
+      <div className="mx-auto max-w-[1320px] px-6 md:px-10">
+        <div className="flex flex-col items-center justify-between gap-4 py-6 text-[13px] text-cream/45 sm:flex-row">
+          <p>
+            &copy; {new Date().getFullYear()} {storeName} · Kigali, Rwanda
           </p>
-          <div className="flex items-center gap-4 text-sm text-gray-500">
-            <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms</Link>
-            <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy</Link>
-            <div className="flex items-center gap-1">
-              Powered by
-              <span className="font-semibold text-[#FFCB05] bg-white/10 px-2 py-0.5 rounded text-xs ml-1">
-                {storeName}
-              </span>
-            </div>
+          <div className="flex items-center gap-[18px]">
+            <Link href="/privacy" className="transition-colors hover:text-cream">Privacy</Link>
+            <Link href="/terms" className="transition-colors hover:text-cream">Terms</Link>
+            <span className="flex items-center gap-1.5">
+              Pay with
+              <span className="rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold text-ink">MoMo</span>
+            </span>
           </div>
         </div>
       </div>

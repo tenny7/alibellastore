@@ -14,9 +14,9 @@ export function ProductGrid({ products, className }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-16">
-        <PackageSearch className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-        <p className="text-gray-500 font-medium mb-1">No products found</p>
-        <p className="text-sm text-gray-400 mb-4">Try adjusting your filters or search terms.</p>
+        <PackageSearch className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+        <p className="text-surface-muted font-medium mb-1">No products found</p>
+        <p className="text-sm text-surface-muted mb-4">Try adjusting your filters or search terms.</p>
         <Link
           href="/products"
           className="text-sm text-primary hover:underline font-medium"

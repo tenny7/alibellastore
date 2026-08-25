@@ -10,7 +10,7 @@ export function ToastProvider() {
         duration: 4000,
         style: {
           borderRadius: "8px",
-          border: "1px solid #E2E8F0",
+          border: "1px solid rgba(16,14,27,.12)",
           padding: "12px 16px",
           fontSize: "14px",
         },

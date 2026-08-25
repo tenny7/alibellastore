@@ -33,20 +33,20 @@ export function AddToCartButton({ productId, name, price, image }: AddToCartButt
     <div className="space-y-4">
       {/* Quantity selector */}
       <div>
-        <label className="text-sm font-medium text-gray-700 mb-2 block">Quantity</label>
-        <div className="inline-flex items-center rounded-lg border border-[#E2E8F0]">
+        <label className="text-sm font-medium text-surface-fg mb-2 block">Quantity</label>
+        <div className="inline-flex items-center rounded-lg border border-surface-border">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="px-3 py-2.5 text-gray-500 hover:text-[#1E293B] hover:bg-gray-50 transition-colors rounded-l-lg"
+            className="px-3 py-2.5 text-surface-muted hover:text-surface-fg hover:bg-surface-hover transition-colors rounded-l-lg"
           >
             <Minus className="h-4 w-4" />
           </button>
-          <span className="w-12 text-center text-sm font-medium text-[#1E293B] border-x border-[#E2E8F0] py-2.5">
+          <span className="w-12 text-center text-sm font-medium text-surface-fg border-x border-surface-border py-2.5">
             {quantity}
           </span>
           <button
             onClick={() => setQuantity(quantity + 1)}
-            className="px-3 py-2.5 text-gray-500 hover:text-[#1E293B] hover:bg-gray-50 transition-colors rounded-r-lg"
+            className="px-3 py-2.5 text-surface-muted hover:text-surface-fg hover:bg-surface-hover transition-colors rounded-r-lg"
           >
             <Plus className="h-4 w-4" />
           </button>

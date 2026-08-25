@@ -19,7 +19,7 @@ export function FooterAccountLinks() {
     return (
       <ul className="space-y-2.5">
         <li>
-          <Link href="/profile" className="text-sm text-gray-400 hover:text-white transition-colors">
+          <Link href="/profile" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
             My Profile
           </Link>
         </li>
@@ -31,12 +31,12 @@ export function FooterAccountLinks() {
     return (
       <ul className="space-y-2.5">
         <li>
-          <Link href="/profile" className="text-sm text-gray-400 hover:text-white transition-colors">
+          <Link href="/profile" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
             My Profile
           </Link>
         </li>
         <li>
-          <Link href="/orders" className="text-sm text-gray-400 hover:text-white transition-colors">
+          <Link href="/orders" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
             My Orders
           </Link>
         </li>
@@ -47,12 +47,12 @@ export function FooterAccountLinks() {
   return (
     <ul className="space-y-2.5">
       <li>
-        <Link href="/login" className="text-sm text-gray-400 hover:text-white transition-colors">
+        <Link href="/login" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
           Sign In
         </Link>
       </li>
       <li>
-        <Link href="/signup" className="text-sm text-gray-400 hover:text-white transition-colors">
+        <Link href="/signup" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
           Create Account
         </Link>
       </li>

@@ -83,8 +83,8 @@ export default function CheckoutPage() {
   if (items.length === 0 && !orderId) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-[#1E293B] mb-2">Cart is empty</h1>
-        <p className="text-gray-500 mb-6">Add products before checking out.</p>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-2">Cart is empty</h1>
+        <p className="text-surface-muted mb-6">Add products before checking out.</p>
         <Link href="/products">
           <Button>Continue Shopping</Button>
         </Link>
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       <Link
         href="/cart"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary mb-6"
+        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-primary mb-6"
       >
         <ChevronLeft className="h-4 w-4" />
         Back to cart
@@ -199,21 +199,21 @@ export default function CheckoutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Order Summary — left on desktop, bottom on mobile */}
         <div className="order-2 lg:order-1 lg:col-span-5">
-          <div className="lg:sticky lg:top-24 rounded-xl border border-[#E2E8F0] bg-white p-6">
-            <h2 className="font-semibold text-[#1E293B] mb-4">Order Summary</h2>
+          <div className="lg:sticky lg:top-24 rounded-[22px] border border-surface-border bg-surface p-6">
+            <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Order Summary</h2>
             <div className="space-y-3 mb-4">
               {items.map((item) => (
                 <div key={item.productId} className="flex items-center gap-3">
-                  <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-[#E2E8F0]">
+                  <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-surface-hover shrink-0 border border-surface-border">
                     {item.image && (
                       <Image src={item.image} alt={item.name} fill className="object-cover" sizes="56px" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-[#1E293B] truncate">{item.name}</p>
-                    <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                    <p className="text-sm font-medium text-surface-fg truncate">{item.name}</p>
+                    <p className="text-xs text-surface-muted">Qty: {item.quantity}</p>
                   </div>
-                  <p className="text-sm font-medium text-[#1E293B]">
+                  <p className="text-sm font-medium text-surface-fg">
                     {formatCurrency(item.price * item.quantity, currencyCode)}
                   </p>
                 </div>
@@ -231,12 +231,12 @@ export default function CheckoutPage() {
                       onChange={(e) => setDiscountCode(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleApplyDiscount()}
                       placeholder="Discount Code"
-                      className="flex-1 rounded-lg border border-[#E2E8F0] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className="flex-1 rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                     />
                     <button
                       onClick={handleApplyDiscount}
                       disabled={applyingDiscount || !discountCode.trim()}
-                      className="px-4 py-2 text-sm font-medium border border-[#E2E8F0] rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="px-4 py-2 text-sm font-medium border border-surface-border rounded-lg hover:bg-surface-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {applyingDiscount ? <Loader2 className="h-4 w-4 animate-spin" /> : "Apply"}
                     </button>
@@ -266,8 +266,8 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            <div className="border-t border-[#E2E8F0] pt-4 space-y-2">
-              <div className="flex justify-between text-sm text-gray-600">
+            <div className="border-t border-surface-border pt-4 space-y-2">
+              <div className="flex justify-between text-sm text-surface-muted">
                 <span>Subtotal</span>
                 <span>{formatCurrency(subtotal, currencyCode)}</span>
               </div>
@@ -277,7 +277,7 @@ export default function CheckoutPage() {
                   <span>-{formatCurrency(discountAmount, currencyCode)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-sm text-surface-muted">
                 <span>Delivery</span>
                 {effectiveDeliveryFee > 0 ? (
                   <span>{formatCurrency(effectiveDeliveryFee, currencyCode)}</span>
@@ -286,17 +286,17 @@ export default function CheckoutPage() {
                 )}
               </div>
               {freeDeliveryThreshold != null && freeDeliveryThreshold > 0 && effectiveDeliveryFee > 0 && (
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-surface-muted">
                   Free delivery on orders above {formatCurrency(freeDeliveryThreshold, currencyCode)}
                 </p>
               )}
               {taxPercentage > 0 && (
-                <div className="flex justify-between text-sm text-gray-600">
+                <div className="flex justify-between text-sm text-surface-muted">
                   <span>Tax ({taxPercentage}%)</span>
                   <span>{formatCurrency(taxAmount, currencyCode)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-lg font-bold text-[#1E293B] pt-2 border-t border-[#E2E8F0]">
+              <div className="flex justify-between text-lg font-bold text-surface-fg pt-2 border-t border-surface-border">
                 <span>Total</span>
                 <span>{formatCurrency(orderTotal ?? estimatedTotal, currencyCode)}</span>
               </div>
@@ -306,7 +306,7 @@ export default function CheckoutPage() {
 
         {/* Checkout form — right on desktop, top on mobile */}
         <div className="order-1 lg:order-2 lg:col-span-7">
-          <h1 className="text-2xl font-bold text-[#1E293B] mb-2">Checkout</h1>
+          <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-2">Checkout</h1>
 
           {/* Progress bar */}
           <div className="flex items-center justify-center mb-8">
@@ -320,10 +320,10 @@ export default function CheckoutPage() {
                       className={cn(
                         "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
                         isCompleted
-                          ? "bg-[#16A34A] text-white"
+                          ? "bg-purple text-white"
                           : isCurrent
-                            ? "bg-primary text-white"
-                            : "bg-gray-100 text-gray-400"
+                            ? "bg-ink text-cream"
+                            : "bg-surface-hover text-surface-muted"
                       )}
                     >
                       {isCompleted ? <Check className="h-4 w-4" /> : s.number}
@@ -331,7 +331,7 @@ export default function CheckoutPage() {
                     <span
                       className={cn(
                         "text-xs font-medium hidden sm:block",
-                        isCurrent ? "text-[#1E293B]" : "text-gray-400"
+                        isCurrent ? "text-surface-fg" : "text-surface-muted"
                       )}
                     >
                       {s.label}
@@ -341,7 +341,7 @@ export default function CheckoutPage() {
                     <div
                       className={cn(
                         "w-16 sm:w-24 h-0.5 mx-2 sm:mx-3",
-                        i < currentStepIdx ? "bg-[#16A34A]" : "bg-gray-200"
+                        i < currentStepIdx ? "bg-purple" : "bg-surface-border"
                       )}
                     />
                   )}
@@ -352,8 +352,8 @@ export default function CheckoutPage() {
 
           {/* Step 1: Shipping Info */}
           {step === "info" && (
-            <div className="rounded-xl border border-[#E2E8F0] bg-white p-6 space-y-4">
-              <h2 className="font-semibold text-[#1E293B]">Shipping Address</h2>
+            <div className="space-y-4 rounded-[22px] border border-surface-border bg-surface p-6">
+              <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg">Where should it go?</h2>
               <Input
                 id="name"
                 label="Full Name"
@@ -395,13 +395,13 @@ export default function CheckoutPage() {
           {step === "review" && (
             <div className="space-y-4">
               {/* Shipping summary */}
-              <div className="rounded-xl border border-[#E2E8F0] bg-white p-6">
+              <div className="rounded-[22px] border border-surface-border bg-surface p-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#16A34A] text-white">
                       <Check className="h-3.5 w-3.5" />
                     </div>
-                    <h2 className="font-semibold text-[#1E293B]">Shipping Address</h2>
+                    <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg">Where should it go?</h2>
                   </div>
                   <button
                     onClick={() => setStep("info")}
@@ -411,18 +411,18 @@ export default function CheckoutPage() {
                     Edit
                   </button>
                 </div>
-                <dl className="space-y-1 text-sm text-gray-600 pl-8">
+                <dl className="space-y-1 text-sm text-surface-muted pl-8">
                   <dd>{customerName}</dd>
                   <dd>{customerPhone}</dd>
                   <dd>{shippingAddress}</dd>
-                  {notes && <dd className="text-gray-400 italic">{notes}</dd>}
+                  {notes && <dd className="text-surface-muted italic">{notes}</dd>}
                 </dl>
               </div>
 
               {/* Confirm */}
-              <div className="rounded-xl border border-primary bg-white p-6">
-                <h2 className="font-semibold text-[#1E293B] mb-4">Confirm & Place Order</h2>
-                <p className="text-sm text-gray-500 mb-4">
+              <div className="rounded-xl border border-primary bg-surface p-6">
+                <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Confirm &amp; pay</h2>
+                <p className="text-sm text-surface-muted mb-4">
                   You&apos;ll pay via MTN Mobile Money after placing the order.
                 </p>
                 <div className="flex gap-3">
@@ -439,8 +439,8 @@ export default function CheckoutPage() {
 
           {/* Step 3: Payment */}
           {step === "payment" && orderId && (
-            <div className="rounded-xl border border-[#E2E8F0] bg-white p-6">
-              <h2 className="font-semibold text-[#1E293B] mb-4 text-center">
+            <div className="rounded-[22px] border border-surface-border bg-surface p-6">
+              <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4 text-center">
                 Complete Your Payment
               </h2>
               <MoMoPaymentButton
@@ -450,7 +450,7 @@ export default function CheckoutPage() {
                 onSuccess={handlePaymentSuccess}
                 currencyCode={currencyCode}
               />
-              <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-gray-400">
+              <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-surface-muted">
                 <Lock className="h-3 w-3" />
                 Encrypted and secure payment processing
               </div>

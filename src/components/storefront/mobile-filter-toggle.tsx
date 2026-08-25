@@ -25,7 +25,7 @@ export function MobileFilterToggle({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm text-gray-600 border border-[#E2E8F0] rounded-lg hover:bg-gray-50 transition-colors"
+        className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm text-surface-muted border border-surface-border rounded-lg hover:bg-surface-hover transition-colors"
       >
         <SlidersHorizontal className="h-4 w-4" />
         Filters

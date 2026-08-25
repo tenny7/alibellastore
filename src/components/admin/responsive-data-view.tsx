@@ -32,11 +32,11 @@ export function ResponsiveDataView<T>({
 }: ResponsiveDataViewProps<T>) {
   if (data.length === 0) {
     return (
-      <div className="text-center py-12 rounded-lg border border-[#E2E8F0] bg-white">
+      <div className="text-center py-12 rounded-[20px] border border-surface-border bg-surface">
         {emptyIcon && <div className="mb-3 flex justify-center">{emptyIcon}</div>}
-        <p className="text-gray-500 font-medium mb-1">{emptyTitle}</p>
+        <p className="text-surface-muted font-medium mb-1">{emptyTitle}</p>
         {emptyDescription && (
-          <p className="text-sm text-gray-400 mb-4">{emptyDescription}</p>
+          <p className="text-sm text-surface-muted mb-4">{emptyDescription}</p>
         )}
         {emptyAction}
       </div>
@@ -76,7 +76,7 @@ export function ResponsiveDataView<T>({
         {data.map((item) => (
           <div
             key={keyExtractor(item)}
-            className="rounded-lg border border-[#E2E8F0] bg-white p-4"
+            className="rounded-[20px] border border-surface-border bg-surface p-4"
             style={{ animation: "fadeInUp 0.3s ease-out" }}
           >
             {renderCard(item)}

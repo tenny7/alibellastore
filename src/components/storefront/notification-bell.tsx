@@ -87,7 +87,7 @@ export function NotificationBell() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 text-gray-500 hover:text-[#1E293B] transition-colors"
+        className="relative p-2 text-surface-muted hover:text-surface-fg transition-colors"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
@@ -98,10 +98,10 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="fixed left-4 right-4 top-16 sm:absolute sm:left-auto sm:top-auto sm:right-0 sm:mt-1 sm:w-80 bg-white border border-[#E2E8F0] rounded-lg shadow-lg z-50 overflow-hidden">
+        <div className="fixed left-4 right-4 top-16 sm:absolute sm:left-auto sm:top-auto sm:right-0 sm:mt-1 sm:w-80 bg-surface border border-surface-border rounded-lg shadow-lg z-50 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E2E8F0]">
-            <h3 className="font-semibold text-sm text-[#1E293B]">Notifications</h3>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-surface-border">
+            <h3 className="font-semibold text-sm text-surface-fg">Notifications</h3>
             {unreadCount > 0 && (
               <button
                 onClick={markAllRead}
@@ -118,7 +118,7 @@ export function NotificationBell() {
             {notifications.length === 0 ? (
               <div className="py-10 text-center">
                 <Bell className="h-10 w-10 text-gray-200 mx-auto mb-3" />
-                <p className="text-sm font-medium text-gray-500">No notifications yet</p>
+                <p className="text-sm font-medium text-surface-muted">No notifications yet</p>
               </div>
             ) : (
               notifications.map((n) => {
@@ -126,9 +126,9 @@ export function NotificationBell() {
                   <div
                     key={n.id}
                     className={cn(
-                      "flex items-start gap-3 px-4 py-3 border-b border-[#E2E8F0] last:border-b-0 transition-colors",
+                      "flex items-start gap-3 px-4 py-3 border-b border-surface-border last:border-b-0 transition-colors",
                       n.is_read
-                        ? "bg-white"
+                        ? "bg-surface"
                         : "bg-primary/5 hover:bg-primary/10"
                     )}
                     onClick={() => {
@@ -138,16 +138,16 @@ export function NotificationBell() {
                   >
                     <div className={cn(
                       "shrink-0 mt-0.5 flex h-8 w-8 items-center justify-center rounded-full",
-                      n.is_read ? "bg-gray-100" : "bg-primary/10"
+                      n.is_read ? "bg-surface-hover" : "bg-primary/10"
                     )}>
-                      <Package className={cn("h-4 w-4", n.is_read ? "text-gray-400" : "text-primary")} />
+                      <Package className={cn("h-4 w-4", n.is_read ? "text-surface-muted" : "text-primary")} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={cn("text-sm", n.is_read ? "text-gray-600" : "font-medium text-[#1E293B]")}>
+                      <p className={cn("text-sm", n.is_read ? "text-surface-muted" : "font-medium text-surface-fg")}>
                         {n.title}
                       </p>
-                      <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">{n.message}</p>
-                      <p className="text-xs text-gray-400 mt-1">{timeAgo(n.created_at)}</p>
+                      <p className="text-xs text-surface-muted mt-0.5 line-clamp-2">{n.message}</p>
+                      <p className="text-xs text-surface-muted mt-1">{timeAgo(n.created_at)}</p>
                     </div>
                     {!n.is_read && (
                       <div className="shrink-0 mt-2 h-2 w-2 rounded-full bg-primary" />

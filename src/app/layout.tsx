@@ -1,13 +1,32 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { getSiteSettings } from "@/lib/settings";
 import { darkenHex } from "@/lib/utils";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Self-hosted at build time by next/font. The design ships these as Google
+// Fonts <link> tags, but our CSP is font-src 'self' / style-src 'self', which
+// would block fonts.googleapis.com — next/font serves them same-origin.
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -59,7 +78,9 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`${geistSans.variable} font-sans antialiased`}>
+      <body
+        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+      >
         {children}
         <ToastProvider />
       </body>

@@ -176,7 +176,7 @@ export default function AdminDiscountsPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-[#1E293B] mb-6">Discounts</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg mb-6">Discounts</h1>
         <SkeletonDataView rows={3} cols={6} />
       </div>
     );
@@ -185,7 +185,7 @@ export default function AdminDiscountsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#1E293B]">Discounts</h1>
+        <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">Discounts</h1>
         <Button onClick={openCreate} size="sm" className="hidden lg:inline-flex">
           <Plus className="h-4 w-4" />
           New Discount
@@ -215,7 +215,7 @@ export default function AdminDiscountsPage() {
                     <TableRow key={d.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <TypeIcon className="h-4 w-4 text-gray-400" />
+                          <TypeIcon className="h-4 w-4 text-surface-muted" />
                           <span className="capitalize">{d.type.replace("_", " ")}</span>
                         </div>
                       </TableCell>
@@ -234,20 +234,20 @@ export default function AdminDiscountsPage() {
                           </Badge>
                         </button>
                       </TableCell>
-                      <TableCell className="text-gray-500 text-xs">
+                      <TableCell className="text-surface-muted text-xs">
                         {formatRelativeDate(d.expires_at)}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => openEdit(d)}
-                            className="p-1.5 rounded-md text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors"
+                            className="p-1.5 rounded-md text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
                           >
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(d.id)}
-                            className="p-1.5 rounded-md text-gray-400 hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                            className="p-1.5 rounded-md text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -265,18 +265,18 @@ export default function AdminDiscountsPage() {
             {discounts.map((d) => {
               const TypeIcon = typeIcons[d.type];
               return (
-                <div key={d.id} className="rounded-lg border border-[#E2E8F0] bg-white p-4">
+                <div key={d.id} className="rounded-[20px] border border-surface-border bg-surface p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="rounded-lg bg-gray-100 p-1.5">
-                        <TypeIcon className="h-4 w-4 text-gray-500" />
+                      <div className="rounded-lg bg-surface-hover p-1.5">
+                        <TypeIcon className="h-4 w-4 text-surface-muted" />
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-[#1E293B] capitalize">
+                        <p className="text-sm font-medium text-surface-fg capitalize">
                           {d.type.replace("_", " ")}
                         </p>
                         {d.code && (
-                          <p className="text-xs font-mono text-gray-400">{d.code}</p>
+                          <p className="text-xs font-mono text-surface-muted">{d.code}</p>
                         )}
                       </div>
                     </div>
@@ -286,25 +286,25 @@ export default function AdminDiscountsPage() {
                       </Badge>
                     </button>
                   </div>
-                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#E2E8F0]">
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-surface-border">
                     <div className="flex items-center gap-4 text-sm">
-                      <span className="font-semibold text-[#1E293B]">
+                      <span className="font-semibold text-surface-fg">
                         {d.type === "percentage" ? `${d.value}%` : formatCurrency(Number(d.value), currencyCode)}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-surface-muted">
                         {formatRelativeDate(d.expires_at)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEdit(d)}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-primary transition-colors"
+                        className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(d.id)}
-                        className="p-1.5 rounded-lg text-gray-400 hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                        className="p-1.5 rounded-lg text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -316,10 +316,10 @@ export default function AdminDiscountsPage() {
           </div>
         </>
       ) : (
-        <div className="text-center py-12 rounded-lg border border-[#E2E8F0] bg-white">
-          <Tag className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-          <p className="text-gray-500 font-medium mb-1">No discounts yet</p>
-          <p className="text-sm text-gray-400 mb-4">Create your first discount or promotion.</p>
+        <div className="text-center py-12 rounded-[20px] border border-surface-border bg-surface">
+          <Tag className="h-12 w-12 mx-auto text-surface-muted mb-3" />
+          <p className="text-surface-muted font-medium mb-1">No discounts yet</p>
+          <p className="text-sm text-surface-muted mb-4">Create your first discount or promotion.</p>
           <Button onClick={openCreate} size="sm">
             <Plus className="h-4 w-4" />
             Create Discount
@@ -418,7 +418,7 @@ export default function AdminDiscountsPage() {
               onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
               className="rounded border-gray-300"
             />
-            <label htmlFor="is_active" className="text-sm text-gray-700">Active</label>
+            <label htmlFor="is_active" className="text-sm text-surface-fg">Active</label>
           </div>
 
           <div className="flex justify-end gap-3 pt-2">

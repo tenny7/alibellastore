@@ -22,11 +22,11 @@ export function SortDropdown() {
 
   return (
     <div className="flex items-center gap-2">
-      <label className="text-sm text-gray-500 shrink-0 hidden sm:block">Sort by:</label>
+      <label className="text-sm text-surface-muted shrink-0 hidden sm:block">Sort by:</label>
       <select
         value={currentSort}
         onChange={handleChange}
-        className="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm text-[#1E293B] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+        className="rounded-[20px] border border-surface-border bg-surface px-3 py-2 text-sm text-surface-fg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
       >
         {SORT_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>

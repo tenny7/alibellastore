@@ -58,7 +58,7 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                     ? "bg-[#16A34A] text-white"
                     : isCurrent
                     ? "bg-primary text-white"
-                    : "bg-gray-100 text-gray-400"
+                    : "bg-surface-hover text-surface-muted"
                 )}
               >
                 {isComplete ? (
@@ -86,7 +86,7 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                     ? "text-[#16A34A]"
                     : isCurrent
                     ? "text-primary"
-                    : "text-gray-400"
+                    : "text-surface-muted"
                 )}
               >
                 {step.label}
