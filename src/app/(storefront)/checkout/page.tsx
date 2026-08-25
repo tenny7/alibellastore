@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, ChevronLeft, Lock, Pencil, X, Tag, Loader2 } from "lucide-react";
+import { Banknote, Check, ChevronLeft, Lock, Pencil, X, Tag, Loader2 } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { MoMoPaymentButton } from "@/components/storefront/momo-payment-button";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,7 @@ export default function CheckoutPage() {
 
   const [step, setStep] = useState<Step>("info");
   const [loading, setLoading] = useState(false);
+  const [codLoading, setCodLoading] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
   const [orderNumber, setOrderNumber] = useState<string>("");
 
@@ -134,6 +135,29 @@ export default function CheckoutPage() {
 
   function handleContinueToReview() {
     if (validateInfo()) setStep("review");
+  }
+
+  async function handleCashOnDelivery() {
+    if (!orderId) return;
+    setCodLoading(true);
+    try {
+      const res = await fetch("/api/payments/cod", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Could not confirm the order");
+        return;
+      }
+      clearCart();
+      router.push(`/checkout/confirmation?orderId=${orderId}&method=cod`);
+    } catch {
+      toast.error("Could not confirm the order");
+    } finally {
+      setCodLoading(false);
+    }
   }
 
   async function handleCreateOrder() {
@@ -453,6 +477,25 @@ export default function CheckoutPage() {
               <div className="flex items-center justify-center gap-1.5 mt-4 text-xs text-surface-muted">
                 <Lock className="h-3 w-3" />
                 Encrypted and secure payment processing
+              </div>
+
+              {/* Cash on Delivery fallback */}
+              <div className="mt-6 border-t border-surface-border pt-5">
+                <p className="mb-3 text-center text-sm text-surface-muted">
+                  Can&apos;t pay with MoMo right now?
+                </p>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  loading={codLoading}
+                  onClick={handleCashOnDelivery}
+                >
+                  <Banknote className="mr-2 h-4 w-4" />
+                  Pay cash on delivery
+                </Button>
+                <p className="mt-2.5 text-center text-xs text-surface-muted">
+                  We&apos;ll pack your order now and collect payment when it arrives.
+                </p>
               </div>
             </div>
           )}

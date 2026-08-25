@@ -202,6 +202,12 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                   <dt className="text-surface-muted">Status</dt>
                   <dd><PaymentStatusBadge status={order.payment_status} /></dd>
                 </div>
+                <div>
+                  <dt className="text-surface-muted">Method</dt>
+                  <dd className="font-medium">
+                    {order.payment_method === "cod" ? "Cash on delivery" : "MTN Mobile Money"}
+                  </dd>
+                </div>
                 {order.momo_reference_id && (
                   <div>
                     <dt className="text-surface-muted">MoMo Reference</dt>
@@ -212,6 +218,14 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                   <div>
                     <dt className="text-surface-muted">Transaction ID</dt>
                     <dd className="font-mono text-xs break-all">{order.momo_transaction_id}</dd>
+                  </div>
+                )}
+                {order.momo_reason && (
+                  <div>
+                    <dt className="text-surface-muted">MTN reason</dt>
+                    <dd className="font-mono text-xs break-all text-[#FFC773]">
+                      {order.momo_reason}
+                    </dd>
                   </div>
                 )}
               </dl>

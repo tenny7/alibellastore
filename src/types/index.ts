@@ -12,6 +12,8 @@ export type OrderStatus =
 
 export type PaymentStatus = "pending" | "successful" | "failed" | "timed_out";
 
+export type PaymentMethod = "momo" | "cod";
+
 export type DiscountType = "percentage" | "fixed" | "coupon" | "flash_sale";
 
 export interface User {
@@ -78,7 +80,11 @@ export interface Order {
   status: OrderStatus;
   momo_transaction_id: string | null;
   momo_reference_id: string | null;
+  /** MTN reason code from a failed request-to-pay (e.g. "APPROVAL_REJECTED"). */
+  momo_reason: string | null;
   payment_status: PaymentStatus;
+  /** "momo" (MTN Mobile Money) or "cod" (Cash on Delivery). */
+  payment_method: PaymentMethod;
   shipping_address: string;
   customer_phone: string;
   customer_name: string;

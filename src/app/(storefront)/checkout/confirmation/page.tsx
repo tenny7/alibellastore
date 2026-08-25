@@ -7,12 +7,13 @@ import { getSiteSettings } from "@/lib/settings";
 import type { PaymentStatus } from "@/types";
 
 interface Props {
-  searchParams: Promise<{ orderId?: string }>;
+  searchParams: Promise<{ orderId?: string; method?: string }>;
 }
 
 export default async function ConfirmationPage({ searchParams }: Props) {
   const params = await searchParams;
   const orderId = params.orderId;
+  const isCod = params.method === "cod";
 
   if (!orderId) {
     return (
@@ -85,12 +86,17 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       {/* Status banner */}
       <div className={`rounded-lg border p-8 text-center mb-6 ${config.bg}`}>
         <StatusIcon className={`h-16 w-16 mx-auto ${config.color}`} />
-        <h1 className={`text-2xl font-bold mt-4 ${config.color}`}>
-          {config.label}
+        <h1 className={`font-display tracking-[-0.03em] text-2xl font-bold mt-4 ${config.color}`}>
+          {isCod ? "Order Confirmed" : config.label}
         </h1>
         <p className="text-surface-muted mt-2">
           Order <span className="font-mono font-bold">{order.order_number}</span>
         </p>
+        {isCod && (
+          <p className="mx-auto mt-3 max-w-sm text-sm text-surface-muted">
+            You&apos;ll pay cash when your order is delivered. Nothing has been charged.
+          </p>
+        )}
       </div>
 
       {/* Order details */}
