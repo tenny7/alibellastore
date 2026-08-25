@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast-provider";
+import { ThemeScript } from "@/components/storefront/theme-toggle";
 import { getSiteSettings } from "@/lib/settings";
 import { darkenHex } from "@/lib/utils";
 import "./globals.css";
@@ -69,8 +70,9 @@ export default async function RootLayout({
   const hoverColor = darkenHex(primaryColor, 15);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <ThemeScript />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <style
           dangerouslySetInnerHTML={{

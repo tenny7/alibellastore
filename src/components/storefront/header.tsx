@@ -19,6 +19,7 @@ import { useCartStore } from "@/store/cart-store";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { NotificationBell } from "@/components/storefront/notification-bell";
+import { ThemeToggle } from "@/components/storefront/theme-toggle";
 import type { User as UserType } from "@supabase/supabase-js";
 import type { Category } from "@/types";
 
@@ -169,6 +170,8 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             </Link>
           )}
 
+          <ThemeToggle />
+
           {/* Search */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
@@ -256,7 +259,8 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
         </div>
 
         {/* Mobile right actions */}
-        <div className="flex md:hidden items-center gap-1">
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle className="!h-9 !w-9 !border-0" />
           <button
             onClick={() => { setSearchOpen(!searchOpen); setMenuOpen(false); }}
             aria-label="Search products"

@@ -81,7 +81,7 @@ export default async function HomePage() {
   const heroImages = products.map((p) => p.images?.[0]).filter(Boolean).slice(0, 3) as string[];
 
   return (
-    <div className="overflow-hidden bg-cream text-ink">
+    <div className="overflow-hidden bg-page text-page-fg">
       {/* ─── Hero ─────────────────────────────────────────────── */}
       <div className="bg-ink text-cream">
         <section className="relative px-6 pt-16 md:px-10 md:pt-[88px]">
@@ -188,20 +188,20 @@ export default async function HomePage() {
 
       {/* ─── Collections ──────────────────────────────────────── */}
       {cats.length > 0 && (
-        <section id="collections" className="px-6 pb-12 pt-16 md:px-10 md:pt-20">
+        <section id="collections" className="bg-page px-6 pb-12 pt-16 md:px-10 md:pt-20">
           <div className="mx-auto max-w-[1320px]">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
               <div>
-                <div className="mb-3.5 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-ink/45">
+                <div className="mb-3.5 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-page-fg/45">
                   Collections
                 </div>
-                <h2 className="font-display text-[clamp(30px,3.6vw,48px)] font-bold leading-[1.05] tracking-[-0.03em]">
+                <h2 className="font-display text-[clamp(30px,3.6vw,48px)] font-bold leading-[1.05] tracking-[-0.03em] text-page-fg">
                   Start somewhere
                 </h2>
               </div>
               <Link
                 href="/products"
-                className="inline-flex items-center gap-2 text-sm font-medium text-ink/60 transition-colors hover:text-ink"
+                className="inline-flex items-center gap-2 text-sm font-medium text-page-fg/60 transition-colors hover:text-page-fg"
               >
                 Browse all {productCount ?? 0} products <span className="text-base">→</span>
               </Link>
@@ -255,7 +255,7 @@ export default async function HomePage() {
 
       {/* ─── Trending ─────────────────────────────────────────── */}
       {products.length > 0 && (
-        <section id="shop" className="px-6 pb-20 pt-8 md:px-10 md:pb-[88px]">
+        <section id="shop" className="bg-page px-6 pb-20 pt-8 md:px-10 md:pb-[88px]">
           <div className="mx-auto max-w-[1320px]">
             <div className="mb-7 flex flex-wrap items-center justify-between gap-6">
               <h2 className="font-display text-[clamp(30px,3.6vw,48px)] font-bold leading-[1.05] tracking-[-0.03em]">
@@ -264,7 +264,7 @@ export default async function HomePage() {
               <div className="flex flex-wrap gap-2">
                 <Link
                   href="/products"
-                  className="rounded-full border border-ink bg-ink px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-cream"
+                  className="rounded-full border border-page-fg bg-page-fg px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-cream"
                 >
                   All
                 </Link>
@@ -272,7 +272,7 @@ export default async function HomePage() {
                   <Link
                     key={cat.id}
                     href={`/products?category=${cat.slug}`}
-                    className="rounded-full border border-ink/[0.16] px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-ink/[0.62] transition-colors hover:border-ink hover:text-ink"
+                    className="rounded-full border border-page-fg/[0.16] px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-page-fg/[0.62] transition-colors hover:border-page-fg hover:text-page-fg"
                   >
                     {cat.name}
                   </Link>
@@ -294,7 +294,7 @@ export default async function HomePage() {
       )}
 
       {/* ─── MoMo ─────────────────────────────────────────────── */}
-      <section id="momo" className="px-6 pb-20 md:px-10 md:pb-[88px]">
+      <section id="momo" className="bg-page px-6 pb-20 md:px-10 md:pb-[88px]">
         <div className="relative mx-auto max-w-[1320px] overflow-hidden rounded-[34px] bg-ink px-8 py-14 md:px-13 md:py-15">
           <div
             aria-hidden
@@ -367,7 +367,7 @@ function CollectionTile({
   return (
     <Link
       href={`/products?category=${cat.slug}`}
-      className={`group relative block overflow-hidden rounded-[26px] bg-sand ${tall ? "h-[400px]" : ""}`}
+      className={`group relative block overflow-hidden rounded-[26px] bg-field ${tall ? "h-[400px]" : ""}`}
     >
       {meta?.image && (
         <Image

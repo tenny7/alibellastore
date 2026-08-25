@@ -186,8 +186,8 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           {/* Delivery info banner */}
-          <div className="flex items-start gap-3 rounded-lg bg-[#F0F9FF] border border-[#BAE6FD] p-3.5 mb-6">
-            <Truck className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3 mb-6 rounded-[14px] border border-purple/25 bg-purple/10 p-3.5">
+            <Truck className="mt-0.5 h-5 w-5 shrink-0 text-purple" />
             <div className="text-sm text-surface-fg">
               {deliveryFee === 0 ? (
                 <p className="font-medium text-[#16A34A]">Free delivery on all orders</p>

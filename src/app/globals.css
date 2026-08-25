@@ -33,6 +33,14 @@
   --color-surface-border: var(--surface-border);
   --color-surface-input: var(--surface-input);
   --color-surface-hover: var(--surface-hover);
+
+  /* Page-level semantics for the storefront. These flip with .dc-night
+     so the shop has a dark mode; the raw palette above never moves. */
+  --color-page: var(--page-bg);
+  --color-page-fg: var(--page-fg);
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-field: var(--field-bg);
 }
 
 @layer base {
@@ -49,6 +57,13 @@
     /* Themeable accent. Design alternates: #C8FA4B #4EE2C4 #FF7A45 */
     --dc-accent: #F4F1E9;
 
+    /* Storefront page surfaces (light) */
+    --page-bg: var(--dc-cream);
+    --page-fg: var(--dc-ink);
+    --card-bg: #ffffff;
+    --card-border: rgba(16, 14, 27, 0.09);
+    --field-bg: var(--dc-mist);
+
     /* Light surface (storefront) */
     --surface-canvas: var(--dc-cream);
     --surface-bg: #ffffff;
@@ -62,6 +77,26 @@
     --brand-primary: #1A73E8;
     --brand-primary-hover: #1557B0;
   }
+}
+
+/* Storefront dark theme. Applied to <html> by the theme toggle.
+   The shop's dark sections (header, hero, footer) already sit at --dc-ink,
+   so in night mode they read as raised panels above the deeper canvas. */
+.dc-night {
+  --page-bg: var(--dc-ink-deep);
+  --page-fg: var(--dc-cream);
+  --card-bg: var(--dc-ink);
+  --card-border: rgba(244, 241, 233, 0.09);
+  --field-bg: var(--dc-ink-raised);
+
+  /* shared primitives follow too */
+  --surface-canvas: var(--dc-ink-deep);
+  --surface-bg: var(--dc-ink);
+  --surface-fg: var(--dc-cream);
+  --surface-muted: rgba(244, 241, 233, 0.5);
+  --surface-border: rgba(244, 241, 233, 0.12);
+  --surface-input: rgba(244, 241, 233, 0.06);
+  --surface-hover: rgba(244, 241, 233, 0.06);
 }
 
 /* Dark surface (admin). Applied on the admin layout root. */
@@ -82,8 +117,8 @@ html {
 }
 
 body {
-  background: var(--dc-cream);
-  color: var(--dc-ink);
+  background: var(--page-bg);
+  color: var(--page-fg);
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

@@ -242,7 +242,7 @@ export default function CheckoutPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between rounded-lg bg-[#F0FDF4] border border-[#BBF7D0] px-3 py-2.5">
+                  <div className="flex items-center justify-between rounded-[12px] border border-[#16A34A]/30 bg-[#16A34A]/10 px-3 py-2.5">
                     <div className="flex items-center gap-2">
                       <Tag className="h-4 w-4 text-[#16A34A]" />
                       <span className="text-sm font-medium text-[#16A34A]">
