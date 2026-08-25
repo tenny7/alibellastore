@@ -6,6 +6,11 @@ import { ProductCard } from "@/components/storefront/product-card";
 import { ArrowRight, Smartphone, Zap } from "lucide-react";
 import type { Product, Category } from "@/types";
 
+// Without this the page is prerendered once at build and never refreshes:
+// new products, category counts and the stat row would all go stale.
+// 60s keeps it near-static in latency while staying current.
+export const revalidate = 60;
+
 // Ticker copy — store policy statements, not metrics.
 const TICKER = [
   "Free returns in 14 days",
@@ -49,27 +54,21 @@ export default async function HomePage() {
   const cats = (categories ?? []) as Category[];
   const products = (bestSellers ?? []) as Product[];
 
-  // Per-category cover image + item count, from real rows.
+  // Per-category cover image + item count. One query for every category
+  // rather than two per category — this was 2N round trips.
+  const { data: catRows } = await supabase
+    .from("products")
+    .select("category_id, images")
+    .eq("status", "active");
+
   const catMeta: Record<string, { image: string | null; count: number }> = {};
-  await Promise.all(
-    cats.map(async (cat) => {
-      const [{ data: img }, { count }] = await Promise.all([
-        supabase
-          .from("products")
-          .select("images")
-          .eq("category_id", cat.id)
-          .eq("status", "active")
-          .limit(1)
-          .maybeSingle(),
-        supabase
-          .from("products")
-          .select("*", { count: "exact", head: true })
-          .eq("category_id", cat.id)
-          .eq("status", "active"),
-      ]);
-      catMeta[cat.id] = { image: img?.images?.[0] ?? null, count: count ?? 0 };
-    })
-  );
+  for (const cat of cats) catMeta[cat.id] = { image: null, count: 0 };
+  for (const row of catRows ?? []) {
+    const meta = catMeta[row.category_id];
+    if (!meta) continue;
+    meta.count += 1;
+    if (!meta.image && row.images?.[0]) meta.image = row.images[0];
+  }
 
   // Only real, non-zero figures are shown — no invented trust metrics.
   const stats = [
@@ -151,7 +150,7 @@ export default async function HomePage() {
 
             {/* Bento image grid — real product imagery */}
             <div className="relative grid grid-cols-2 grid-rows-[200px_150px_130px] gap-3.5">
-              <HeroTile className="col-start-1 row-span-2 row-start-1" src={heroImages[0]} alt="Featured product" />
+              <HeroTile className="col-start-1 row-span-2 row-start-1" src={heroImages[0]} alt="Featured product" priority />
               <HeroTile className="col-start-2 row-start-1" src={heroImages[1]} alt="Featured product" />
               <HeroTile className="col-start-2 row-span-2 row-start-2" src={heroImages[2]} alt="Featured product" />
               <div className="col-start-1 row-start-3 flex flex-col justify-between rounded-3xl bg-purple p-5">
@@ -347,10 +346,31 @@ export default async function HomePage() {
   );
 }
 
-function HeroTile({ src, alt, className }: { src?: string; alt: string; className: string }) {
+function HeroTile({
+  src,
+  alt,
+  className,
+  priority = false,
+}: {
+  src?: string;
+  alt: string;
+  className: string;
+  priority?: boolean;
+}) {
   return (
     <div className={`relative overflow-hidden rounded-3xl bg-ink-raised ${className}`}>
-      {src && <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width:768px) 50vw, 25vw" />}
+      {src && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          // The lead tile is the largest above-the-fold image, so it is the
+          // LCP element — eager-load it instead of letting it lazy-load.
+          priority={priority}
+          className="object-cover"
+          sizes="(max-width:768px) 50vw, 25vw"
+        />
+      )}
     </div>
   );
 }
