@@ -1,16 +1,34 @@
+import type { MoMoTransactionStatus } from "./types";
+
 // ─── Environment Config ─────────────────────────────────
-// MOMO_ENVIRONMENT: "sandbox" (default) | "production"
-// Sandbox:    https://sandbox.momodeveloper.mtn.com  / target: sandbox  / currency: EUR
-// Production: https://proxy.momoapi.mtn.co.rw        / target: mtnrwanda / currency: RWF
+// Configured by momo-integration-kit/momo-setup.mjs. Env contract:
+//   MOMO_COLLECTION_API_URL    base URL ending at /collection (client appends
+//                              /token/ and /v1_0/...). NOT ".../collection/v1_0".
+//   MOMO_COLLECTION_PRIMARY_KEY  Ocp-Apim-Subscription-Key from momodeveloper.mtn.com
+//   MOMO_COLLECTION_API_USER   provisioned API user (uuid)
+//   MOMO_COLLECTION_API_KEY    provisioned API key
+//   MOMO_ENVIRONMENT           "sandbox" | "production"
+//   MOMO_CURRENCY              real store currency (RWF); sandbox overrides to EUR
+//   MOMO_MOCK=true             simulate locally, no network calls
 
 const momoEnv = process.env.MOMO_ENVIRONMENT || "sandbox";
 const isProduction = momoEnv === "production";
 
-const BASE_URL = isProduction
-  ? "https://proxy.momoapi.mtn.co.rw"
-  : "https://sandbox.momodeveloper.mtn.com";
+// Sandbox host root, used only for on-demand API-user provisioning when
+// MOMO_COLLECTION_API_USER/KEY are absent. Derived from the collection base URL.
+const API_URL = (
+  process.env.MOMO_COLLECTION_API_URL ||
+  "https://sandbox.momodeveloper.mtn.com/collection"
+).replace(/\/+$/, "");
+const HOST_ROOT = API_URL.replace(/\/collection$/, "");
 
+// X-Target-Environment. NOTE: MTN Rwanda production expects "mtnrwanda", not
+// "production" — confirm the exact value with MTN before going live (playbook §8).
 const TARGET_ENVIRONMENT = isProduction ? "mtnrwanda" : "sandbox";
+
+// The MTN sandbox only accepts EUR for requesttopay; production sends the real
+// currency. Verified: sandbox rejects RWF with INVALID_CURRENCY.
+const SANDBOX_CURRENCY = process.env.MOMO_SANDBOX_CURRENCY || "EUR";
 
 // Mock mode: simulates MoMo payment locally when MOMO_MOCK=true
 const isMockMode = process.env.MOMO_MOCK === "true";
@@ -32,133 +50,105 @@ function getSubscriptionKey(): string {
   return key;
 }
 
-/** Get the API User ID. In production, must be set via MOMO_API_USER env var.
- *  In sandbox, auto-provisions a new user if not set or if the set one fails. */
-async function getApiUserId(): Promise<string> {
-  if (cachedApiUser) return cachedApiUser;
-
-  if (isProduction) {
-    const id = process.env.MOMO_API_USER;
-    if (!id) throw new Error("MOMO_API_USER is required in production");
-    cachedApiUser = id;
-    return id;
+/** A callback URL is only usable if its host is publicly reachable. MTN validates
+ *  X-Callback-Url against the API user's provisioned providerCallbackHost, so a
+ *  mismatch returns 500 INVALID_CALLBACK_URL_HOST. */
+function isPublicCallbackUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  try {
+    const host = new URL(url).hostname;
+    return host !== "" && host !== "localhost" && host !== "127.0.0.1";
+  } catch {
+    return false;
   }
+}
 
-  // Try env var first
-  const envUser = process.env.MOMO_API_USER;
-  if (envUser) {
-    cachedApiUser = envUser;
-    return envUser;
-  }
+/** Provision a fresh sandbox API user + key at the HOST ROOT (not /collection). */
+async function provisionSandboxCredentials(): Promise<{ user: string; key: string }> {
+  const user = crypto.randomUUID();
+  const callbackHost = isPublicCallbackUrl(process.env.MOMO_CALLBACK_URL)
+    ? new URL(process.env.MOMO_CALLBACK_URL as string).hostname
+    : "example.com";
 
-  // Sandbox: auto-provision a new API user
-  const newUserId = crypto.randomUUID();
-  const res = await fetch(`${BASE_URL}/v1_0/apiuser`, {
+  const userRes = await fetch(`${HOST_ROOT}/v1_0/apiuser`, {
     method: "POST",
     headers: {
-      "X-Reference-Id": newUserId,
+      "X-Reference-Id": user,
       "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
       "Content-Type": "application/json",
       "Cache-Control": "no-cache",
     },
-    body: JSON.stringify({ providerCallbackHost: "localhost" }),
+    body: JSON.stringify({ providerCallbackHost: callbackHost }),
   });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Failed to provision sandbox API user: ${res.status} ${text}`);
+  if (!userRes.ok) {
+    throw new Error(
+      `Failed to provision sandbox API user: ${userRes.status} ${await userRes.text()}`
+    );
   }
 
-  console.log(`[MoMo] Auto-provisioned sandbox API user: ${newUserId}`);
-  cachedApiUser = newUserId;
-  return newUserId;
+  const keyRes = await fetch(`${HOST_ROOT}/v1_0/apiuser/${user}/apikey`, {
+    method: "POST",
+    headers: {
+      "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
+      "Cache-Control": "no-cache",
+    },
+  });
+  if (!keyRes.ok) {
+    throw new Error(`Failed to create sandbox API key: ${keyRes.status} ${await keyRes.text()}`);
+  }
+
+  const { apiKey } = await keyRes.json();
+  console.log(
+    `[MoMo] Auto-provisioned sandbox API user ${user}. ` +
+      `Persist it as MOMO_COLLECTION_API_USER/MOMO_COLLECTION_API_KEY to reuse across restarts.`
+  );
+  return { user, key: apiKey };
 }
 
-/** Get the API key. In production this must be set via env var (from Partner Portal).
- *  In sandbox, it can be auto-generated via the provisioning API. */
-async function getApiKey(): Promise<string> {
-  if (cachedApiKey) return cachedApiKey;
+/** Resolve API user + key: env-configured (preferred), else provision in sandbox. */
+async function getCredentials(): Promise<{ user: string; key: string }> {
+  if (cachedApiUser && cachedApiKey) return { user: cachedApiUser, key: cachedApiKey };
 
-  if (process.env.MOMO_API_KEY) {
-    cachedApiKey = process.env.MOMO_API_KEY;
-    return cachedApiKey;
+  const envUser = process.env.MOMO_COLLECTION_API_USER;
+  const envKey = process.env.MOMO_COLLECTION_API_KEY;
+  if (envUser && envKey) {
+    cachedApiUser = envUser;
+    cachedApiKey = envKey;
+    return { user: envUser, key: envKey };
   }
 
-  // In production, API key must be provided — no auto-generation
   if (isProduction) {
-    throw new Error("MOMO_API_KEY is required in production (get it from the MTN Partner Portal)");
+    throw new Error(
+      "MOMO_COLLECTION_API_USER and MOMO_COLLECTION_API_KEY are required in production"
+    );
   }
 
-  const userId = await getApiUserId();
-
-  // Sandbox: auto-generate API key via provisioning API
-  const res = await fetch(
-    `${BASE_URL}/v1_0/apiuser/${userId}/apikey`,
-    {
-      method: "POST",
-      headers: {
-        "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
-        "Cache-Control": "no-cache",
-      },
-    }
-  );
-
-  if (!res.ok) {
-    // If API user is invalid, clear cache and try with a fresh user
-    if (!isProduction && res.status === 404) {
-      cachedApiUser = null;
-      process.env.MOMO_API_USER = undefined;
-      const freshUserId = await getApiUserId();
-      const retryRes = await fetch(
-        `${BASE_URL}/v1_0/apiuser/${freshUserId}/apikey`,
-        {
-          method: "POST",
-          headers: {
-            "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
-            "Cache-Control": "no-cache",
-          },
-        }
-      );
-      if (!retryRes.ok) {
-        const text = await retryRes.text();
-        throw new Error(`Failed to get API key after re-provisioning: ${retryRes.status} ${text}`);
-      }
-      const data = await retryRes.json();
-      cachedApiKey = data.apiKey;
-      return cachedApiKey!;
-    }
-
-    const text = await res.text();
-    throw new Error(`Failed to get API key: ${res.status} ${text}`);
-  }
-
-  const data = await res.json();
-  cachedApiKey = data.apiKey;
-  return cachedApiKey!;
+  const provisioned = await provisionSandboxCredentials();
+  cachedApiUser = provisioned.user;
+  cachedApiKey = provisioned.key;
+  return provisioned;
 }
 
 /** Get an OAuth access token (cached until near-expiry). */
 async function getAccessToken(): Promise<string> {
   if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
 
-  const apiKey = await getApiKey();
-  const userId = await getApiUserId();
-  const credentials = Buffer.from(`${userId}:${apiKey}`).toString(
-    "base64"
-  );
+  const { user, key } = await getCredentials();
+  const credentials = Buffer.from(`${user}:${key}`).toString("base64");
 
-  const res = await fetch(`${BASE_URL}/collection/token/`, {
+  const res = await fetch(`${API_URL}/token/`, {
     method: "POST",
     headers: {
       Authorization: `Basic ${credentials}`,
       "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
     },
+    signal: AbortSignal.timeout(15000),
   });
 
   if (!res.ok) {
     cachedApiKey = null;
-    const text = await res.text();
-    throw new Error(`Failed to get access token: ${res.status} ${text}`);
+    cachedApiUser = null;
+    throw new Error(`Failed to get access token: ${res.status} ${await res.text()}`);
   }
 
   const data = await res.json();
@@ -180,10 +170,7 @@ export async function requestToPay(params: {
 
   if (isMockMode) {
     console.log(`[MoMo Mock] requestToPay: ${referenceId}`, params);
-    mockTransactions.set(referenceId, {
-      status: "PENDING",
-      createdAt: Date.now(),
-    });
+    mockTransactions.set(referenceId, { status: "PENDING", createdAt: Date.now() });
     return referenceId;
   }
 
@@ -197,34 +184,32 @@ export async function requestToPay(params: {
     "Content-Type": "application/json",
   };
 
-  // Include callback URL if configured (MTN sends a PUT when payment is final)
-  const callbackUrl = process.env.MOMO_CALLBACK_URL;
-  if (callbackUrl) {
-    headers["X-Callback-Url"] = callbackUrl;
+  // Only send the async callback in production, with a public host matching the
+  // API user's provisioned providerCallbackHost. Sandbox relies on polling —
+  // sending it there returns 500 INVALID_CALLBACK_URL_HOST.
+  if (isProduction && isPublicCallbackUrl(process.env.MOMO_CALLBACK_URL)) {
+    headers["X-Callback-Url"] = process.env.MOMO_CALLBACK_URL as string;
   }
 
-  const res = await fetch(
-    `${BASE_URL}/collection/v1_0/requesttopay`,
-    {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        amount: String(params.amount),
-        currency: params.currency,
-        externalId: params.externalId,
-        payer: {
-          partyIdType: "MSISDN",
-          partyId: params.payerPhone.replace(/^\+/, ""),
-        },
-        payerMessage: params.payerMessage || "Payment for order",
-        payeeNote: params.payeeNote || "MoMo Commerce payment",
-      }),
-    }
-  );
+  const res = await fetch(`${API_URL}/v1_0/requesttopay`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      amount: String(params.amount),
+      currency: isProduction ? params.currency : SANDBOX_CURRENCY,
+      externalId: params.externalId,
+      payer: {
+        partyIdType: "MSISDN",
+        partyId: params.payerPhone.replace(/^\+/, ""),
+      },
+      payerMessage: params.payerMessage || "Payment for order",
+      payeeNote: params.payeeNote || "MoMo Commerce payment",
+    }),
+    signal: AbortSignal.timeout(30000),
+  });
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`requestToPay failed: ${res.status} ${text}`);
+    throw new Error(`requestToPay failed: ${res.status} ${await res.text()}`);
   }
 
   return referenceId;
@@ -233,11 +218,7 @@ export async function requestToPay(params: {
 /** Check the status of a request-to-pay transaction. */
 export async function getTransactionStatus(
   referenceId: string
-): Promise<{
-  status: "PENDING" | "SUCCESSFUL" | "FAILED";
-  financialTransactionId?: string;
-  reason?: { code: string; message: string };
-}> {
+): Promise<MoMoTransactionStatus> {
   if (isMockMode) {
     const tx = mockTransactions.get(referenceId);
     if (!tx) {
@@ -259,20 +240,17 @@ export async function getTransactionStatus(
 
   const token = await getAccessToken();
 
-  const res = await fetch(
-    `${BASE_URL}/collection/v1_0/requesttopay/${referenceId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-Target-Environment": TARGET_ENVIRONMENT,
-        "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
-      },
-    }
-  );
+  const res = await fetch(`${API_URL}/v1_0/requesttopay/${referenceId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Target-Environment": TARGET_ENVIRONMENT,
+      "Ocp-Apim-Subscription-Key": getSubscriptionKey(),
+    },
+    signal: AbortSignal.timeout(15000),
+  });
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`getTransactionStatus failed: ${res.status} ${text}`);
+    throw new Error(`getTransactionStatus failed: ${res.status} ${await res.text()}`);
   }
 
   return res.json();
