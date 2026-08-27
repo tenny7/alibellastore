@@ -54,7 +54,7 @@ export default async function AdminDispatchPage() {
               className="flex flex-col rounded-[20px] border border-cream/[0.09] bg-ink"
             >
               <header className="flex items-center gap-2.5 border-b border-cream/[0.09] px-4 py-3.5">
-                <span className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-purple/15 text-lilac">
+                <span className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-cream/[0.08] text-cream/70">
                   <lane.icon className="h-[15px] w-[15px]" />
                 </span>
                 <div className="min-w-0 flex-1">
@@ -77,7 +77,7 @@ export default async function AdminDispatchPage() {
                     className="rounded-[14px] border border-cream/[0.08] bg-cream/[0.03] p-3 transition-colors hover:border-cream/20 hover:bg-cream/[0.06]"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-[12.5px] font-medium text-lilac">{o.order_number}</span>
+                      <span className="font-mono text-[12.5px] font-medium text-cream">{o.order_number}</span>
                       <span className="font-mono text-[12.5px] text-cream/70">
                         {formatCurrency(Number(o.total), settings.currency_code)}
                       </span>

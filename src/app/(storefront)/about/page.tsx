@@ -47,7 +47,7 @@ export default async function AboutPage() {
               key={step.title}
               className="rounded-[20px] border border-surface-border bg-surface p-5"
             >
-              <step.icon className="h-8 w-8 text-primary mb-3" />
+              <step.icon className="h-8 w-8 text-surface-fg mb-3" />
               <h3 className="font-semibold text-surface-fg mb-1">
                 {step.title}
               </h3>
@@ -71,7 +71,7 @@ export default async function AboutPage() {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-white font-medium hover:bg-[#1ebe57] transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-page-fg px-6 py-3 text-white font-medium hover:opacity-90 transition-colors"
           >
             <MessageCircle className="h-5 w-5" />
             Chat on WhatsApp

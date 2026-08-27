@@ -92,7 +92,7 @@ export function SearchFilterBar({
           value={search}
           onChange={(e) => handleSearchInput(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-[20px] border border-surface-border bg-surface py-2.5 pl-10 pr-9 text-sm text-surface-fg placeholder-gray-400 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+          className="w-full rounded-[20px] border border-surface-border bg-surface py-2.5 pl-10 pr-9 text-sm text-surface-fg placeholder:text-surface-muted outline-none focus:border-surface-fg focus:ring-1 focus:ring-surface-fg transition-colors"
         />
         {search && (
           <button
@@ -110,7 +110,7 @@ export function SearchFilterBar({
           key={filter.key}
           value={isUrlMode ? (searchParams.get(filter.key) ?? "") : undefined}
           onChange={(e) => handleFilterSelect(filter.key, e.target.value)}
-          className="rounded-[20px] border border-surface-border bg-surface px-3 py-2.5 text-sm text-surface-fg outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors sm:w-auto"
+          className="rounded-[20px] border border-surface-border bg-surface px-3 py-2.5 text-sm text-surface-fg outline-none focus:border-surface-fg focus:ring-1 focus:ring-surface-fg transition-colors sm:w-auto"
         >
           <option value="">{filter.label}</option>
           {filter.options.map((opt) => (

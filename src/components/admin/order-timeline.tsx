@@ -27,11 +27,11 @@ interface OrderTimelineProps {
 export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) {
   if (currentStatus === "cancelled") {
     return (
-      <div className={cn("flex items-center gap-3 p-4 rounded-lg bg-red-50 border border-red-100", className)}>
-        <XCircle className="h-5 w-5 text-[#DC2626] shrink-0" />
+      <div className={cn("flex items-center gap-3 p-4 rounded-lg bg-danger/10 border border-danger/25", className)}>
+        <XCircle className="h-5 w-5 text-danger shrink-0" />
         <div>
-          <p className="text-sm font-medium text-[#DC2626]">Order Cancelled</p>
-          <p className="text-xs text-red-400 mt-0.5">This order has been cancelled</p>
+          <p className="text-sm font-medium text-danger">Order Cancelled</p>
+          <p className="text-xs text-danger mt-0.5">This order has been cancelled</p>
         </div>
       </div>
     );
@@ -55,9 +55,9 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-full shrink-0 transition-colors",
                   isComplete
-                    ? "bg-[#16A34A] text-white"
+                    ? "bg-surface-fg text-white"
                     : isCurrent
-                    ? "bg-primary text-white"
+                    ? "bg-page-fg text-white"
                     : "bg-surface-hover text-surface-muted"
                 )}
               >
@@ -71,7 +71,7 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                 <div
                   className={cn(
                     "w-0.5 h-6",
-                    stepIndex < currentIndex ? "bg-[#16A34A]" : "bg-gray-200"
+                    stepIndex < currentIndex ? "bg-surface-fg" : "bg-surface-fg/15"
                   )}
                 />
               )}
@@ -83,9 +83,9 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                 className={cn(
                   "text-sm font-medium",
                   isComplete
-                    ? "text-[#16A34A]"
+                    ? "text-surface-fg"
                     : isCurrent
-                    ? "text-primary"
+                    ? "text-surface-fg"
                     : "text-surface-muted"
                 )}
               >

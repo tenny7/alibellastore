@@ -51,10 +51,10 @@ export default async function AdminDashboard() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-8">
-        <StatsCard title="Products" value={String(totalProducts ?? 0)} icon={Package} color="blue" />
-        <StatsCard title="Orders" value={String(totalOrders ?? 0)} icon={ShoppingCart} color="green" />
-        <StatsCard title="Revenue" value={formatCurrency(totalRevenue, settings.currency_code)} icon={DollarSign} color="amber" />
-        <StatsCard title="Pending" value={String(pendingOrders ?? 0)} icon={Clock} color="purple" />
+        <StatsCard title="Products" value={String(totalProducts ?? 0)} icon={Package} color="neutral" />
+        <StatsCard title="Orders" value={String(totalOrders ?? 0)} icon={ShoppingCart} color="neutral" />
+        <StatsCard title="Revenue" value={formatCurrency(totalRevenue, settings.currency_code)} icon={DollarSign} color="neutral" />
+        <StatsCard title="Pending" value={String(pendingOrders ?? 0)} icon={Clock} color="neutral" />
       </div>
 
       {/* Quick actions */}
@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
       <div className="rounded-[20px] border border-cream/[0.09] bg-ink">
         <div className="flex items-center justify-between border-b border-cream/[0.09] px-4 py-4 lg:px-6">
           <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">Recent Orders</h2>
-          <Link href="/admin/orders" className="text-sm font-medium text-lilac transition-colors hover:text-cream">
+          <Link href="/admin/orders" className="text-sm font-medium text-cream transition-colors hover:text-cream">
             View all
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
                   {recentOrders.map((order) => (
                     <TableRow key={order.id}>
                       <TableCell>
-                        <Link href={`/admin/orders/${order.id}`} className="font-mono text-[13px] font-medium text-lilac transition-colors hover:text-cream">
+                        <Link href={`/admin/orders/${order.id}`} className="font-mono text-[13px] font-medium text-cream transition-colors hover:text-cream">
                           {order.order_number}
                         </Link>
                       </TableCell>

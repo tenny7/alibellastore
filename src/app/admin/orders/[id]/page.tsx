@@ -33,7 +33,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
     <div>
       <Link
         href="/admin/orders"
-        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-primary mb-4 transition-colors"
+        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-surface-fg mb-4 transition-colors"
       >
         <ChevronLeft className="h-4 w-4" />
         Back to orders
@@ -127,7 +127,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                   </div>
                 )}
                 {Number(order.discount_amount) > 0 && (
-                  <div className="flex justify-between text-[#16A34A]">
+                  <div className="flex justify-between text-surface-fg">
                     <span>Discount</span>
                     <span>-{formatCurrency(Number(order.discount_amount), settings.currency_code)}</span>
                   </div>
@@ -223,7 +223,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 {order.momo_reason && (
                   <div>
                     <dt className="text-surface-muted">MTN reason</dt>
-                    <dd className="font-mono text-xs break-all text-[#FFC773]">
+                    <dd className="font-mono text-xs break-all text-cream/70">
                       {order.momo_reason}
                     </dd>
                   </div>

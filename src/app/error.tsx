@@ -16,7 +16,7 @@ export default function Error({
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center max-w-md">
-        <p className="text-7xl font-bold text-red-500 mb-4">!</p>
+        <p className="text-7xl font-bold text-danger mb-4">!</p>
         <h1 className="text-2xl font-bold text-surface-fg mb-2">Something went wrong</h1>
         <p className="text-surface-muted mb-8">
           An unexpected error occurred. Please try again or contact support if the problem
@@ -25,7 +25,7 @@ export default function Error({
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={reset}
-            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors text-sm"
+            className="inline-flex items-center justify-center px-6 py-3 bg-page-fg text-white font-semibold rounded-lg hover:opacity-90 transition-colors text-sm"
           >
             Try Again
           </button>

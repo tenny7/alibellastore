@@ -80,8 +80,8 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             href={f.value ? `/admin/orders?status=${f.value}` : "/admin/orders"}
             className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium border transition-all ${
               (status ?? "") === f.value
-                ? "bg-primary text-white border-primary shadow-sm"
-                : "bg-surface text-surface-muted border-surface-border hover:border-gray-300 hover:bg-surface-hover"
+                ? "bg-page-fg text-white border-surface-fg shadow-sm"
+                : "bg-surface text-surface-muted border-surface-border hover:border-surface-border hover:bg-surface-hover"
             }`}
           >
             {f.label}
@@ -137,7 +137,7 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
                     <TableCell className="text-right">
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="text-sm text-primary hover:underline font-medium"
+                        className="text-sm text-surface-fg hover:underline font-medium"
                       >
                         View
                       </Link>

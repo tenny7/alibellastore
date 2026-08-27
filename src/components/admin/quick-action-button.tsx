@@ -25,7 +25,7 @@ export function QuickActionButton({
         className
       )}
     >
-      <div className="rounded-[10px] bg-purple/15 p-2.5 text-lilac transition-colors group-hover:bg-purple/25">
+      <div className="rounded-[10px] bg-cream/[0.08] p-2.5 text-cream/70 transition-colors group-hover:bg-cream/[0.14]">
         <Icon className="h-5 w-5" />
       </div>
       <div>

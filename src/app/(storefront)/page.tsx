@@ -86,17 +86,16 @@ export default async function HomePage() {
         <section className="relative px-6 pt-16 md:px-10 md:pt-[88px]">
           <div
             aria-hidden
-            className="dc-blob pointer-events-none absolute -right-20 -top-40 h-[620px] w-[620px] rounded-full blur-[30px]"
+            className="pointer-events-none absolute -right-20 -top-40 h-[620px] w-[620px] rounded-full blur-[60px]"
             style={{
               background:
-                "radial-gradient(circle at 35% 35%, rgba(108,76,241,.8), rgba(108,76,241,0) 62%)",
-              animation: "blob 14s ease-in-out infinite",
+                "radial-gradient(circle at 35% 35%, rgba(244,241,233,.10), rgba(244,241,233,0) 62%)",
             }}
           />
           <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] md:gap-14">
             <div>
               <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-cream/[0.12] bg-cream/[0.06] py-[7px] pl-2 pr-3.5 text-[12.5px] font-medium text-cream/80">
-                <span className="rounded-full bg-purple px-2.5 py-1 text-[11px] font-bold tracking-[0.04em] text-white">
+                <span className="rounded-full bg-cream px-2.5 py-1 text-[11px] font-bold tracking-[0.04em] text-ink">
                   NEW
                 </span>
                 Kigali same-day delivery is live
@@ -107,7 +106,7 @@ export default async function HomePage() {
                   <>
                     Everything you want,
                     <br />
-                    <span className="inline-block rounded-[0.14em] bg-accent px-[0.22em] pb-[0.06em] text-ink">
+                    <span className="inline-block rounded-[0.14em] bg-cream px-[0.22em] pb-[0.06em] text-ink">
                       one tap
                     </span>{" "}
                     <span className="font-normal italic text-cream/60">away.</span>
@@ -123,7 +122,7 @@ export default async function HomePage() {
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href="/products"
-                  className="inline-flex h-[54px] items-center gap-2.5 rounded-[14px] bg-accent px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
+                  className="inline-flex h-[54px] items-center gap-2.5 rounded-[14px] bg-cream px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
                 >
                   Shop the drop
                   <ArrowRight className="h-[17px] w-[17px]" strokeWidth={2.4} />
@@ -153,7 +152,7 @@ export default async function HomePage() {
               <HeroTile className="col-start-1 row-span-2 row-start-1" src={heroImages[0]} alt="Featured product" priority />
               <HeroTile className="col-start-2 row-start-1" src={heroImages[1]} alt="Featured product" />
               <HeroTile className="col-start-2 row-span-2 row-start-2" src={heroImages[2]} alt="Featured product" />
-              <div className="col-start-1 row-start-3 flex flex-col justify-between rounded-3xl bg-purple p-5">
+              <div className="col-start-1 row-start-3 flex flex-col justify-between rounded-3xl bg-cream p-5">
                 <Smartphone className="h-[22px] w-[22px] text-white" strokeWidth={2} />
                 <div className="font-display text-[15px] font-bold leading-[1.3] text-white">
                   Checkout in
@@ -165,7 +164,7 @@ export default async function HomePage() {
 
           {/* Ticker */}
           <div className="mt-16 overflow-hidden border-t border-cream/[0.1] py-4">
-            <div className="dc-ticker flex w-max" style={{ animation: "ticker 34s linear infinite" }}>
+            <div className="dc-ticker flex w-max" style={{ animation: "ticker 60s linear infinite" }}>
               {[0, 1].map((dup) => (
                 <div
                   key={dup}
@@ -175,7 +174,7 @@ export default async function HomePage() {
                   {TICKER.map((t) => (
                     <span key={t} className="flex items-center gap-11">
                       {t}
-                      <span className="text-accent">✦</span>
+                      <span className="text-cream/30">·</span>
                     </span>
                   ))}
                 </div>
@@ -299,12 +298,12 @@ export default async function HomePage() {
             aria-hidden
             className="pointer-events-none absolute -right-[70px] -top-[140px] h-[440px] w-[440px] rounded-full blur-[24px]"
             style={{
-              background: "radial-gradient(circle, rgba(108,76,241,.75), transparent 66%)",
+              background: "radial-gradient(circle, rgba(244,241,233,.09), transparent 66%)",
             }}
           />
           <div className="relative grid items-center gap-12 md:grid-cols-2">
             <div>
-              <div className="mb-4 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-accent">
+              <div className="mb-4 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-cream">
                 Payments
               </div>
               <h2 className="mb-4.5 font-display text-[clamp(28px,3.2vw,44px)] font-bold leading-[1.06] tracking-[-0.03em] text-cream">
@@ -318,7 +317,7 @@ export default async function HomePage() {
               </p>
               <Link
                 href="/products"
-                className="inline-flex h-[52px] items-center gap-2.5 rounded-[14px] bg-accent px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
+                className="inline-flex h-[52px] items-center gap-2.5 rounded-[14px] bg-cream px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
               >
                 Try a checkout →
               </Link>
@@ -329,7 +328,7 @@ export default async function HomePage() {
                   key={s.n}
                   className="flex items-center gap-4 rounded-[18px] border border-cream/[0.13] bg-cream/[0.07] px-5 py-[18px]"
                 >
-                  <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-xl bg-accent font-display text-[15px] font-bold text-ink">
+                  <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-xl bg-cream font-display text-[15px] font-bold text-ink">
                     {s.n}
                   </div>
                   <div>

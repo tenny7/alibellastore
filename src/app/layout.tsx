@@ -3,7 +3,6 @@ import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { ThemeScript } from "@/components/storefront/theme-toggle";
 import { getSiteSettings } from "@/lib/settings";
-import { darkenHex } from "@/lib/utils";
 import "./globals.css";
 
 // Self-hosted at build time by next/font. The design ships these as Google
@@ -66,19 +65,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
-  const primaryColor = settings.primary_color || "#1A73E8";
-  const hoverColor = darkenHex(primaryColor, 15);
 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <ThemeScript />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `:root{--brand-primary:${primaryColor};--brand-primary-hover:${hoverColor}}`,
-          }}
-        />
       </head>
       <body
         className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}

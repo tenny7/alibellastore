@@ -156,13 +156,13 @@ export default function CategoriesPage() {
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={() => openEdit(cat)}
-                          className="rounded-lg p-1.5 text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
+                          className="rounded-lg p-1.5 text-surface-muted hover:bg-surface-hover hover:text-surface-fg transition-colors"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => handleDelete(cat.id)}
-                          className="rounded-lg p-1.5 text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                          className="rounded-lg p-1.5 text-surface-muted hover:bg-danger/10 hover:text-danger transition-colors"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -195,13 +195,13 @@ export default function CategoriesPage() {
                     </Badge>
                     <button
                       onClick={() => openEdit(cat)}
-                      className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
+                      className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-surface-fg transition-colors"
                     >
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
                       onClick={() => handleDelete(cat.id)}
-                      className="p-1.5 rounded-lg text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                      className="p-1.5 rounded-lg text-surface-muted hover:bg-danger/10 hover:text-danger transition-colors"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>

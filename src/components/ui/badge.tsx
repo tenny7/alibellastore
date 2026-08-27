@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
 
+/** Two-colour system: states read by fill weight, not hue. `danger` is the
+ *  single chromatic exception, reserved for failures and cancellations.
+ *  Variant names are kept so existing call sites don't churn. */
 type BadgeVariant = "default" | "success" | "warning" | "danger" | "info";
 type BadgeSize = "sm" | "md";
 
@@ -12,19 +15,24 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-surface-hover text-surface-fg border-gray-200",
-  success: "bg-green-50 text-[#16A34A] border-green-200",
-  warning: "bg-amber-50 text-[#D97706] border-amber-200",
-  danger: "bg-red-50 text-[#DC2626] border-red-200",
-  info: "bg-blue-50 text-primary border-blue-200",
+  // outline only — the weakest state
+  default: "border-surface-border text-surface-muted",
+  // solid, inverted — the strongest, terminal state
+  success: "border-transparent bg-surface-fg text-surface",
+  // faint wash
+  warning: "border-surface-border bg-surface-fg/[0.06] text-surface-muted",
+  // the one colour
+  danger: "border-danger/30 bg-danger/10 text-danger",
+  // mid weight
+  info: "border-transparent bg-surface-fg/15 text-surface-fg",
 };
 
 const dotColors: Record<BadgeVariant, string> = {
-  default: "bg-gray-400",
-  success: "bg-[#16A34A]",
-  warning: "bg-[#D97706]",
-  danger: "bg-[#DC2626]",
-  info: "bg-primary",
+  default: "bg-surface-muted",
+  success: "bg-surface",
+  warning: "bg-surface-fg/40",
+  danger: "bg-danger",
+  info: "bg-surface-fg",
 };
 
 const sizeStyles: Record<BadgeSize, string> = {

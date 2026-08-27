@@ -50,7 +50,7 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
     >
       {/* Header */}
       <div className={cn("flex items-center gap-2.5 px-4 py-5", collapsed && "justify-center px-3")}>
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-accent">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-cream">
           <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
         </span>
         {!collapsed && (
@@ -87,7 +87,7 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
                 <span
                   className={cn(
                     "h-[7px] w-[7px] shrink-0 rounded-full transition-colors",
-                    isActive ? "bg-purple" : "bg-cream/25 group-hover:bg-cream/50"
+                    isActive ? "bg-ink" : "bg-cream/25 group-hover:bg-cream/50"
                   )}
                 />
               )}

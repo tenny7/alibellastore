@@ -91,7 +91,7 @@ export function NotificationBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-0 right-0 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white animate-[pop_0.3s_ease-out]">
+          <span className="absolute top-0 right-0 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white animate-[pop_0.3s_ease-out]">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -105,7 +105,7 @@ export function NotificationBell() {
             {unreadCount > 0 && (
               <button
                 onClick={markAllRead}
-                className="text-xs text-primary hover:underline font-medium flex items-center gap-1"
+                className="text-xs text-surface-fg hover:underline font-medium flex items-center gap-1"
               >
                 <Check className="h-3 w-3" />
                 Mark all read
@@ -117,7 +117,7 @@ export function NotificationBell() {
           <div className="max-h-80 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="py-10 text-center">
-                <Bell className="h-10 w-10 text-gray-200 mx-auto mb-3" />
+                <Bell className="h-10 w-10 text-surface-muted mx-auto mb-3" />
                 <p className="text-sm font-medium text-surface-muted">No notifications yet</p>
               </div>
             ) : (
@@ -129,7 +129,7 @@ export function NotificationBell() {
                       "flex items-start gap-3 px-4 py-3 border-b border-surface-border last:border-b-0 transition-colors",
                       n.is_read
                         ? "bg-surface"
-                        : "bg-primary/5 hover:bg-primary/10"
+                        : "bg-page-fg/5 hover:bg-surface-fg/10"
                     )}
                     onClick={() => {
                       if (!n.is_read) markRead(n.id);
@@ -138,9 +138,9 @@ export function NotificationBell() {
                   >
                     <div className={cn(
                       "shrink-0 mt-0.5 flex h-8 w-8 items-center justify-center rounded-full",
-                      n.is_read ? "bg-surface-hover" : "bg-primary/10"
+                      n.is_read ? "bg-surface-hover" : "bg-surface-fg/10"
                     )}>
-                      <Package className={cn("h-4 w-4", n.is_read ? "text-surface-muted" : "text-primary")} />
+                      <Package className={cn("h-4 w-4", n.is_read ? "text-surface-muted" : "text-surface-fg")} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className={cn("text-sm", n.is_read ? "text-surface-muted" : "font-medium text-surface-fg")}>
@@ -150,7 +150,7 @@ export function NotificationBell() {
                       <p className="text-xs text-surface-muted mt-1">{timeAgo(n.created_at)}</p>
                     </div>
                     {!n.is_read && (
-                      <div className="shrink-0 mt-2 h-2 w-2 rounded-full bg-primary" />
+                      <div className="shrink-0 mt-2 h-2 w-2 rounded-full bg-page-fg" />
                     )}
                   </div>
                 );

@@ -120,9 +120,9 @@ export function MoMoPaymentButton({
 
   if (state === "success") {
     return (
-      <div className="text-center py-4 bg-green-50 border border-green-200 rounded-lg p-6">
-        <CheckCircle className="h-12 w-12 mx-auto text-[#16A34A]" />
-        <p className="mt-3 font-medium text-[#16A34A]">Payment Successful!</p>
+      <div className="text-center py-4 bg-surface-fg/[0.06] border border-surface-border rounded-lg p-6">
+        <CheckCircle className="h-12 w-12 mx-auto text-surface-fg" />
+        <p className="mt-3 font-medium text-surface-fg">Payment Successful!</p>
         <p className="text-sm text-surface-muted mt-1">
           Redirecting to confirmation...
         </p>
@@ -132,9 +132,9 @@ export function MoMoPaymentButton({
 
   if (state === "failed" || state === "timed_out") {
     return (
-      <div className="text-center py-4 bg-red-50 border border-red-200 rounded-lg p-6">
-        <XCircle className="h-12 w-12 mx-auto text-[#DC2626]" />
-        <p className="mt-3 font-medium text-[#DC2626]">
+      <div className="text-center py-4 bg-danger/10 border border-danger/30 rounded-lg p-6">
+        <XCircle className="h-12 w-12 mx-auto text-danger" />
+        <p className="mt-3 font-medium text-danger">
           {state === "timed_out" ? "Payment Timed Out" : "Payment Failed"}
         </p>
         {errorMessage && (
@@ -146,7 +146,7 @@ export function MoMoPaymentButton({
             setReferenceId(null);
             setErrorMessage("");
           }}
-          className="mt-4 px-6 py-2 bg-[#FFCB05] text-black rounded-lg font-medium hover:bg-[#E6B800]"
+          className="mt-4 px-6 py-2 bg-page-fg text-page rounded-lg font-medium hover:opacity-90"
         >
           Try Again
         </button>
@@ -158,7 +158,7 @@ export function MoMoPaymentButton({
     return (
       <div className="text-center py-8 space-y-4">
         <div className="relative mx-auto w-16 h-16">
-          <Loader2 className="h-16 w-16 text-[#FFCB05] animate-spin" />
+          <Loader2 className="h-16 w-16 text-surface-fg animate-spin" />
           <Phone className="h-6 w-6 text-surface-fg absolute inset-0 m-auto" />
         </div>
         <div>
@@ -181,7 +181,7 @@ export function MoMoPaymentButton({
 
   return (
     <div className="space-y-4 text-center">
-      <div className="bg-[#FFF8E1] border border-[#FFECB3] rounded-lg p-4">
+      <div className="bg-surface-fg/[0.06] border border-surface-border rounded-lg p-4">
         <p className="text-sm text-surface-fg">
           Click below to send a payment request of{" "}
           <strong>{formatCurrency(amount, currencyCode)}</strong> to your MTN MoMo account.
@@ -191,7 +191,7 @@ export function MoMoPaymentButton({
       <Button
         onClick={initiatePayment}
         loading={state === "initiating"}
-        className="w-full bg-[#FFCB05] hover:bg-[#E6B800] text-black font-semibold py-3"
+        className="w-full bg-page-fg hover:opacity-90 text-page font-semibold py-3"
         size="lg"
       >
         {state === "initiating" ? "Sending request..." : `Pay ${formatCurrency(amount, currencyCode)} with MoMo`}

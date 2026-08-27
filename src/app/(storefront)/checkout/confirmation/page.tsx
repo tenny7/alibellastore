@@ -54,26 +54,26 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   > = {
     successful: {
       icon: CheckCircle,
-      color: "text-[#16A34A]",
-      bg: "bg-green-50 border-green-200",
+      color: "text-surface-fg",
+      bg: "bg-surface-fg/[0.06] border-surface-border",
       label: "Payment Confirmed",
     },
     pending: {
       icon: Clock,
-      color: "text-[#D97706]",
-      bg: "bg-yellow-50 border-yellow-200",
+      color: "text-surface-muted",
+      bg: "bg-surface-fg/[0.06] border-surface-border",
       label: "Payment Pending",
     },
     failed: {
       icon: XCircle,
-      color: "text-[#DC2626]",
-      bg: "bg-red-50 border-red-200",
+      color: "text-danger",
+      bg: "bg-danger/10 border-danger/30",
       label: "Payment Failed",
     },
     timed_out: {
       icon: XCircle,
-      color: "text-[#DC2626]",
-      bg: "bg-red-50 border-red-200",
+      color: "text-danger",
+      bg: "bg-danger/10 border-danger/30",
       label: "Payment Timed Out",
     },
   };
@@ -134,7 +134,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
             </div>
           )}
           {Number(order.discount_amount) > 0 && (
-            <div className="flex justify-between text-sm text-[#16A34A]">
+            <div className="flex justify-between text-sm text-surface-fg">
               <span>Discount</span>
               <span>-{formatCurrency(Number(order.discount_amount), settings.currency_code)}</span>
             </div>

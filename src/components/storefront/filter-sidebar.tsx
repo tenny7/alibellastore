@@ -126,8 +126,8 @@ export function FilterSidebar({
           Categories
         </h3>
         {isPending && (
-          <div className="h-0.5 w-full bg-primary/20 rounded overflow-hidden mb-2">
-            <div className="h-full w-1/3 bg-primary rounded animate-[shimmer_1s_ease-in-out_infinite]" />
+          <div className="h-0.5 w-full bg-surface-fg/15 rounded overflow-hidden mb-2">
+            <div className="h-full w-1/3 bg-page-fg rounded animate-[shimmer_1s_ease-in-out_infinite]" />
           </div>
         )}
         <div className="space-y-1">
@@ -138,7 +138,7 @@ export function FilterSidebar({
                   type="checkbox"
                   checked={localCategories.includes(cat.slug)}
                   onChange={() => toggleCategory(cat.slug)}
-                  className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                  className="h-4 w-4 rounded border-surface-border text-surface-fg focus:ring-surface-fg"
                 />
                 <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1 font-medium">
                   {cat.name}
@@ -159,7 +159,7 @@ export function FilterSidebar({
                         type="checkbox"
                         checked={localCategories.includes(child.slug)}
                         onChange={() => toggleCategory(child.slug)}
-                        className="h-3.5 w-3.5 rounded border-gray-300 text-primary focus:ring-primary"
+                        className="h-3.5 w-3.5 rounded border-surface-border text-surface-fg focus:ring-surface-fg"
                       />
                       <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1">
                         {child.name}
@@ -188,7 +188,7 @@ export function FilterSidebar({
             onChange={(e) => handlePriceChange("min", e.target.value)}
             placeholder={String(minPrice)}
             min={0}
-            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-surface-fg/20 focus:border-surface-fg"
           />
           <span className="text-surface-muted text-sm shrink-0">&mdash;</span>
           <input
@@ -197,7 +197,7 @@ export function FilterSidebar({
             onChange={(e) => handlePriceChange("max", e.target.value)}
             placeholder={String(maxPrice)}
             min={0}
-            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            className="w-full rounded-lg border border-surface-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-surface-fg/20 focus:border-surface-fg"
           />
         </div>
       </div>

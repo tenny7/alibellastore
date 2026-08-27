@@ -55,13 +55,13 @@ export default async function AdminCustomersPage() {
 
       <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <StatsCard title="Customers" value={String(people.length)} icon={Users} />
-        <StatsCard title="Have ordered" value={String(withOrders.length)} icon={Wallet} color="green" />
-        <StatsCard title="Repeat buyers" value={String(repeat)} icon={Repeat} color="purple" />
+        <StatsCard title="Have ordered" value={String(withOrders.length)} icon={Wallet} color="neutral" />
+        <StatsCard title="Repeat buyers" value={String(repeat)} icon={Repeat} color="neutral" />
         <StatsCard
           title="Avg. basket"
           value={formatCurrency(avgBasket, settings.currency_code)}
           icon={Wallet}
-          color="amber"
+          color="neutral"
           trend="paid orders only"
         />
       </div>
@@ -106,7 +106,7 @@ export default async function AdminCustomersPage() {
           </div>
         ) : (
           <div className="px-6 py-12 text-center text-cream/45">
-            No customers yet. <Link href="/admin/products" className="text-lilac hover:text-cream">Add products</Link> to get started.
+            No customers yet. <Link href="/admin/products" className="text-cream hover:text-cream">Add products</Link> to get started.
           </div>
         )}
       </div>

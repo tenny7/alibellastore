@@ -32,7 +32,7 @@ export function Footer({
           {/* Brand */}
           <div>
             <Link href="/" className="mb-4 flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
+              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-cream">
                 <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
               </span>
               <span className="font-display text-lg font-bold tracking-[-0.02em] text-cream">
@@ -142,7 +142,7 @@ export function Footer({
             <Link href="/terms" className="transition-colors hover:text-cream">Terms</Link>
             <span className="flex items-center gap-1.5">
               Pay with
-              <span className="rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold text-ink">MoMo</span>
+              <span className="rounded-md bg-cream px-2 py-0.5 text-[11px] font-bold text-ink">MoMo</span>
             </span>
           </div>
         </div>

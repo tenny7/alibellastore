@@ -5,7 +5,7 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ className }: SkeletonProps) {
-  return <div className={cn("animate-pulse rounded bg-gray-200", className)} />;
+  return <div className={cn("animate-pulse rounded bg-surface-fg/15", className)} />;
 }
 
 export function SkeletonRow({ cols = 5 }: { cols?: number }) {
@@ -13,7 +13,7 @@ export function SkeletonRow({ cols = 5 }: { cols?: number }) {
     <tr className="border-b border-surface-border">
       {Array.from({ length: cols }).map((_, i) => (
         <td key={i} className="px-4 py-3">
-          <div className="h-4 animate-pulse rounded bg-gray-200 w-3/4" />
+          <div className="h-4 animate-pulse rounded bg-surface-fg/15 w-3/4" />
         </td>
       ))}
     </tr>
@@ -24,12 +24,12 @@ export function SkeletonCard() {
   return (
     <div className="rounded-[20px] border border-surface-border bg-surface p-4 animate-pulse">
       <div className="flex items-center justify-between mb-3">
-        <div className="h-4 bg-gray-200 rounded w-1/3" />
-        <div className="h-5 bg-gray-200 rounded-full w-16" />
+        <div className="h-4 bg-surface-fg/15 rounded w-1/3" />
+        <div className="h-5 bg-surface-fg/15 rounded-full w-16" />
       </div>
       <div className="space-y-2">
-        <div className="h-3 bg-gray-200 rounded w-2/3" />
-        <div className="h-3 bg-gray-200 rounded w-1/2" />
+        <div className="h-3 bg-surface-fg/15 rounded w-2/3" />
+        <div className="h-3 bg-surface-fg/15 rounded w-1/2" />
       </div>
     </div>
   );
@@ -43,7 +43,7 @@ export function SkeletonTable({ rows = 5, cols = 5 }: { rows?: number; cols?: nu
           <tr>
             {Array.from({ length: cols }).map((_, i) => (
               <th key={i} className="px-4 py-3">
-                <div className="h-3 animate-pulse rounded bg-gray-200 w-16" />
+                <div className="h-3 animate-pulse rounded bg-surface-fg/15 w-16" />
               </th>
             ))}
           </tr>

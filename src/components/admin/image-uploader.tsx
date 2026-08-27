@@ -66,14 +66,14 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
             <button
               type="button"
               onClick={() => handleRemove(index)}
-              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 hover:bg-red-600"
+              className="absolute top-1 right-1 bg-danger text-white rounded-full p-0.5 hover:bg-danger"
             >
               <X className="h-3 w-3" />
             </button>
           </div>
         ))}
         {images.length < MAX_IMAGES_PER_PRODUCT && (
-          <label className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors">
+          <label className="w-24 h-24 border-2 border-dashed border-surface-border rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-surface-fg transition-colors">
             {uploading ? (
               <Loader2 className="h-6 w-6 animate-spin text-surface-muted" />
             ) : (

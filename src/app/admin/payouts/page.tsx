@@ -50,10 +50,10 @@ export default async function AdminPayoutsPage() {
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
-        <StatsCard title="Gross collected" value={formatCurrency(gross, cur)} icon={Banknote} color="green" trend={`${collected.length} paid orders`} />
-        <StatsCard title="MTN fee" value={formatCurrency(fees, cur)} icon={Percent} color="amber" trend={`${(MOMO_FEE_RATE * 100).toFixed(2)}% incl. VAT`} />
+        <StatsCard title="Gross collected" value={formatCurrency(gross, cur)} icon={Banknote} color="neutral" trend={`${collected.length} paid orders`} />
+        <StatsCard title="MTN fee" value={formatCurrency(fees, cur)} icon={Percent} color="neutral" trend={`${(MOMO_FEE_RATE * 100).toFixed(2)}% incl. VAT`} />
         <StatsCard title="Net to you" value={formatCurrency(net, cur)} icon={TrendingUp} trend="estimate before settlement" />
-        <StatsCard title="Failed / timed out" value={String(failed.length)} icon={AlertTriangle} color="purple" />
+        <StatsCard title="Failed / timed out" value={String(failed.length)} icon={AlertTriangle} color="danger" />
       </div>
 
       <div className="rounded-[20px] border border-cream/[0.09] bg-ink">
@@ -81,7 +81,7 @@ export default async function AdminPayoutsPage() {
                   return (
                     <TableRow key={o.id}>
                       <TableCell>
-                        <a href={`/admin/orders/${o.id}`} className="font-mono text-[13px] font-medium text-lilac hover:text-cream">
+                        <a href={`/admin/orders/${o.id}`} className="font-mono text-[13px] font-medium text-cream hover:text-cream">
                           {o.order_number}
                         </a>
                       </TableCell>

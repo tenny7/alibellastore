@@ -105,7 +105,7 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
                 )}
               >
                 {isActive && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-primary rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-page-fg rounded-r-full" />
                 )}
                 <item.icon className="h-5 w-5" />
                 {item.label}

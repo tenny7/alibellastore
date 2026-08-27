@@ -28,11 +28,11 @@ export function MobileBottomNav() {
             href={item.href}
             className={cn(
               "flex flex-col items-center justify-center gap-0.5 flex-1 py-1.5 transition-colors relative",
-              isActive ? "text-primary" : "text-surface-muted"
+              isActive ? "text-surface-fg" : "text-surface-muted"
             )}
           >
             {isActive && (
-              <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-primary rounded-full" />
+              <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-page-fg rounded-full" />
             )}
             <item.icon className="h-5 w-5" />
             <span className="text-[10px] font-medium">{item.label}</span>

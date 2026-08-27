@@ -10,7 +10,7 @@ interface FloatingActionButtonProps {
 
 export function FloatingActionButton({ onClick, href, label = "Add" }: FloatingActionButtonProps) {
   const className =
-    "fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-white shadow-lg hover:bg-primary-hover active:scale-95 transition-all lg:hidden";
+    "fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-page-fg px-5 py-3 text-white shadow-lg hover:opacity-90 active:scale-95 transition-all lg:hidden";
 
   if (href) {
     return (

@@ -80,7 +80,7 @@ function LoginForm() {
       </div>
 
       {searchParams.get("error") === "unauthorized" && (
-        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-[#DC2626]">
+        <div className="mb-4 rounded-lg border border-danger/30 bg-danger/10 p-3 text-sm text-danger">
           You need admin access for that page.
         </div>
       )}
@@ -112,7 +112,7 @@ function LoginForm() {
 
       <p className="mt-4 text-center text-sm text-surface-muted">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-primary hover:underline font-medium">
+        <Link href="/signup" className="text-surface-fg hover:underline font-medium">
           Sign up
         </Link>
       </p>

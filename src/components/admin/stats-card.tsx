@@ -1,7 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type ColorVariant = "blue" | "green" | "amber" | "purple";
+// Two-colour system: a stat is either neutral or a problem.
+type ColorVariant = "neutral" | "danger";
 
 interface StatsCardProps {
   title: string;
@@ -15,10 +16,8 @@ interface StatsCardProps {
 // Design KPI card: uppercase label + delta chip, display-face numeral, muted sub.
 // The colour variants now tint only the icon/trend chip — the card itself is ink.
 const colorConfig: Record<ColorVariant, string> = {
-  blue: "bg-purple/15 text-lilac",
-  green: "bg-[#16A34A]/15 text-[#5BE49B]",
-  amber: "bg-[#D97706]/15 text-[#FFC773]",
-  purple: "bg-purple/15 text-lilac",
+  neutral: "bg-cream/[0.08] text-cream/70",
+  danger: "bg-danger/20 text-danger",
 };
 
 export function StatsCard({
@@ -26,7 +25,7 @@ export function StatsCard({
   value,
   icon: Icon,
   trend,
-  color = "blue",
+  color = "neutral",
   className,
 }: StatsCardProps) {
   return (

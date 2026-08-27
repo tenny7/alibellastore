@@ -114,7 +114,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
     <>
       {/* Announcement bar — design: ink bg, cream text, accent dot */}
       <div className="flex items-center justify-center gap-2.5 bg-ink px-5 py-2.5 text-center text-[13px] font-medium leading-none text-cream">
-        <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-accent sm:block" />
+        <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-cream sm:block" />
         <span>Free delivery in Kigali on orders over 30,000 RWF</span>
         <span className="hidden opacity-40 sm:inline">·</span>
         <span className="hidden font-bold sm:inline">Pay with MoMo</span>
@@ -124,7 +124,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
         <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-4 md:px-10">
         {/* Logo */}
         <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
+          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-cream">
             <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
           </span>
           <span className="font-display text-[19px] font-bold tracking-[-0.02em] text-cream">
@@ -187,7 +187,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           {/* Cart */}
           <Link
             href="/cart"
-            className="flex h-[38px] items-center gap-2 rounded-xl bg-accent px-4 text-[13px] font-bold leading-none text-ink transition-opacity hover:opacity-90"
+            className="flex h-[38px] items-center gap-2 rounded-xl bg-cream px-4 text-[13px] font-bold leading-none text-ink transition-opacity hover:opacity-90"
           >
             <ShoppingCart className="h-4 w-4" strokeWidth={2.2} />
             <span>Cart{itemCount > 0 ? ` · ${itemCount}` : ""}</span>
@@ -272,7 +272,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           <Link href="/cart" aria-label="Cart" className="relative p-2">
             <ShoppingCart className="h-5 w-5 text-cream/80" />
             {itemCount > 0 && (
-              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-ink">
+              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-cream text-[10px] font-bold text-ink">
                 {itemCount}
               </span>
             )}
@@ -309,7 +309,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           />
           <button
             type="submit"
-            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-ink transition-opacity hover:opacity-90"
+            className="rounded-xl bg-cream px-5 py-2.5 text-sm font-bold text-ink transition-opacity hover:opacity-90"
           >
             Search
           </button>
@@ -328,7 +328,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           {userRole === "admin" && (
             <Link
               href="/admin"
-              className="mb-2 flex items-center gap-2 rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-ink"
+              className="mb-2 flex items-center gap-2 rounded-xl bg-cream px-3 py-2.5 text-sm font-bold text-ink"
               onClick={() => setMenuOpen(false)}
             >
               <Shield className="h-4 w-4" />
@@ -383,7 +383,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
               </button>
             </>
           ) : (
-            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-accent hover:bg-cream/[0.07]" onClick={() => setMenuOpen(false)}>
+            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-cream hover:bg-cream/[0.07]" onClick={() => setMenuOpen(false)}>
               Sign In
             </Link>
           )}

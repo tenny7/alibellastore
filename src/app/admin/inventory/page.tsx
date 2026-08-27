@@ -37,14 +37,14 @@ export default async function AdminInventoryPage() {
       </div>
 
       <div className="mb-6 grid grid-cols-1 gap-3 lg:grid-cols-3 lg:gap-4">
-        <StatsCard title="Out of stock" value={String(outOfStock.length)} icon={PackageX} color="amber" trend="not purchasable right now" />
-        <StatsCard title="Live" value={String(active.length)} icon={PackageCheck} color="green" trend="visible in the storefront" />
+        <StatsCard title="Out of stock" value={String(outOfStock.length)} icon={PackageX} color="danger" trend="not purchasable right now" />
+        <StatsCard title="Live" value={String(active.length)} icon={PackageCheck} color="neutral" trend="visible in the storefront" />
         <StatsCard title="Drafts" value={String(drafts.length)} icon={FileEdit} trend="hidden from shoppers" />
       </div>
 
       {/* Honest limitation notice — the design assumes fields this schema lacks. */}
       <div className="mb-8 flex gap-3 rounded-[18px] border border-cream/[0.12] bg-cream/[0.04] p-4">
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-lilac" />
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-cream" />
         <p className="text-[13px] leading-relaxed text-cream/60">
           Reorder thresholds, cover-days and stock valuation aren&apos;t shown because products carry no
           on-hand quantity or cost price — only a status. Adding{" "}
@@ -84,7 +84,7 @@ export default async function AdminInventoryPage() {
                     {formatCurrency(Number(p.price), settings.currency_code)}
                   </div>
                 </div>
-                <span className="shrink-0 rounded-md bg-[#D97706]/15 px-2 py-1 font-mono text-[11px] font-medium text-[#FFC773]">
+                <span className="shrink-0 rounded-md bg-surface-fg/40/15 px-2 py-1 font-mono text-[11px] font-medium text-cream/70">
                   0
                 </span>
               </Link>
@@ -131,8 +131,8 @@ export default async function AdminInventoryPage() {
 
 function StatusChip({ status }: { status: Product["status"] }) {
   const map = {
-    active: "bg-[#16A34A]/15 text-[#5BE49B]",
-    out_of_stock: "bg-[#D97706]/15 text-[#FFC773]",
+    active: "bg-surface-fg/15 text-cream",
+    out_of_stock: "bg-surface-fg/40/15 text-cream/70",
     draft: "bg-cream/[0.08] text-cream/60",
   } as const;
   const label = { active: "Live", out_of_stock: "Out", draft: "Draft" } as const;

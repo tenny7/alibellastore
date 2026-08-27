@@ -141,7 +141,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                       <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/products/${product.id}/edit`}
-                          className="rounded-lg px-3 py-1.5 text-sm text-primary hover:bg-blue-50 transition-colors"
+                          className="rounded-lg px-3 py-1.5 text-sm text-surface-fg hover:bg-surface-fg/[0.06] transition-colors"
                         >
                           Edit
                         </Link>
@@ -195,7 +195,7 @@ export default async function AdminProductsPage({ searchParams }: Props) {
                       <div className="flex items-center gap-2">
                         <Link
                           href={`/admin/products/${product.id}/edit`}
-                          className="text-xs text-primary font-medium"
+                          className="text-xs text-surface-fg font-medium"
                         >
                           Edit
                         </Link>

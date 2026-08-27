@@ -156,7 +156,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {product.category && (
             <Link
               href={`/products?category=${product.category.slug}`}
-              className="inline-block text-xs font-medium text-primary bg-primary/10 px-2.5 py-1 rounded-md mb-3 hover:bg-primary/20 transition-colors"
+              className="inline-block text-xs font-medium text-surface-fg bg-surface-fg/10 px-2.5 py-1 rounded-md mb-3 hover:bg-surface-fg/15 transition-colors"
             >
               {product.category.name}
             </Link>
@@ -186,17 +186,17 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           {/* Delivery info banner */}
-          <div className="flex items-start gap-3 mb-6 rounded-[14px] border border-purple/25 bg-purple/10 p-3.5">
-            <Truck className="mt-0.5 h-5 w-5 shrink-0 text-purple" />
+          <div className="flex items-start gap-3 mb-6 rounded-[14px] border border-cream/20 bg-cream/[0.06] p-3.5">
+            <Truck className="mt-0.5 h-5 w-5 shrink-0 text-surface-fg" />
             <div className="text-sm text-surface-fg">
               {deliveryFee === 0 ? (
-                <p className="font-medium text-[#16A34A]">Free delivery on all orders</p>
+                <p className="font-medium text-surface-fg">Free delivery on all orders</p>
               ) : (
                 <>
                   <p>
                     <span className="font-medium">Delivery: {formatCurrency(deliveryFee, settings.currency_code)}</span>
                     {freeThreshold && freeThreshold > 0 && (
-                      <span className="text-[#16A34A] font-medium"> &middot; Free above {formatCurrency(freeThreshold, settings.currency_code)}</span>
+                      <span className="text-surface-fg font-medium"> &middot; Free above {formatCurrency(freeThreshold, settings.currency_code)}</span>
                     )}
                   </p>
                 </>
@@ -218,7 +218,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.category && (
               <Link
                 href={`/products?category=${product.category.slug}`}
-                className="text-sm text-primary hover:underline font-medium flex items-center gap-1"
+                className="text-sm text-surface-fg hover:underline font-medium flex items-center gap-1"
               >
                 View Collection
                 <ArrowRight className="h-3.5 w-3.5" />

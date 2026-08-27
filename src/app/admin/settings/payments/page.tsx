@@ -11,7 +11,7 @@ type State = "ok" | "warn" | "bad";
 function Row({ label, value, state, note }: { label: string; value: string; state: State; note?: string }) {
   const Icon = state === "ok" ? CheckCircle2 : state === "warn" ? AlertTriangle : XCircle;
   const tone =
-    state === "ok" ? "text-[#5BE49B]" : state === "warn" ? "text-[#FFC773]" : "text-[#FF8A8A]";
+    state === "ok" ? "text-cream" : state === "warn" ? "text-cream/70" : "text-danger";
   return (
     <div className="flex items-start gap-3 border-b border-cream/[0.07] px-5 py-4 last:border-0">
       <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${tone}`} />
@@ -146,7 +146,7 @@ export default async function PaymentSettingsPage() {
         </p>
         <Link
           href="/admin/settings"
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-lilac transition-colors hover:text-cream"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-cream transition-colors hover:text-cream"
         >
           Back to settings <ExternalLink className="h-3.5 w-3.5" />
         </Link>
