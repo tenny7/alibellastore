@@ -14,6 +14,7 @@ import {
   Boxes,
   Users,
   Banknote,
+  MessageSquare,
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
+  { href: "/admin/support", label: "Support", icon: MessageSquare },
   { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/payouts", label: "Payouts", icon: Banknote },
   { href: "/admin/discounts", label: "Discounts", icon: Tag },

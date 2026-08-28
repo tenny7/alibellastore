@@ -114,7 +114,18 @@ CREATE TABLE discounts (
 
 CREATE INDEX idx_products_category ON products(category_id);
 CREATE INDEX idx_products_status ON products(status);
+CREATE TABLE support_messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  sender_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  sender_role TEXT NOT NULL CHECK (sender_role IN ('admin', 'customer')),
+  body TEXT NOT NULL CHECK (char_length(body) BETWEEN 1 AND 5000),
+  read_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE INDEX idx_orders_customer ON orders(customer_id);
+CREATE INDEX idx_support_messages_order ON support_messages(order_id, created_at);
 CREATE INDEX idx_orders_status ON orders(status);
 CREATE INDEX idx_orders_payment_status ON orders(payment_status);
 CREATE INDEX idx_orders_payment_method ON orders(payment_method);

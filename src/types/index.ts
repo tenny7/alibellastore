@@ -22,6 +22,9 @@ export interface User {
   email: string | null;
   phone: string | null;
   role: UserRole;
+  /** Admin kill switch: blocked customers can read but not send support messages. */
+  support_blocked?: boolean;
+  support_blocked_at?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -140,4 +143,16 @@ export interface SiteSettings {
   currency_code: string;
   primary_color: string;
   updated_at: string;
+}
+
+export type SupportSenderRole = "admin" | "customer";
+
+export interface SupportMessage {
+  id: string;
+  order_id: string;
+  sender_id: string | null;
+  sender_role: SupportSenderRole;
+  body: string;
+  read_at: string | null;
+  created_at: string;
 }

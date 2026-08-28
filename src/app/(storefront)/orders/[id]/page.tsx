@@ -14,6 +14,7 @@ import {
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatCurrency } from "@/lib/utils";
 import { getSiteSettings } from "@/lib/settings";
+import { SupportThread } from "@/components/support/support-thread";
 import type { OrderStatus, PaymentStatus } from "@/types";
 
 interface Props {
@@ -263,6 +264,15 @@ export default async function OrderDetailPage({ params }: Props) {
       )}
 
       {/* Cancel / WhatsApp contact */}
+      {/* In-app support thread — reaches the admin without leaving the site */}
+      <div className="mb-6">
+        <SupportThread
+          orderId={order.id}
+          orderNumber={order.order_number}
+          viewerRole="customer"
+        />
+      </div>
+
       <div className="flex flex-col items-center gap-3">
         {!isCancelled && order.status !== "delivered" && (
           <a
@@ -281,7 +291,7 @@ export default async function OrderDetailPage({ params }: Props) {
           href={`https://wa.me/${settings.whatsapp_number}?text=${whatsappMsg}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-page-fg text-white rounded-lg font-medium hover:opacity-90 transition-colors text-sm"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-page-fg text-page rounded-lg font-medium hover:opacity-90 transition-colors text-sm"
         >
           <MessageCircle className="h-4 w-4" />
           Need help? Chat on WhatsApp

@@ -8,14 +8,12 @@ import type { Category } from "@/types";
 
 interface MobileFilterToggleProps {
   categories: Category[];
-  categoryCounts: Record<string, number>;
   minPrice: number;
   maxPrice: number;
 }
 
 export function MobileFilterToggle({
   categories,
-  categoryCounts,
   minPrice,
   maxPrice,
 }: MobileFilterToggleProps) {
@@ -33,7 +31,6 @@ export function MobileFilterToggle({
       <MobileFilterDrawer open={open} onClose={() => setOpen(false)}>
         <FilterSidebar
           categories={categories}
-          categoryCounts={categoryCounts}
           minPrice={minPrice}
           maxPrice={maxPrice}
         />

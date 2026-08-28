@@ -23,13 +23,11 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from "fs"
-import { resolve, dirname } from "path"
-import { fileURLToPath } from "url"
+import { resolve } from "path"
 import { randomUUID } from "crypto"
 
 // Vendored from momo-integration-kit. Scaffolding is omitted: this app
 // already has src/lib/momo/{client,types}.ts.
-const KIT_DIR = dirname(fileURLToPath(import.meta.url))
 
 // ── args ────────────────────────────────────────────────────────────────────
 const flags = {}

@@ -36,7 +36,6 @@ export default async function ProductsPage({ searchParams }: Props) {
   // than as four sequential round trips to Supabase.
   const [
     { data: allCategories },
-    { data: productCategoryIds },
     { data: priceMinRow },
     { data: priceMaxRow },
   ] = await Promise.all([
@@ -45,7 +44,6 @@ export default async function ProductsPage({ searchParams }: Props) {
       .select("*, children:categories!parent_id(*)")
       .is("parent_id", null)
       .order("name"),
-    supabase.from("products").select("category_id").eq("status", "active"),
     supabase
       .from("products")
       .select("price")
@@ -64,10 +62,6 @@ export default async function ProductsPage({ searchParams }: Props) {
 
   const categories = (allCategories ?? []) as Category[];
 
-  const categoryCounts: Record<string, number> = {};
-  productCategoryIds?.forEach((p) => {
-    categoryCounts[p.category_id] = (categoryCounts[p.category_id] || 0) + 1;
-  });
 
   const globalMinPrice = Math.floor(Number(priceMinRow?.price ?? 0));
   const globalMaxPrice = Math.ceil(Number(priceMaxRow?.price ?? 100000));
@@ -175,7 +169,6 @@ export default async function ProductsPage({ searchParams }: Props) {
             <Suspense>
               <FilterSidebar
                 categories={categories}
-                categoryCounts={categoryCounts}
                 minPrice={globalMinPrice}
                 maxPrice={globalMaxPrice}
               />
@@ -191,18 +184,15 @@ export default async function ProductsPage({ searchParams }: Props) {
               <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">
                 {search ? `Results for "${search}"` : "All Products"}
               </h1>
-              {count !== null && count !== undefined && (
-                <p className="text-sm text-surface-muted mt-0.5">
-                  {count} product{count !== 1 ? "s" : ""}
-                </p>
-              )}
+              {/* Result counts are deliberately not shown: on a small catalogue
+                  they broadcast how little is in stock. Filters still narrow the
+                  grid; shoppers just aren't given the tally. */}
             </div>
             <div className="flex items-center gap-3">
               {/* Mobile filter toggle */}
               <Suspense>
                 <MobileFilterToggle
                   categories={categories}
-                  categoryCounts={categoryCounts}
                   minPrice={globalMinPrice}
                   maxPrice={globalMaxPrice}
                 />

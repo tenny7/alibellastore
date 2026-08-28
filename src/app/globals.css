@@ -200,3 +200,9 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .dc-ticker { animation: none !important; }
 }
+
+/* Theme-toggle icon swap — driven by the <html> class so the button needs no
+   React state and cannot mismatch during hydration. */
+.dc-when-dark { display: none; }
+.dc-night .dc-when-dark { display: block; }
+.dc-night .dc-when-light { display: none; }

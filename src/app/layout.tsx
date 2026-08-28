@@ -64,8 +64,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSiteSettings();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

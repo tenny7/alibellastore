@@ -105,6 +105,12 @@ function LoginForm() {
           error={errors.password}
           autoComplete="current-password"
         />
+        <div className="flex justify-end">
+          <Link href="/forgot-password" className="text-sm font-medium text-surface-muted underline hover:text-surface-fg">
+            Forgot password?
+          </Link>
+        </div>
+
         <Button type="submit" loading={loading} className="w-full">
           Sign In
         </Button>

@@ -6,14 +6,12 @@ import type { Category } from "@/types";
 
 interface FilterSidebarProps {
   categories: Category[];
-  categoryCounts: Record<string, number>;
   minPrice: number;
   maxPrice: number;
 }
 
 export function FilterSidebar({
   categories,
-  categoryCounts,
   minPrice,
   maxPrice,
 }: FilterSidebarProps) {
@@ -107,17 +105,6 @@ export function FilterSidebar({
 
   const hasFilters = localCategories.length > 0 || priceMin || priceMax;
 
-  // Count helper: sum parent + children counts
-  function getCategoryCount(cat: Category): number {
-    let count = categoryCounts[cat.id] ?? 0;
-    if (cat.children) {
-      for (const child of cat.children) {
-        count += categoryCounts[child.id] ?? 0;
-      }
-    }
-    return count;
-  }
-
   return (
     <div className="space-y-6">
       {/* Categories */}
@@ -143,9 +130,6 @@ export function FilterSidebar({
                 <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1 font-medium">
                   {cat.name}
                 </span>
-                <span className="text-xs text-surface-muted">
-                  ({getCategoryCount(cat)})
-                </span>
               </label>
               {/* Subcategories */}
               {cat.children && cat.children.length > 0 && (
@@ -163,9 +147,6 @@ export function FilterSidebar({
                       />
                       <span className="text-sm text-surface-muted group-hover:text-surface-fg flex-1">
                         {child.name}
-                      </span>
-                      <span className="text-xs text-surface-muted">
-                        ({categoryCounts[child.id] ?? 0})
                       </span>
                     </label>
                   ))}
