@@ -21,12 +21,16 @@ export default async function StorefrontLayout({ children }: { children: React.R
   return (
     <div className="flex flex-col min-h-screen">
       <CartHydration />
-      <Header storeName={settings.store_name} categories={cats} />
+      <Header
+        storeName={settings.store_name}
+        categories={cats}
+      />
       <main className="flex-1">{children}</main>
       <Footer
         storeName={settings.store_name}
         storeDescription={settings.store_description}
         whatsappNumber={settings.whatsapp_number}
+        contactPhone={settings.contact_phone}
         instagramUrl={settings.instagram_url}
         facebookUrl={settings.facebook_url}
         twitterUrl={settings.twitter_url}

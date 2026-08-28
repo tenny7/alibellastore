@@ -12,6 +12,8 @@ export type OrderStatus =
 
 export type PaymentStatus = "pending" | "successful" | "failed" | "timed_out";
 
+export type PaymentMethod = "momo" | "cod";
+
 export type DiscountType = "percentage" | "fixed" | "coupon" | "flash_sale";
 
 export interface User {
@@ -20,6 +22,9 @@ export interface User {
   email: string | null;
   phone: string | null;
   role: UserRole;
+  /** Admin kill switch: blocked customers can read but not send support messages. */
+  support_blocked?: boolean;
+  support_blocked_at?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -78,7 +83,11 @@ export interface Order {
   status: OrderStatus;
   momo_transaction_id: string | null;
   momo_reference_id: string | null;
+  /** MTN reason code from a failed request-to-pay (e.g. "APPROVAL_REJECTED"). */
+  momo_reason: string | null;
   payment_status: PaymentStatus;
+  /** "momo" (MTN Mobile Money) or "cod" (Cash on Delivery). */
+  payment_method: PaymentMethod;
   shipping_address: string;
   customer_phone: string;
   customer_name: string;
@@ -133,5 +142,43 @@ export interface SiteSettings {
   tax_percentage: number;
   currency_code: string;
   primary_color: string;
+  /** Shown as "Est. YYYY" in the landing hero; omitted when unset. */
+  founded_year: number | null;
+  updated_at: string;
+}
+
+export type SupportSenderRole = "admin" | "customer";
+
+export interface SupportMessage {
+  id: string;
+  order_id: string;
+  sender_id: string | null;
+  sender_role: SupportSenderRole;
+  body: string;
+  read_at: string | null;
+  created_at: string;
+}
+
+export interface Testimonial {
+  id: string;
+  author_name: string;
+  author_location: string | null;
+  context: string | null;
+  body: string;
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Admin-curated headline figures. `value` is text: real ones look like
+ *  "4h 12m" or "1.8%", not numbers. */
+export interface StoreMetric {
+  id: string;
+  label: string;
+  value: string;
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
   updated_at: string;
 }

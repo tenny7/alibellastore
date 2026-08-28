@@ -2,35 +2,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSiteSettings } from "@/lib/settings";
-import { ProductCard } from "@/components/storefront/product-card";
-import { ArrowRight, Smartphone, Zap } from "lucide-react";
-import type { Product, Category } from "@/types";
+import { formatCurrency, usableDescription } from "@/lib/utils";
+import { AddToBagButton } from "@/components/storefront/add-to-bag-button";
+import type { Product, Category, Testimonial, StoreMetric, Discount } from "@/types";
 
-// Ticker copy — store policy statements, not metrics.
-const TICKER = [
-  "Free returns in 14 days",
-  "MTN MoMo & Airtel Money",
-  "Verified sellers only",
-  "Same-day Kigali delivery",
-  "Nationwide in 48h",
-];
-
-const MOMO_STEPS = [
-  { n: "1", title: "Pick your items", body: "Add to cart, choose a delivery window." },
-  { n: "2", title: "Approve on your phone", body: "A MoMo prompt lands in seconds." },
-  { n: "3", title: "Accept the delivery", body: "Payment releases only after you say yes." },
-];
+export const revalidate = 60;
 
 export default async function HomePage() {
   const supabase = createAdminClient();
+  const nowIso = new Date().toISOString();
 
-  const [
-    settings,
-    { data: categories },
-    { data: bestSellers },
-    { count: productCount },
-    { count: deliveredCount },
-  ] = await Promise.all([
+  const [settings, cats, prods, quotes, figures, promo] = await Promise.all([
     getSiteSettings(),
     supabase.from("categories").select("*").is("parent_id", null).order("name").limit(5),
     supabase
@@ -39,360 +21,429 @@ export default async function HomePage() {
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .limit(8),
-    supabase.from("products").select("*", { count: "exact", head: true }).eq("status", "active"),
+    supabase.from("testimonials").select("*").eq("is_published", true).order("sort_order"),
+    supabase.from("store_metrics").select("*").eq("is_published", true).order("sort_order"),
+    // The design's "−20% evening window" tile. Driven by a real live discount
+    // rather than a hardcoded promise.
     supabase
-      .from("orders")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "delivered"),
+      .from("discounts")
+      .select("*")
+      .eq("is_active", true)
+      .lte("starts_at", nowIso)
+      .gte("expires_at", nowIso)
+      .order("value", { ascending: false })
+      .limit(1),
   ]);
 
-  const cats = (categories ?? []) as Category[];
-  const products = (bestSellers ?? []) as Product[];
+  const categories = (cats.data ?? []) as Category[];
+  const products = (prods.data ?? []) as Product[];
+  const testimonial = ((quotes.data ?? []) as Testimonial[])[0] ?? null;
+  const metrics = (figures.data ?? []) as StoreMetric[];
+  const deal = ((promo.data ?? []) as Discount[])[0] ?? null;
 
-  // Per-category cover image + item count, from real rows.
-  const catMeta: Record<string, { image: string | null; count: number }> = {};
-  await Promise.all(
-    cats.map(async (cat) => {
-      const [{ data: img }, { count }] = await Promise.all([
-        supabase
-          .from("products")
-          .select("images")
-          .eq("category_id", cat.id)
-          .eq("status", "active")
-          .limit(1)
-          .maybeSingle(),
-        supabase
-          .from("products")
-          .select("*", { count: "exact", head: true })
-          .eq("category_id", cat.id)
-          .eq("status", "active"),
-      ]);
-      catMeta[cat.id] = { image: img?.images?.[0] ?? null, count: count ?? 0 };
-    })
-  );
+  const cur = settings.currency_code;
+  const freeOver = settings.free_delivery_threshold;
+  const shots = products.map((p) => p.images?.[0]).filter(Boolean).slice(0, 2) as string[];
 
-  // Only real, non-zero figures are shown — no invented trust metrics.
-  const stats = [
-    deliveredCount ? { value: `${deliveredCount}`, label: "orders delivered" } : null,
-    productCount ? { value: `${productCount}`, label: "products in stock" } : null,
-    cats.length ? { value: `${cats.length}`, label: "collections" } : null,
-  ].filter(Boolean) as { value: string; label: string }[];
+  // Ticker: policy statements and real payment methods only.
+  const ticker = [
+    freeOver ? `Free delivery over ${formatCurrency(Number(freeOver), cur)}` : "Delivery across Rwanda",
+    "MoMo · Cash on delivery",
+    "Dispatched from Kigali",
+    "7-day returns",
+  ];
 
-  const heroImages = products.map((p) => p.images?.[0]).filter(Boolean).slice(0, 3) as string[];
+  const promises = [
+    { tag: "Anywhere", title: "Across Rwanda", body: "Rider in Kigali, courier upcountry." },
+    { tag: "Payment", title: "MoMo or cash", body: "Pay on delivery if you'd rather see it first." },
+    { tag: "Returns", title: "7 days, no story", body: "Changed your mind? Send it back." },
+    { tag: "Sourcing", title: "Checked by hand", body: "Nothing listed we wouldn't buy ourselves." },
+  ];
+
+  const steps = [
+    {
+      n: "01",
+      title: "Fill one basket across shelves",
+      body: "A phone, a dress and two kilos of coffee travel together. One order, one delivery fee.",
+      meta: freeOver ? `Free over ${formatCurrency(Number(freeOver), cur)}` : "One delivery fee",
+    },
+    {
+      n: "02",
+      title: "Pay the way you already pay",
+      body: "MTN Mobile Money at checkout, or cash to the rider at your gate. No card needed.",
+      meta: "MoMo · Cash on delivery",
+    },
+    {
+      n: "03",
+      title: "Follow it from your account",
+      body: "Your order moves through packing and dispatch, and every order carries its own message thread if you need us.",
+      meta: "Message us on the order",
+    },
+  ];
+
+  const dealLabel = deal
+    ? deal.type === "percentage"
+      ? `−${Number(deal.value)}%`
+      : `−${formatCurrency(Number(deal.value), cur)}`
+    : null;
 
   return (
-    <div className="overflow-hidden bg-page text-page-fg">
+    <div className="bg-page text-page-fg">
       {/* ─── Hero ─────────────────────────────────────────────── */}
-      <div className="bg-ink text-cream">
-        <section className="relative px-6 pt-16 md:px-10 md:pt-[88px]">
+      <section id="top" className="relative border-b border-hairline px-4 pb-7 pt-9 md:px-11 md:pb-14 md:pt-[92px]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(color-mix(in oklab, var(--page-fg) 7%, transparent) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage: "radial-gradient(110% 80% at 24% 12%, #000 34%, transparent 76%)",
+            WebkitMaskImage: "radial-gradient(110% 80% at 24% 12%, #000 34%, transparent 76%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-[14%] right-[-8%] h-[44vw] w-[44vw] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at 45% 45%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 64%)",
+          }}
+        />
+
+        <div className="relative grid items-center gap-6 [grid-template-columns:repeat(auto-fit,minmax(320px,1fr))] md:gap-14">
+          <div className="dc-rise" style={{ animation: "rise .75s cubic-bezier(.2,.8,.2,1) both" }}>
+            {/* Badge appears only with something real behind it. */}
+            {(settings.founded_year || metrics[0]) && (
+              <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-page-fg/20 px-3.5 py-[7px] font-mono text-[10px] uppercase tracking-[0.16em] text-page-fg/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                {[
+                  settings.founded_year ? `Est. ${settings.founded_year}` : null,
+                  metrics[0] ? `${metrics[0].value} ${metrics[0].label.toLowerCase()}` : null,
+                ]
+                  .filter(Boolean)
+                  .join(" — ")}
+              </div>
+            )}
+
+            <h1 className="m-0 font-display text-[clamp(44px,8.2vw,132px)] font-extrabold leading-[0.86] tracking-[-0.05em]">
+              <span className="block">Everything</span>
+              <span
+                className="block text-transparent"
+                style={{ WebkitTextStroke: "1.6px color-mix(in oklab, var(--page-fg) 70%, transparent)" }}
+              >
+                good, in
+              </span>
+              <span className="block">
+                one{" "}
+                <span className="font-serif font-light italic tracking-[-0.01em] text-accent">shop.</span>
+              </span>
+            </h1>
+
+            <p className="my-6 max-w-[40ch] text-[clamp(16px,1.4vw,20px)] leading-[1.6] text-page-fg/[0.68]">
+              {usableDescription(settings.store_description) ??
+                "Clothing, electronics, gadgets and the food you actually miss — one basket, one delivery, anywhere in Rwanda."}
+            </p>
+
+            <div className="flex flex-wrap gap-2.5">
+              <Link
+                href="#index"
+                className="inline-flex items-center gap-2.5 rounded-full bg-accent px-6 py-[15px] font-mono text-[11px] uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-page-fg hover:text-page"
+              >
+                Shop the index →
+              </Link>
+              <Link
+                href="#how"
+                className="inline-flex items-center rounded-full border border-page-fg/[0.26] px-6 py-[15px] font-mono text-[11px] uppercase tracking-[0.14em] transition-colors hover:border-page-fg"
+              >
+                How delivery works
+              </Link>
+            </div>
+          </div>
+
+          {/* Collage: two real product shots, a live-deal tile, spinning badge */}
           <div
-            aria-hidden
-            className="dc-blob pointer-events-none absolute -right-20 -top-40 h-[620px] w-[620px] rounded-full blur-[30px]"
-            style={{
-              background:
-                "radial-gradient(circle at 35% 35%, rgba(108,76,241,.8), rgba(108,76,241,0) 62%)",
-              animation: "blob 14s ease-in-out infinite",
-            }}
-          />
-          <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)] md:gap-14">
-            <div>
-              <div className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-cream/[0.12] bg-cream/[0.06] py-[7px] pl-2 pr-3.5 text-[12.5px] font-medium text-cream/80">
-                <span className="rounded-full bg-purple px-2.5 py-1 text-[11px] font-bold tracking-[0.04em] text-white">
-                  NEW
-                </span>
-                Kigali same-day delivery is live
-              </div>
-
-              <h1 className="mb-5 font-display text-[clamp(44px,6vw,86px)] font-bold leading-[0.94] tracking-[-0.04em] text-balance">
-                {settings.hero_title || (
-                  <>
-                    Everything you want,
-                    <br />
-                    <span className="inline-block rounded-[0.14em] bg-accent px-[0.22em] pb-[0.06em] text-ink">
-                      one tap
-                    </span>{" "}
-                    <span className="font-normal italic text-cream/60">away.</span>
-                  </>
-                )}
-              </h1>
-
-              <p className="mb-8 max-w-[470px] text-[17.5px] leading-[1.6] text-cream/[0.62]">
-                {settings.hero_subtitle ||
-                  "Clothing, electronics, gadgets and groceries — curated in Kigali, paid with MTN Mobile Money, at your door before dinner."}
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  href="/products"
-                  className="inline-flex h-[54px] items-center gap-2.5 rounded-[14px] bg-accent px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
-                >
-                  Shop the drop
-                  <ArrowRight className="h-[17px] w-[17px]" strokeWidth={2.4} />
-                </Link>
-                <a
-                  href="#momo"
-                  className="inline-flex h-[54px] items-center rounded-[14px] border border-cream/20 px-6 text-[15px] font-medium text-cream transition-colors hover:bg-cream/[0.07]"
-                >
-                  How MoMo pay works
-                </a>
-              </div>
-
-              {stats.length > 0 && (
-                <div className="mt-11 flex flex-wrap gap-9 border-t border-cream/[0.1] pt-6">
-                  {stats.map((s) => (
-                    <div key={s.label}>
-                      <div className="font-display text-[26px] font-bold leading-none">{s.value}</div>
-                      <div className="mt-1.5 text-[13px] leading-[1.4] text-cream/50">{s.label}</div>
+            className="dc-rise relative grid min-h-[clamp(320px,40vw,520px)] grid-cols-2 gap-3"
+            style={{ animation: "rise .95s cubic-bezier(.2,.8,.2,1) both .1s" }}
+          >
+            <Well src={shots[0]} className="row-span-2" />
+            <Well src={shots[1]} />
+            <div
+              className="flex flex-col justify-between gap-3.5 rounded-2xl border border-page-fg/[0.14] p-[18px]"
+              style={{
+                background:
+                  "linear-gradient(150deg, color-mix(in oklab, var(--accent) 16%, transparent), transparent 70%)",
+              }}
+            >
+              {deal && dealLabel ? (
+                <>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-page-fg/70">
+                    {deal.code ? `Code ${deal.code}` : "Live offer"}
+                  </div>
+                  <div>
+                    <div className="font-display text-[clamp(24px,2.8vw,40px)] font-extrabold leading-none tracking-[-0.03em]">
+                      {dealLabel}
                     </div>
-                  ))}
-                </div>
+                    <div className="mt-1.5 text-[15px] text-page-fg/70">
+                      {deal.min_cart_value
+                        ? `on orders over ${formatCurrency(Number(deal.min_cart_value), cur)}`
+                        : "on your order at checkout"}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-page-fg/70">
+                    Delivery
+                  </div>
+                  <div>
+                    <div className="font-display text-[clamp(20px,2.2vw,32px)] font-extrabold leading-none tracking-[-0.03em]">
+                      {freeOver ? formatCurrency(Number(freeOver), cur) : "Nationwide"}
+                    </div>
+                    <div className="mt-1.5 text-[15px] text-page-fg/70">
+                      {freeOver ? "spend this much, delivery is on us" : "we deliver across Rwanda"}
+                    </div>
+                  </div>
+                </>
               )}
             </div>
 
-            {/* Bento image grid — real product imagery */}
-            <div className="relative grid grid-cols-2 grid-rows-[200px_150px_130px] gap-3.5">
-              <HeroTile className="col-start-1 row-span-2 row-start-1" src={heroImages[0]} alt="Featured product" />
-              <HeroTile className="col-start-2 row-start-1" src={heroImages[1]} alt="Featured product" />
-              <HeroTile className="col-start-2 row-span-2 row-start-2" src={heroImages[2]} alt="Featured product" />
-              <div className="col-start-1 row-start-3 flex flex-col justify-between rounded-3xl bg-purple p-5">
-                <Smartphone className="h-[22px] w-[22px] text-white" strokeWidth={2} />
-                <div className="font-display text-[15px] font-bold leading-[1.3] text-white">
-                  Checkout in
-                  <br />3 taps with MoMo
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Ticker */}
-          <div className="mt-16 overflow-hidden border-t border-cream/[0.1] py-4">
-            <div className="dc-ticker flex w-max" style={{ animation: "ticker 34s linear infinite" }}>
-              {[0, 1].map((dup) => (
-                <div
-                  key={dup}
-                  aria-hidden={dup === 1}
-                  className="flex gap-11 whitespace-nowrap pr-11 font-display text-sm font-medium uppercase tracking-[0.14em] text-cream/[0.42]"
-                >
-                  {TICKER.map((t) => (
-                    <span key={t} className="flex items-center gap-11">
-                      {t}
-                      <span className="text-accent">✦</span>
-                    </span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </div>
-
-      {/* ─── Collections ──────────────────────────────────────── */}
-      {cats.length > 0 && (
-        <section id="collections" className="bg-page px-6 pb-12 pt-16 md:px-10 md:pt-20">
-          <div className="mx-auto max-w-[1320px]">
-            <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <div className="mb-3.5 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-page-fg/45">
-                  Collections
-                </div>
-                <h2 className="font-display text-[clamp(30px,3.6vw,48px)] font-bold leading-[1.05] tracking-[-0.03em] text-page-fg">
-                  Start somewhere
-                </h2>
-              </div>
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 text-sm font-medium text-page-fg/60 transition-colors hover:text-page-fg"
-              >
-                Browse all {productCount ?? 0} products <span className="text-base">→</span>
-              </Link>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]">
-              {/* Lead tile */}
-              <CollectionTile cat={cats[0]} meta={catMeta[cats[0].id]} tall />
-
-              <div className="grid grid-rows-2 gap-4">
-                {cats[1] && <CollectionTile cat={cats[1]} meta={catMeta[cats[1].id]} />}
-                <Link
-                  href="/products"
-                  className="flex flex-col justify-between rounded-[26px] bg-ink p-[22px] text-cream transition-colors hover:bg-ink-raised"
-                >
-                  <div className="font-display text-[11.5px] font-medium uppercase tracking-[0.16em] opacity-65">
-                    Weekly deal
-                  </div>
-                  <div>
-                    <div className="font-display text-2xl font-bold leading-[1.05] tracking-[-0.02em]">
-                      Fresh drops
-                      <br />
-                      every week
-                    </div>
-                    <div className="mt-2.5 text-[13px] font-medium opacity-70">Browse now →</div>
-                  </div>
-                </Link>
-              </div>
-
-              <div className="grid grid-rows-2 gap-4">
-                <Link
-                  href="/products"
-                  className="flex flex-col justify-between rounded-[26px] bg-ink p-[22px] text-cream transition-colors hover:bg-ink-raised"
-                >
-                  <Zap className="h-6 w-6" strokeWidth={2} />
-                  <div>
-                    <div className="font-display text-2xl font-bold leading-[1.05] tracking-[-0.02em]">
-                      All products
-                    </div>
-                    <div className="mt-2 text-[13px] opacity-60">
-                      {productCount ?? 0} items · updated daily
-                    </div>
-                  </div>
-                </Link>
-                {cats[2] && <CollectionTile cat={cats[2]} meta={catMeta[cats[2].id]} />}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ─── Trending ─────────────────────────────────────────── */}
-      {products.length > 0 && (
-        <section id="shop" className="bg-page px-6 pb-20 pt-8 md:px-10 md:pb-[88px]">
-          <div className="mx-auto max-w-[1320px]">
-            <div className="mb-7 flex flex-wrap items-center justify-between gap-6">
-              <h2 className="font-display text-[clamp(30px,3.6vw,48px)] font-bold leading-[1.05] tracking-[-0.03em]">
-                Trending now
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href="/products"
-                  className="rounded-full border border-page-fg bg-page-fg px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-cream"
-                >
-                  All
-                </Link>
-                {cats.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    href={`/products?category=${cat.slug}`}
-                    className="rounded-full border border-page-fg/[0.16] px-[18px] py-2.5 text-[13.5px] font-medium leading-none text-page-fg/[0.62] transition-colors hover:border-page-fg hover:text-page-fg"
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  currencyCode={settings.currency_code}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ─── MoMo ─────────────────────────────────────────────── */}
-      <section id="momo" className="bg-page px-6 pb-20 md:px-10 md:pb-[88px]">
-        <div className="relative mx-auto max-w-[1320px] overflow-hidden rounded-[34px] bg-ink px-8 py-14 md:px-13 md:py-15">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-[70px] -top-[140px] h-[440px] w-[440px] rounded-full blur-[24px]"
-            style={{
-              background: "radial-gradient(circle, rgba(108,76,241,.75), transparent 66%)",
-            }}
-          />
-          <div className="relative grid items-center gap-12 md:grid-cols-2">
-            <div>
-              <div className="mb-4 font-display text-[12.5px] font-medium uppercase tracking-[0.18em] text-accent">
-                Payments
-              </div>
-              <h2 className="mb-4.5 font-display text-[clamp(28px,3.2vw,44px)] font-bold leading-[1.06] tracking-[-0.03em] text-cream">
-                No card. No cash.
+            <div className="absolute left-1/2 top-1/2 z-[3] grid h-[clamp(86px,9vw,112px)] w-[clamp(86px,9vw,112px)] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-page-fg/[0.18] bg-page text-center">
+              <div
+                aria-hidden
+                className="dc-spin absolute inset-[6px] rounded-full border border-dashed border-page-fg/[0.22]"
+                style={{ animation: "spin 26s linear infinite" }}
+              />
+              <div className="font-mono text-[8.5px] uppercase leading-[1.7] tracking-[0.14em]">
+                Dispatched
                 <br />
-                Just your phone.
-              </h2>
-              <p className="mb-7 max-w-[430px] text-[16.5px] leading-[1.6] text-cream/[0.66]">
-                Confirm your order, approve the MoMo prompt, and we pack it. Money is held until you
-                accept the delivery.
-              </p>
-              <Link
-                href="/products"
-                className="inline-flex h-[52px] items-center gap-2.5 rounded-[14px] bg-accent px-6 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
-              >
-                Try a checkout →
-              </Link>
-            </div>
-            <div className="flex flex-col gap-3">
-              {MOMO_STEPS.map((s) => (
-                <div
-                  key={s.n}
-                  className="flex items-center gap-4 rounded-[18px] border border-cream/[0.13] bg-cream/[0.07] px-5 py-[18px]"
-                >
-                  <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-xl bg-accent font-display text-[15px] font-bold text-ink">
-                    {s.n}
-                  </div>
-                  <div>
-                    <div className="text-[15.5px] font-bold leading-[1.2] text-cream">{s.title}</div>
-                    <div className="mt-1 text-[13.5px] leading-[1.4] text-cream/60">{s.body}</div>
-                  </div>
-                </div>
-              ))}
+                from
+                <br />
+                <span className="text-accent">Kigali</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
-    </div>
-  );
-}
 
-function HeroTile({ src, alt, className }: { src?: string; alt: string; className: string }) {
-  return (
-    <div className={`relative overflow-hidden rounded-3xl bg-ink-raised ${className}`}>
-      {src && <Image src={src} alt={alt} fill className="object-cover" sizes="(max-width:768px) 50vw, 25vw" />}
-    </div>
-  );
-}
-
-function CollectionTile({
-  cat,
-  meta,
-  tall = false,
-}: {
-  cat: Category;
-  meta?: { image: string | null; count: number };
-  tall?: boolean;
-}) {
-  return (
-    <Link
-      href={`/products?category=${cat.slug}`}
-      className={`group relative block overflow-hidden rounded-[26px] bg-field ${tall ? "h-[400px]" : ""}`}
-    >
-      {meta?.image && (
-        <Image
-          src={meta.image}
-          alt={cat.name}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width:768px) 100vw, 33vw"
-        />
-      )}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 p-5 md:p-6"
-        style={{ background: "linear-gradient(to top,rgba(16,14,27,.9),rgba(16,14,27,0))" }}
-      >
+      {/* ─── Ticker ───────────────────────────────────────────── */}
+      <div className="overflow-hidden whitespace-nowrap border-b border-hairline bg-page-fg/[0.03] py-3">
         <div
-          className={`font-display font-bold tracking-[-0.02em] text-cream ${
-            tall ? "text-[26px] leading-[1.1]" : "text-xl leading-[1.1]"
-          }`}
+          className="dc-marquee inline-flex gap-[38px] pr-[38px] font-mono text-[11px] uppercase tracking-[0.14em] text-page-fg/60"
+          style={{ animation: "marquee 36s linear infinite" }}
         >
-          {cat.name}
-        </div>
-        <div className="mt-1.5 text-[13px] text-cream/[0.66]">
-          {meta?.count ?? 0} {meta?.count === 1 ? "item" : "items"}
+          {[0, 1].map((dup) =>
+            ticker.map((t) => (
+              <span key={`${dup}-${t}`} className="inline-flex items-center gap-[38px]">
+                {t}
+                <span className="text-accent">✦</span>
+              </span>
+            ))
+          )}
         </div>
       </div>
-    </Link>
+
+      {/* ─── Promises ─────────────────────────────────────────── */}
+      <section
+        data-reveal="1"
+        className="grid border-b border-hairline [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]"
+      >
+        {promises.map((p) => (
+          <div key={p.tag} className="border-l border-hairline px-4 py-6 md:px-8">
+            <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+              {p.tag}
+            </div>
+            <div className="mb-1.5 font-display text-[clamp(15px,1.3vw,18px)] font-semibold tracking-[-0.02em]">
+              {p.title}
+            </div>
+            <div className="text-[15px] leading-[1.5] text-page-fg/60">{p.body}</div>
+          </div>
+        ))}
+      </section>
+
+      {/* ─── The index ────────────────────────────────────────── */}
+      <section id="index" data-reveal="1" className="px-4 py-10 md:px-11 md:py-[88px]">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.18em] text-page-fg/[0.55]">
+              02 — The index
+            </div>
+            <h2 className="m-0 font-display text-[clamp(30px,4.4vw,66px)] font-extrabold leading-[0.94] tracking-[-0.04em]">
+              Pick a shelf.{" "}
+              <span className="font-serif font-light italic text-page-fg/[0.55]">
+                The shop follows.
+              </span>
+            </h2>
+          </div>
+        </div>
+
+        <div className="mb-7 flex flex-wrap gap-2">
+          <Link
+            href="/products"
+            className="rounded-full border border-accent bg-accent px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-accent-fg"
+          >
+            Everything
+          </Link>
+          {categories.map((c) => (
+            <Link
+              key={c.id}
+              href={`/products?category=${c.slug}`}
+              className="rounded-full border border-page-fg/[0.24] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors hover:border-accent hover:text-accent"
+            >
+              {c.name}
+            </Link>
+          ))}
+        </div>
+
+        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(224px,1fr))]">
+          {products.map((item) => (
+            <article
+              key={item.id}
+              className="flex flex-col gap-3 rounded-2xl border border-card-border bg-card p-3 transition-colors hover:border-page-fg/30"
+            >
+              <Link
+                href={`/products/${item.id}`}
+                className="relative block aspect-square overflow-hidden rounded-[10px] bg-well"
+              >
+                {item.images?.[0] && (
+                  <Image
+                    src={item.images[0]}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width:640px) 100vw, 25vw"
+                  />
+                )}
+                {item.category && (
+                  <span className="pointer-events-none absolute left-2 top-2 rounded border border-page-fg/[0.18] bg-page/80 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-page-fg">
+                    {item.category.name}
+                  </span>
+                )}
+              </Link>
+              <div className="flex items-baseline justify-between gap-2.5">
+                <h3 className="m-0 font-display text-[16px] font-semibold tracking-[-0.02em]">
+                  <Link href={`/products/${item.id}`}>{item.name}</Link>
+                </h3>
+                <span className="whitespace-nowrap font-mono text-[12px] text-accent">
+                  {formatCurrency(Number(item.price), cur)}
+                </span>
+              </div>
+              {item.description && (
+                <p className="m-0 line-clamp-2 text-[15px] leading-[1.5] text-page-fg/60">
+                  {item.description}
+                </p>
+              )}
+              <div className="mt-auto flex gap-2">
+                <AddToBagButton product={item} />
+                <Link
+                  href={`/products/${item.id}`}
+                  className="inline-flex min-h-[44px] items-center rounded-full border border-page-fg/[0.24] px-3.5 font-mono text-[10px] text-page-fg/70 transition-colors hover:border-page-fg hover:text-page-fg"
+                >
+                  View
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── How it works ─────────────────────────────────────── */}
+      <section
+        id="how"
+        data-reveal="1"
+        className="border-t border-hairline px-4 py-10 md:px-11 md:py-[88px]"
+        style={{
+          background:
+            "linear-gradient(180deg, color-mix(in oklab, var(--accent) 6%, transparent), transparent 55%)",
+        }}
+      >
+        <h2 className="m-0 mb-7 font-display text-[clamp(28px,4vw,58px)] font-extrabold leading-[0.96] tracking-[-0.04em]">
+          Order today.{" "}
+          <span className="font-serif font-light italic text-accent">Unbox soon.</span>
+        </h2>
+        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
+          {steps.map((st) => (
+            <div key={st.n} className="rounded-2xl border border-card-border bg-card p-[22px]">
+              <div
+                className="font-display text-[38px] font-extrabold leading-none tracking-[-0.04em] text-transparent"
+                style={{ WebkitTextStroke: "1.2px var(--accent)" }}
+              >
+                {st.n}
+              </div>
+              <h3 className="mb-2 mt-3.5 font-display text-[19px] font-semibold tracking-[-0.02em]">
+                {st.title}
+              </h3>
+              <p className="m-0 mb-3.5 text-[15px] leading-[1.6] text-page-fg/[0.62]">{st.body}</p>
+              <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/[0.5]">
+                {st.meta}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Story — only with real content behind it ──────────── */}
+      {(testimonial || metrics.length > 0) && (
+        <section
+          id="story"
+          data-reveal="1"
+          className="grid items-center gap-6 border-t border-hairline px-4 py-10 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))] md:gap-14 md:px-11 md:py-[88px]"
+        >
+          <div>
+            <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-page-fg/[0.55]">
+              04 — Why people stay
+            </div>
+            {testimonial ? (
+              <>
+                <blockquote className="m-0 text-[clamp(24px,3.2vw,48px)] font-light leading-[1.14] tracking-[-0.02em]">
+                  &ldquo;{testimonial.body}&rdquo;
+                </blockquote>
+                <div className="mt-5 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.12em] text-page-fg/[0.6]">
+                  <span className="h-px w-[30px] bg-accent" />
+                  {[testimonial.author_name, testimonial.author_location, testimonial.context]
+                    .filter(Boolean)
+                    .join(" — ")}
+                </div>
+              </>
+            ) : (
+              <blockquote className="m-0 text-[clamp(24px,3.2vw,48px)] font-light leading-[1.14] tracking-[-0.02em]">
+                A charger and a kilo of coffee in the same basket, one delivery.{" "}
+                <span className="italic text-accent">That&apos;s the whole idea.</span>
+              </blockquote>
+            )}
+
+            {metrics.length > 0 && (
+              <div className="mt-7 flex flex-wrap gap-x-8 gap-y-5 md:mt-12 md:gap-x-11">
+                {metrics.map((k) => (
+                  <div key={k.id}>
+                    <div className="font-display text-[clamp(26px,3vw,46px)] font-extrabold leading-none tracking-[-0.04em]">
+                      {k.value}
+                    </div>
+                    <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/[0.55]">
+                      {k.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[18px] border border-page-fg/[0.14] bg-well">
+            {shots[0] && (
+              <Image src={shots[0]} alt="" fill className="object-cover" sizes="(max-width:768px) 100vw, 40vw" />
+            )}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function Well({ src, className = "" }: { src?: string; className?: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl border border-page-fg/[0.14] bg-well ${className}`}
+    >
+      {src && <Image src={src} alt="" fill className="object-cover" sizes="30vw" />}
+    </div>
   );
 }

@@ -27,7 +27,7 @@ export function Accordion({ items, defaultOpen }: AccordionProps) {
           <div key={i}>
             <button
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between py-4 text-sm font-medium text-surface-fg hover:text-primary transition-colors"
+              className="flex w-full items-center justify-between py-4 text-sm font-medium text-surface-fg hover:text-surface-fg transition-colors"
             >
               {item.title}
               <ChevronDown

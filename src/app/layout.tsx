@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Newsreader, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { ThemeScript } from "@/components/storefront/theme-toggle";
 import { getSiteSettings } from "@/lib/settings";
-import { darkenHex } from "@/lib/utils";
 import "./globals.css";
 
 // Self-hosted at build time by next/font. The design ships these as Google
 // Fonts <link> tags, but our CSP is font-src 'self' / style-src 'self', which
 // would block fonts.googleapis.com — next/font serves them same-origin.
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "800"],
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+// The design's body face. Italic is used for the pull-quotes and accents,
+// so both styles are loaded.
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -65,23 +67,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSiteSettings();
-  const primaryColor = settings.primary_color || "#1A73E8";
-  const hoverColor = darkenHex(primaryColor, 15);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <ThemeScript />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `:root{--brand-primary:${primaryColor};--brand-primary-hover:${hoverColor}}`,
-          }}
-        />
       </head>
       <body
-        className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${bricolage.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         {children}
         <ToastProvider />

@@ -14,6 +14,7 @@ import {
 import { createAdminClient } from "@/lib/supabase/admin";
 import { formatCurrency } from "@/lib/utils";
 import { getSiteSettings } from "@/lib/settings";
+import { SupportThread } from "@/components/support/support-thread";
 import type { OrderStatus, PaymentStatus } from "@/types";
 
 interface Props {
@@ -42,10 +43,10 @@ const PAYMENT_LABELS: Record<
   PaymentStatus,
   { label: string; color: string }
 > = {
-  successful: { label: "Paid", color: "text-[#16A34A]" },
-  pending: { label: "Pending", color: "text-[#D97706]" },
-  failed: { label: "Failed", color: "text-[#DC2626]" },
-  timed_out: { label: "Timed Out", color: "text-[#DC2626]" },
+  successful: { label: "Paid", color: "text-surface-fg" },
+  pending: { label: "Pending", color: "text-surface-muted" },
+  failed: { label: "Failed", color: "text-danger" },
+  timed_out: { label: "Timed Out", color: "text-danger" },
 };
 
 export default async function OrderDetailPage({ params }: Props) {
@@ -74,7 +75,7 @@ export default async function OrderDetailPage({ params }: Props) {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <Link
         href="/orders"
-        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-primary mb-6"
+        className="inline-flex items-center gap-1 text-sm text-surface-muted hover:text-surface-fg mb-6"
       >
         <ChevronLeft className="h-4 w-4" />
         Back to Orders
@@ -103,18 +104,18 @@ export default async function OrderDetailPage({ params }: Props) {
 
       {/* Status Timeline */}
       {isCancelled ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center mb-6">
-          <XCircle className="h-10 w-10 mx-auto text-[#DC2626] mb-2" />
-          <p className="font-medium text-[#DC2626]">Order Cancelled</p>
+        <div className="rounded-lg border border-danger/30 bg-danger/10 p-6 text-center mb-6">
+          <XCircle className="h-10 w-10 mx-auto text-danger mb-2" />
+          <p className="font-medium text-danger">Order Cancelled</p>
         </div>
       ) : (
         <div className="rounded-[20px] border border-surface-border bg-surface p-4 sm:p-6 mb-6">
           <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg mb-4">Order Status</h2>
           <div className="flex items-center justify-between relative px-1 sm:px-4">
             {/* Progress line — runs between first and last icon centers */}
-            <div className="absolute top-3 sm:top-4 h-0.5 bg-gray-200" style={{ left: "10%", right: "10%" }} />
+            <div className="absolute top-3 sm:top-4 h-0.5 bg-surface-fg/15" style={{ left: "10%", right: "10%" }} />
             <div
-              className="absolute top-3 sm:top-4 h-0.5 bg-primary transition-all"
+              className="absolute top-3 sm:top-4 h-0.5 bg-page-fg transition-all"
               style={{
                 left: "10%",
                 width: `${currentStep > 0 ? (currentStep / (ORDER_STEPS.length - 1)) * 80 : 0}%`,
@@ -132,15 +133,15 @@ export default async function OrderDetailPage({ params }: Props) {
                   <div
                     className={`flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 transition-colors ${
                       isActive
-                        ? "bg-primary border-primary text-white"
-                        : "bg-surface border-gray-300 text-surface-muted"
+                        ? "bg-page-fg border-surface-fg text-page"
+                        : "bg-surface border-surface-border text-surface-muted"
                     }`}
                   >
                     <StepIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
                   <span
                     className={`mt-1.5 sm:mt-2 text-[10px] sm:text-xs font-medium text-center leading-tight ${
-                      isActive ? "text-primary" : "text-surface-muted"
+                      isActive ? "text-surface-fg" : "text-surface-muted"
                     }`}
                   >
                     {step.label}
@@ -182,7 +183,7 @@ export default async function OrderDetailPage({ params }: Props) {
                 <div className="flex-1 min-w-0">
                   <Link
                     href={`/products/${item.product?.id}`}
-                    className="text-sm font-medium text-surface-fg hover:text-primary truncate block"
+                    className="text-sm font-medium text-surface-fg hover:text-surface-fg truncate block"
                   >
                     {item.product?.name}
                   </Link>
@@ -204,7 +205,7 @@ export default async function OrderDetailPage({ params }: Props) {
             <span>{formatCurrency(Number(order.subtotal), settings.currency_code)}</span>
           </div>
           {Number(order.discount_amount) > 0 && (
-            <div className="flex justify-between text-sm text-[#16A34A]">
+            <div className="flex justify-between text-sm text-surface-fg">
               <span>Discount</span>
               <span>-{formatCurrency(Number(order.discount_amount), settings.currency_code)}</span>
             </div>
@@ -263,6 +264,15 @@ export default async function OrderDetailPage({ params }: Props) {
       )}
 
       {/* Cancel / WhatsApp contact */}
+      {/* In-app support thread — reaches the admin without leaving the site */}
+      <div className="mb-6">
+        <SupportThread
+          orderId={order.id}
+          orderNumber={order.order_number}
+          viewerRole="customer"
+        />
+      </div>
+
       <div className="flex flex-col items-center gap-3">
         {!isCancelled && order.status !== "delivered" && (
           <a
@@ -271,7 +281,7 @@ export default async function OrderDetailPage({ params }: Props) {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2.5 border border-red-200 text-red-600 rounded-lg font-medium hover:bg-red-50 transition-colors text-sm"
+            className="inline-flex items-center gap-2 px-6 py-2.5 border border-danger/30 text-danger rounded-lg font-medium hover:bg-danger/10 transition-colors text-sm"
           >
             <XCircle className="h-4 w-4" />
             Request Cancellation
@@ -281,7 +291,7 @@ export default async function OrderDetailPage({ params }: Props) {
           href={`https://wa.me/${settings.whatsapp_number}?text=${whatsappMsg}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#25D366] text-white rounded-lg font-medium hover:bg-[#1ebe57] transition-colors text-sm"
+          className="inline-flex items-center gap-2 px-6 py-2.5 bg-page-fg text-page rounded-lg font-medium hover:opacity-90 transition-colors text-sm"
         >
           <MessageCircle className="h-4 w-4" />
           Need help? Chat on WhatsApp

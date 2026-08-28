@@ -15,10 +15,10 @@ export function ToastProvider() {
           fontSize: "14px",
         },
         success: {
-          style: { color: "#16A34A" },
+          style: { color: "var(--surface-fg)" },
         },
         error: {
-          style: { color: "#DC2626" },
+          style: { color: "var(--danger)" },
         },
       }}
     />

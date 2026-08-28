@@ -93,7 +93,7 @@ export default function CartPage() {
                     </p>
                     <button
                       onClick={() => removeItem(item.productId)}
-                      className="text-surface-muted hover:text-[#DC2626]"
+                      className="text-surface-muted hover:text-danger"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -105,7 +105,7 @@ export default function CartPage() {
 
           <button
             onClick={clearCart}
-            className="text-sm text-surface-muted hover:text-[#DC2626] transition-colors"
+            className="text-sm text-surface-muted hover:text-danger transition-colors"
           >
             Clear cart
           </button>

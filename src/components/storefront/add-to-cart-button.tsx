@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ShoppingBag, Minus, Plus, Zap } from "lucide-react";
+import { formatCurrency } from "@/lib/utils";
+import { Minus, Plus } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import toast from "react-hot-toast";
 
@@ -11,10 +11,10 @@ interface AddToCartButtonProps {
   name: string;
   price: number;
   image: string;
+  currencyCode?: string;
 }
 
-export function AddToCartButton({ productId, name, price, image }: AddToCartButtonProps) {
-  const router = useRouter();
+export function AddToCartButton({ productId, name, price, image, currencyCode = "RWF" }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1);
   const addItem = useCartStore((s) => s.addItem);
 
@@ -24,52 +24,40 @@ export function AddToCartButton({ productId, name, price, image }: AddToCartButt
     setQuantity(1);
   }
 
-  function handleBuyNow() {
-    addItem({ productId, name, price, image }, quantity);
-    router.push("/checkout");
-  }
 
   return (
-    <div className="space-y-4">
-      {/* Quantity selector */}
-      <div>
-        <label className="text-sm font-medium text-surface-fg mb-2 block">Quantity</label>
-        <div className="inline-flex items-center rounded-lg border border-surface-border">
-          <button
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="px-3 py-2.5 text-surface-muted hover:text-surface-fg hover:bg-surface-hover transition-colors rounded-l-lg"
-          >
-            <Minus className="h-4 w-4" />
-          </button>
-          <span className="w-12 text-center text-sm font-medium text-surface-fg border-x border-surface-border py-2.5">
-            {quantity}
-          </span>
-          <button
-            onClick={() => setQuantity(quantity + 1)}
-            className="px-3 py-2.5 text-surface-muted hover:text-surface-fg hover:bg-surface-hover transition-colors rounded-r-lg"
-          >
-            <Plus className="h-4 w-4" />
-          </button>
-        </div>
+    <div className="flex flex-wrap items-center gap-2.5">
+      {/* v2 stepper: pill-outlined, ±44px targets */}
+      <div className="flex items-center gap-1 rounded-full border border-page-fg/[0.24] p-1">
+        <button
+          type="button"
+          onClick={() => setQuantity(Math.max(1, quantity - 1))}
+          aria-label="Decrease quantity"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-page-fg transition-colors hover:bg-page-fg/10"
+        >
+          <Minus className="h-4 w-4" />
+        </button>
+        <span className="min-w-7 text-center font-mono text-sm">{quantity}</span>
+        <button
+          type="button"
+          onClick={() => setQuantity(quantity + 1)}
+          aria-label="Increase quantity"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-page-fg transition-colors hover:bg-page-fg/10"
+        >
+          <Plus className="h-4 w-4" />
+        </button>
       </div>
 
-      {/* Add to Bag & Buy Now buttons */}
-      <div className="flex gap-3">
-        <button
-          onClick={handleAdd}
-          className="flex-1 flex items-center justify-center gap-2 border-2 border-primary text-primary font-semibold px-6 py-3.5 rounded-lg hover:bg-primary/5 transition-colors text-sm"
-        >
-          <ShoppingBag className="h-5 w-5" />
-          Add to Bag
-        </button>
-        <button
-          onClick={handleBuyNow}
-          className="flex-1 flex items-center justify-center gap-2 bg-primary text-white font-semibold px-6 py-3.5 rounded-lg hover:bg-primary-hover transition-colors text-sm"
-        >
-          <Zap className="h-5 w-5" />
-          Buy Now
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={handleAdd}
+        className="flex min-h-12 flex-1 basis-[200px] items-center justify-center gap-2 rounded-full bg-accent px-6 font-mono text-[11px] uppercase tracking-[0.14em] text-accent-fg transition-colors hover:bg-page-fg hover:text-page"
+      >
+        Add to bag
+        {typeof price === "number" && (
+          <span aria-hidden>— {formatCurrency(price * quantity, currencyCode)}</span>
+        )}
+      </button>
     </div>
   );
 }

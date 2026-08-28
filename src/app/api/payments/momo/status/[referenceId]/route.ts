@@ -56,14 +56,30 @@ export async function GET(
           paymentStatus = "failed";
         }
 
-        await supabase
+        // MTN returns `reason` as a string enum in practice (e.g.
+        // "APPROVAL_REJECTED"), though some docs show an object — handle both.
+        const reason =
+          typeof tx.reason === "string"
+            ? tx.reason
+            : tx.reason?.code || tx.reason?.message || null;
+
+        const update = {
+          payment_status: paymentStatus,
+          status: orderStatus,
+          momo_transaction_id: tx.financialTransactionId || null,
+        };
+
+        // momo_reason is added by a migration; if it isn't applied yet, retry
+        // without it rather than fail the whole payment confirmation.
+        const { error: updateError } = await supabase
           .from("orders")
-          .update({
-            payment_status: paymentStatus,
-            status: orderStatus,
-            momo_transaction_id: tx.financialTransactionId || null,
-          })
+          .update({ ...update, momo_reason: reason })
           .eq("id", order.id);
+
+        if (updateError) {
+          console.warn("[MoMo] momo_reason update failed, retrying without it:", updateError.message);
+          await supabase.from("orders").update(update).eq("id", order.id);
+        }
 
         // Send payment result notification
         const settings = await getSiteSettings();

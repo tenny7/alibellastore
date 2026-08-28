@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  ShoppingBag,
   ShoppingCart,
   User,
   Menu,
@@ -28,7 +27,10 @@ interface HeaderProps {
   categories?: Category[];
 }
 
-export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderProps) {
+export function Header({
+  storeName = "MoMo Commerce",
+  categories = [],
+}: HeaderProps) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -112,31 +114,23 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
 
   return (
     <>
-      {/* Announcement bar — design: ink bg, cream text, accent dot */}
-      <div className="flex items-center justify-center gap-2.5 bg-ink px-5 py-2.5 text-center text-[13px] font-medium leading-none text-cream">
-        <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-accent sm:block" />
-        <span>Free delivery in Kigali on orders over 30,000 RWF</span>
-        <span className="hidden opacity-40 sm:inline">·</span>
-        <span className="hidden font-bold sm:inline">Pay with MoMo</span>
-      </div>
-
-      <header className="sticky top-0 z-40 bg-ink/90 text-cream backdrop-blur-[18px]">
-        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-4 md:px-10">
+      <header className="sticky top-0 z-40 border-b border-page-fg/[0.12] bg-page/[0.82] text-page-fg backdrop-blur-[14px]">
+        <div className="flex h-16 items-center justify-between gap-6 px-5 md:px-14">
         {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-accent">
-            <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
-          </span>
-          <span className="font-display text-[19px] font-bold tracking-[-0.02em] text-cream">
+        <Link href="/" className="flex shrink-0 items-baseline gap-2">
+          <span className="font-display text-[22px] font-extrabold uppercase tracking-[-0.03em] text-page-fg">
             {storeName}
+          </span>
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-page-fg/50 sm:inline">
+            Kigali
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 rounded-full border border-cream/[0.07] bg-cream/[0.05] p-[5px] md:flex">
+        <nav className="hidden items-center gap-6 font-mono text-[11px] uppercase tracking-[0.12em] md:flex">
           <Link
             href="/products"
-            className="rounded-full bg-cream px-[15px] py-2 text-sm font-medium leading-none text-ink transition-colors"
+            className="transition-colors hover:text-accent"
           >
             Shop
           </Link>
@@ -144,14 +138,14 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="rounded-full px-[15px] py-2 text-sm font-medium leading-none text-cream/[0.66] transition-colors hover:bg-cream/[0.08] hover:text-cream"
+              className="text-page-fg/70 transition-colors hover:text-accent"
             >
               {cat.name}
             </Link>
           ))}
           <Link
             href="/about"
-            className="rounded-full px-[15px] py-2 text-sm font-medium leading-none text-cream/[0.66] transition-colors hover:bg-cream/[0.08] hover:text-cream"
+            className="text-page-fg/70 transition-colors hover:text-accent"
           >
             About
           </Link>
@@ -163,7 +157,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           {userRole === "admin" && (
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 rounded-[10px] border border-cream/[0.12] px-3 py-2 text-xs font-bold text-cream transition-colors hover:bg-cream/[0.09]"
+              className="flex items-center gap-1.5 rounded-[10px] border border-page-fg/25 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-page-fg transition-colors hover:bg-page-fg/[0.06]"
             >
               <Shield className="h-3.5 w-3.5" />
               Admin
@@ -176,7 +170,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             aria-label="Search products"
-            className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+            className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
           >
             <Search className="h-[17px] w-[17px]" />
           </button>
@@ -187,10 +181,12 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           {/* Cart */}
           <Link
             href="/cart"
-            className="flex h-[38px] items-center gap-2 rounded-xl bg-accent px-4 text-[13px] font-bold leading-none text-ink transition-opacity hover:opacity-90"
+            className="flex items-center gap-2.5 rounded-full border border-page-fg/[0.28] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-page-fg transition-colors hover:border-accent hover:text-accent"
           >
-            <ShoppingCart className="h-4 w-4" strokeWidth={2.2} />
-            <span>Cart{itemCount > 0 ? ` · ${itemCount}` : ""}</span>
+            <span>Bag</span>
+            <span className="inline-flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-accent px-1 text-[10px] text-accent-fg">
+              {itemCount}
+            </span>
           </Link>
 
           {/* User */}
@@ -199,20 +195,20 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 aria-label="Account menu"
-                className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+                className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
               >
                 <User className="h-[17px] w-[17px]" />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-cream/[0.12] bg-ink-raised py-1.5 shadow-[0_18px_44px_rgba(11,10,18,.5)]">
-                  <div className="border-b border-cream/[0.1] px-4 py-2.5 text-xs text-cream/50">
+                <div className="absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-page-fg/[0.12] bg-well py-1.5 shadow-[0_18px_44px_rgba(11,10,18,.5)]">
+                  <div className="border-b border-page-fg/[0.1] px-4 py-2.5 text-xs text-page-fg/50">
                     {user.email && !user.email.endsWith("@phone.local")
                       ? user.email
                       : user.user_metadata?.phone || "My Account"}
                   </div>
                   <Link
                     href="/profile"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                     onClick={() => setDropdownOpen(false)}
                   >
                     <UserCircle className="h-4 w-4" />
@@ -220,7 +216,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
                   </Link>
                   <Link
                     href="/orders"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                     onClick={() => setDropdownOpen(false)}
                   >
                     <Package className="h-4 w-4" />
@@ -229,17 +225,17 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
                   {userRole === "admin" && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                       onClick={() => setDropdownOpen(false)}
                     >
                       <Shield className="h-4 w-4" />
                       Admin Panel
                     </Link>
                   )}
-                  <div className="my-1 border-t border-cream/[0.1]" />
+                  <div className="my-1 border-t border-page-fg/[0.1]" />
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out
@@ -251,7 +247,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             <Link
               href="/login"
               aria-label="Sign in"
-              className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+              className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
             >
               <User className="h-[17px] w-[17px]" />
             </Link>
@@ -264,15 +260,15 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           <button
             onClick={() => { setSearchOpen(!searchOpen); setMenuOpen(false); }}
             aria-label="Search products"
-            className="p-2 text-cream/80"
+            className="p-2 text-page-fg/70"
           >
             <Search className="h-5 w-5" />
           </button>
           {user && <NotificationBell />}
           <Link href="/cart" aria-label="Cart" className="relative p-2">
-            <ShoppingCart className="h-5 w-5 text-cream/80" />
+            <ShoppingCart className="h-5 w-5 text-page-fg/70" />
             {itemCount > 0 && (
-              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-ink">
+              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-page-fg text-[10px] font-bold text-page">
                 {itemCount}
               </span>
             )}
@@ -283,9 +279,9 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             className="p-2"
           >
             {menuOpen ? (
-              <X className="h-5 w-5 text-cream/80" />
+              <X className="h-5 w-5 text-page-fg/70" />
             ) : (
-              <Menu className="h-5 w-5 text-cream/80" />
+              <Menu className="h-5 w-5 text-page-fg/70" />
             )}
           </button>
         </div>
@@ -294,7 +290,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
       {/* Search bar (slides down) */}
       <div
         className={cn(
-          "overflow-hidden border-t border-cream/[0.1] bg-ink transition-all duration-200",
+          "overflow-hidden border-t border-page-fg/[0.1] bg-page transition-all duration-200",
           searchOpen ? "max-h-16" : "max-h-0"
         )}
       >
@@ -305,11 +301,11 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="flex-1 rounded-xl border border-cream/20 bg-cream/[0.06] px-4 py-2.5 text-sm text-cream placeholder:text-cream/40 focus:border-accent focus:outline-none"
+            className="flex-1 rounded-xl border border-page-fg/20 bg-page-fg/[0.06] px-4 py-2.5 text-sm text-page-fg placeholder:text-page-fg/40 focus:border-accent focus:outline-none"
           />
           <button
             type="submit"
-            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-bold text-ink transition-opacity hover:opacity-90"
+            className="rounded-xl bg-page-fg px-5 py-2.5 text-sm font-bold text-page transition-opacity hover:opacity-90"
           >
             Search
           </button>
@@ -319,7 +315,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
       {/* Mobile menu */}
       <div
         className={cn(
-          "overflow-hidden border-t border-cream/[0.1] bg-ink transition-all duration-200 md:hidden",
+          "overflow-hidden border-t border-page-fg/[0.1] bg-page transition-all duration-200 md:hidden",
           menuOpen ? "max-h-[500px]" : "max-h-0"
         )}
       >
@@ -328,7 +324,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           {userRole === "admin" && (
             <Link
               href="/admin"
-              className="mb-2 flex items-center gap-2 rounded-xl bg-accent px-3 py-2.5 text-sm font-bold text-ink"
+              className="mb-2 flex items-center gap-2 rounded-xl bg-page-fg px-3 py-2.5 text-sm font-bold text-page"
               onClick={() => setMenuOpen(false)}
             >
               <Shield className="h-4 w-4" />
@@ -337,7 +333,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           )}
           <Link
             href="/products"
-            className="block rounded-xl px-3 py-2.5 text-sm font-medium text-cream hover:bg-cream/[0.07]"
+            className="block rounded-xl px-3 py-2.5 text-sm font-medium text-page-fg hover:bg-page-fg/[0.07]"
             onClick={() => setMenuOpen(false)}
           >
             All Products
@@ -346,7 +342,7 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+              className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
               onClick={() => setMenuOpen(false)}
             >
               {cat.name}
@@ -354,36 +350,36 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
           ))}
           <Link
             href="/about"
-            className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+            className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
             onClick={() => setMenuOpen(false)}
           >
             About
           </Link>
 
-          <div className="my-2 border-t border-cream/[0.1]" />
+          <div className="my-2 border-t border-page-fg/[0.1]" />
 
           {user ? (
             <>
-              <Link href="/profile" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+              <Link href="/profile" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                 My Profile
               </Link>
-              <Link href="/orders" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+              <Link href="/orders" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                 My Orders
               </Link>
               {userRole === "admin" && (
-                <Link href="/admin" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+                <Link href="/admin" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                   Admin Panel
                 </Link>
               )}
               <button
                 onClick={() => { handleLogout(); setMenuOpen(false); }}
-                className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+                className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
               >
                 Sign Out
               </button>
             </>
           ) : (
-            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-accent hover:bg-cream/[0.07]" onClick={() => setMenuOpen(false)}>
+            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-page-fg hover:bg-page-fg/[0.07]" onClick={() => setMenuOpen(false)}>
               Sign In
             </Link>
           )}

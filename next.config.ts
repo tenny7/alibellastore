@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  // Pin the Turbopack workspace root to this project. Without it Turbopack
+  // misinfers the root as the parent folder and then cannot resolve packages
+  // such as `tailwindcss`, which made `npm run dev` hang in a resolve-retry
+  // loop. Same fix as Lumiere. dev/build/start all run from the project root.
+  turbopack: {
+    root: path.resolve(),
+  },
   images: {
+    // AVIF first, WebP fallback. Next only serves these to browsers that
+    // advertise support, so there is no compatibility cost.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

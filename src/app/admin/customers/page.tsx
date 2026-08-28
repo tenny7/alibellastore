@@ -47,28 +47,28 @@ export default async function AdminCustomersPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-cream">Customers</h1>
-        <p className="mt-1.5 text-sm text-cream/50">
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-page-fg">Customers</h1>
+        <p className="mt-1.5 text-sm text-page-fg/50">
           Everyone who has signed up, ranked by lifetime spend.
         </p>
       </div>
 
       <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <StatsCard title="Customers" value={String(people.length)} icon={Users} />
-        <StatsCard title="Have ordered" value={String(withOrders.length)} icon={Wallet} color="green" />
-        <StatsCard title="Repeat buyers" value={String(repeat)} icon={Repeat} color="purple" />
+        <StatsCard title="Have ordered" value={String(withOrders.length)} icon={Wallet} color="neutral" />
+        <StatsCard title="Repeat buyers" value={String(repeat)} icon={Repeat} color="neutral" />
         <StatsCard
           title="Avg. basket"
           value={formatCurrency(avgBasket, settings.currency_code)}
           icon={Wallet}
-          color="amber"
+          color="neutral"
           trend="paid orders only"
         />
       </div>
 
-      <div className="rounded-[20px] border border-cream/[0.09] bg-ink">
-        <div className="border-b border-cream/[0.09] px-4 py-4 lg:px-6">
-          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">All customers</h2>
+      <div className="rounded-[20px] border border-page-fg/[0.09] bg-page">
+        <div className="border-b border-page-fg/[0.09] px-4 py-4 lg:px-6">
+          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-page-fg">All customers</h2>
         </div>
 
         {enriched.length > 0 ? (
@@ -87,16 +87,16 @@ export default async function AdminCustomersPage() {
                 {enriched.map(({ person, orders: n, spent, last }) => (
                   <TableRow key={person.id}>
                     <TableCell>
-                      <span className="font-medium text-cream">{person.name || "—"}</span>
+                      <span className="font-medium text-page-fg">{person.name || "—"}</span>
                     </TableCell>
-                    <TableCell className="font-mono text-[13px] text-cream/60">
+                    <TableCell className="font-mono text-[13px] text-page-fg/60">
                       {person.phone || person.email || "—"}
                     </TableCell>
                     <TableCell className="font-mono">{n}</TableCell>
-                    <TableCell className="font-medium text-cream">
+                    <TableCell className="font-medium text-page-fg">
                       {formatCurrency(spent, settings.currency_code)}
                     </TableCell>
-                    <TableCell className="font-mono text-xs text-cream/45">
+                    <TableCell className="font-mono text-xs text-page-fg/45">
                       {last ? new Date(last).toLocaleDateString() : "never"}
                     </TableCell>
                   </TableRow>
@@ -105,8 +105,8 @@ export default async function AdminCustomersPage() {
             </Table>
           </div>
         ) : (
-          <div className="px-6 py-12 text-center text-cream/45">
-            No customers yet. <Link href="/admin/products" className="text-lilac hover:text-cream">Add products</Link> to get started.
+          <div className="px-6 py-12 text-center text-page-fg/45">
+            No customers yet. <Link href="/admin/products" className="text-page-fg hover:text-page-fg">Add products</Link> to get started.
           </div>
         )}
       </div>

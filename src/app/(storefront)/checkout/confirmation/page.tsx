@@ -7,12 +7,13 @@ import { getSiteSettings } from "@/lib/settings";
 import type { PaymentStatus } from "@/types";
 
 interface Props {
-  searchParams: Promise<{ orderId?: string }>;
+  searchParams: Promise<{ orderId?: string; method?: string }>;
 }
 
 export default async function ConfirmationPage({ searchParams }: Props) {
   const params = await searchParams;
   const orderId = params.orderId;
+  const isCod = params.method === "cod";
 
   if (!orderId) {
     return (
@@ -53,26 +54,26 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   > = {
     successful: {
       icon: CheckCircle,
-      color: "text-[#16A34A]",
-      bg: "bg-green-50 border-green-200",
+      color: "text-surface-fg",
+      bg: "bg-surface-fg/[0.06] border-surface-border",
       label: "Payment Confirmed",
     },
     pending: {
       icon: Clock,
-      color: "text-[#D97706]",
-      bg: "bg-yellow-50 border-yellow-200",
+      color: "text-surface-muted",
+      bg: "bg-surface-fg/[0.06] border-surface-border",
       label: "Payment Pending",
     },
     failed: {
       icon: XCircle,
-      color: "text-[#DC2626]",
-      bg: "bg-red-50 border-red-200",
+      color: "text-danger",
+      bg: "bg-danger/10 border-danger/30",
       label: "Payment Failed",
     },
     timed_out: {
       icon: XCircle,
-      color: "text-[#DC2626]",
-      bg: "bg-red-50 border-red-200",
+      color: "text-danger",
+      bg: "bg-danger/10 border-danger/30",
       label: "Payment Timed Out",
     },
   };
@@ -85,12 +86,17 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       {/* Status banner */}
       <div className={`rounded-lg border p-8 text-center mb-6 ${config.bg}`}>
         <StatusIcon className={`h-16 w-16 mx-auto ${config.color}`} />
-        <h1 className={`text-2xl font-bold mt-4 ${config.color}`}>
-          {config.label}
+        <h1 className={`font-display tracking-[-0.03em] text-2xl font-bold mt-4 ${config.color}`}>
+          {isCod ? "Order Confirmed" : config.label}
         </h1>
         <p className="text-surface-muted mt-2">
           Order <span className="font-mono font-bold">{order.order_number}</span>
         </p>
+        {isCod && (
+          <p className="mx-auto mt-3 max-w-sm text-sm text-surface-muted">
+            You&apos;ll pay cash when your order is delivered. Nothing has been charged.
+          </p>
+        )}
       </div>
 
       {/* Order details */}
@@ -128,7 +134,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
             </div>
           )}
           {Number(order.discount_amount) > 0 && (
-            <div className="flex justify-between text-sm text-[#16A34A]">
+            <div className="flex justify-between text-sm text-surface-fg">
               <span>Discount</span>
               <span>-{formatCurrency(Number(order.discount_amount), settings.currency_code)}</span>
             </div>

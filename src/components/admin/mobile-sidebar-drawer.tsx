@@ -14,6 +14,8 @@ import {
   Boxes,
   Users,
   Banknote,
+  MessageSquare,
+  FileText,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -26,9 +28,11 @@ const navItems = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/inventory", label: "Inventory", icon: Boxes },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
+  { href: "/admin/support", label: "Support", icon: MessageSquare },
   { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/payouts", label: "Payouts", icon: Banknote },
   { href: "/admin/discounts", label: "Discounts", icon: Tag },
+  { href: "/admin/content", label: "Content", icon: FileText },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -70,7 +74,7 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
 
       {/* Drawer */}
       <aside
-        className="dc-dark absolute bottom-0 left-0 top-0 flex w-[280px] flex-col bg-ink text-cream"
+        className="dc-dark absolute bottom-0 left-0 top-0 flex w-[280px] flex-col bg-page text-page-fg"
         style={{ animation: "slideInLeft 0.25s ease-out" }}
       >
         {/* Header */}
@@ -81,7 +85,7 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
           </div>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-1.5 rounded-lg text-surface-muted hover:text-white hover:bg-surface/10 transition-colors"
+            className="p-1.5 rounded-lg text-surface-muted hover:text-page-fg hover:bg-surface/10 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -100,12 +104,12 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
                 className={cn(
                   "flex items-center gap-3 px-5 py-3 text-sm transition-colors relative",
                   isActive
-                    ? "text-white bg-surface/10"
-                    : "text-surface-muted hover:text-white hover:bg-surface/5"
+                    ? "text-page-fg bg-page-fg/10"
+                    : "text-surface-muted hover:text-page-fg hover:bg-surface/5"
                 )}
               >
                 {isActive && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-primary rounded-r-full" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-page-fg rounded-r-full" />
                 )}
                 <item.icon className="h-5 w-5" />
                 {item.label}

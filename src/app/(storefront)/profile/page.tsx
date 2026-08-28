@@ -65,7 +65,7 @@ export default function ProfilePage() {
         <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">My Profile</h1>
         <Link
           href="/orders"
-          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+          className="inline-flex items-center gap-1.5 text-sm text-surface-fg hover:underline"
         >
           <Package className="h-4 w-4" />
           My Orders
@@ -74,8 +74,8 @@ export default function ProfilePage() {
 
       <div className="rounded-[20px] border border-surface-border bg-surface p-6 space-y-5">
         <div className="flex items-center gap-3 pb-4 border-b border-surface-border">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-            <User className="h-6 w-6 text-primary" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-fg/10">
+            <User className="h-6 w-6 text-surface-fg" />
           </div>
           <div>
             <p className="font-medium text-surface-fg">{name || "Customer"}</p>

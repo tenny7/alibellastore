@@ -2,8 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import type { OrderStatus, PaymentStatus } from "@/types";
 
 const orderStatusMap: Record<OrderStatus, { label: string; variant: "default" | "success" | "warning" | "danger" | "info" }> = {
-  pending: { label: "Pending", variant: "warning" },
-  paid: { label: "Paid", variant: "success" },
+  pending: { label: "Pending", variant: "default" },
+  paid: { label: "Paid", variant: "warning" },
   processing: { label: "Processing", variant: "info" },
   shipped: { label: "Shipped", variant: "info" },
   delivered: { label: "Delivered", variant: "success" },
@@ -11,7 +11,7 @@ const orderStatusMap: Record<OrderStatus, { label: string; variant: "default" | 
 };
 
 const paymentStatusMap: Record<PaymentStatus, { label: string; variant: "default" | "success" | "warning" | "danger" | "info" }> = {
-  pending: { label: "Pending", variant: "warning" },
+  pending: { label: "Pending", variant: "default" },
   successful: { label: "Paid", variant: "success" },
   failed: { label: "Failed", variant: "danger" },
   timed_out: { label: "Timed Out", variant: "danger" },

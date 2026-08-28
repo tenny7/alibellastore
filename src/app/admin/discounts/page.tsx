@@ -241,13 +241,13 @@ export default function AdminDiscountsPage() {
                         <div className="flex items-center justify-end gap-1">
                           <button
                             onClick={() => openEdit(d)}
-                            className="p-1.5 rounded-md text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
+                            className="p-1.5 rounded-md text-surface-muted hover:bg-surface-hover hover:text-surface-fg transition-colors"
                           >
                             <Pencil className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDelete(d.id)}
-                            className="p-1.5 rounded-md text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                            className="p-1.5 rounded-md text-surface-muted hover:bg-danger/10 hover:text-danger transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -298,13 +298,13 @@ export default function AdminDiscountsPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEdit(d)}
-                        className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-primary transition-colors"
+                        className="p-1.5 rounded-lg text-surface-muted hover:bg-surface-hover hover:text-surface-fg transition-colors"
                       >
                         <Pencil className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(d.id)}
-                        className="p-1.5 rounded-lg text-surface-muted hover:bg-red-50 hover:text-[#DC2626] transition-colors"
+                        className="p-1.5 rounded-lg text-surface-muted hover:bg-danger/10 hover:text-danger transition-colors"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -416,7 +416,7 @@ export default function AdminDiscountsPage() {
               type="checkbox"
               checked={form.is_active}
               onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
-              className="rounded border-gray-300"
+              className="rounded border-surface-border"
             />
             <label htmlFor="is_active" className="text-sm text-surface-fg">Active</label>
           </div>

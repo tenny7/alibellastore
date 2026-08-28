@@ -45,7 +45,7 @@ export function ProductCard({ product, currencyCode = "RWF" }: ProductCardProps)
   return (
     // @ts-expect-error — conditional wrapper element
     <Wrapper {...wrapperProps}>
-      <div className="relative aspect-square overflow-hidden rounded-[14px] bg-field">
+      <div className="relative aspect-square overflow-hidden rounded-[14px] bg-well">
         {product.images?.[0] ? (
           <Image
             src={product.images[0]}
@@ -68,7 +68,7 @@ export function ProductCard({ product, currencyCode = "RWF" }: ProductCardProps)
         {/* Out of stock badge */}
         {isOutOfStock && (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="rounded-full bg-ink/80 px-3 py-1.5 font-display text-[10.5px] font-bold uppercase tracking-[0.08em] text-cream">
+            <span className="rounded-full bg-page/80 px-3 py-1.5 font-display text-[10.5px] font-bold uppercase tracking-[0.08em] text-page-fg">
               Out of Stock
             </span>
           </div>
@@ -95,7 +95,7 @@ export function ProductCard({ product, currencyCode = "RWF" }: ProductCardProps)
         {!isOutOfStock && (
           <button
             onClick={handleAddToCart}
-            className="flex h-[38px] shrink-0 items-center gap-1.5 rounded-[11px] bg-ink px-4 text-[13px] font-bold leading-none text-cream transition-opacity hover:opacity-85"
+            className="flex h-[38px] shrink-0 items-center gap-1.5 rounded-[11px] bg-page px-4 text-[13px] font-bold leading-none text-page-fg transition-opacity hover:opacity-85"
             aria-label={`Add ${product.name} to cart`}
           >
             <Plus className="h-[15px] w-[15px]" strokeWidth={2.6} />

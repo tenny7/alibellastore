@@ -35,8 +35,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                 className={cn(
                   "relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors",
                   i === activeIndex
-                    ? "border-primary"
-                    : "border-surface-border hover:border-gray-300"
+                    ? "border-surface-fg"
+                    : "border-surface-border hover:border-surface-border"
                 )}
               >
                 <Image
@@ -83,8 +83,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
                 className={cn(
                   "relative w-16 h-16 shrink-0 rounded-lg overflow-hidden border-2 transition-colors",
                   i === activeIndex
-                    ? "border-primary"
-                    : "border-surface-border hover:border-gray-300"
+                    ? "border-surface-fg"
+                    : "border-surface-border hover:border-surface-border"
                 )}
               >
                 <Image

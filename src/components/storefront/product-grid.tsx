@@ -19,7 +19,7 @@ export function ProductGrid({ products, className }: ProductGridProps) {
         <p className="text-sm text-surface-muted mb-4">Try adjusting your filters or search terms.</p>
         <Link
           href="/products"
-          className="text-sm text-primary hover:underline font-medium"
+          className="text-sm text-surface-fg hover:underline font-medium"
         >
           Clear all filters
         </Link>

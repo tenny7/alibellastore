@@ -56,3 +56,13 @@ export function slugify(text: string): string {
     .replace(/-+/g, "-")
     .trim();
 }
+
+/** The store description is owner-editable and is often left as a stub like
+ *  "Ecommerce". Anything that short isn't a sentence, so treat it as unset
+ *  rather than rendering it as body copy. */
+export function usableDescription(value?: string | null): string | null {
+  const v = value?.trim();
+  if (!v) return null;
+  if (v.length < 25 || !/\s/.test(v)) return null;
+  return v;
+}

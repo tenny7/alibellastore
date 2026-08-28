@@ -20,12 +20,12 @@ interface OrderRow {
 }
 
 const STATUS_LABELS: Record<OrderStatus, { label: string; color: string }> = {
-  pending: { label: "Pending", color: "bg-yellow-100 text-yellow-800" },
-  paid: { label: "Paid", color: "bg-blue-100 text-blue-800" },
-  processing: { label: "Processing", color: "bg-indigo-100 text-indigo-800" },
-  shipped: { label: "Shipped", color: "bg-purple-100 text-purple-800" },
-  delivered: { label: "Delivered", color: "bg-green-100 text-green-800" },
-  cancelled: { label: "Cancelled", color: "bg-red-100 text-red-800" },
+  pending: { label: "Pending", color: "bg-surface-fg/10 text-surface-fg" },
+  paid: { label: "Paid", color: "bg-surface-fg/10 text-surface-fg" },
+  processing: { label: "Processing", color: "bg-surface-fg/10 text-surface-fg" },
+  shipped: { label: "Shipped", color: "bg-surface-fg/10 text-surface-fg" },
+  delivered: { label: "Delivered", color: "bg-surface-fg/10 text-surface-fg" },
+  cancelled: { label: "Cancelled", color: "bg-danger/15 text-danger" },
 };
 
 const FILTER_OPTIONS: { value: string; label: string }[] = [
@@ -77,7 +77,7 @@ export default function OrdersPage() {
         <h1 className="font-display tracking-[-0.03em] text-2xl font-bold text-surface-fg">My Orders</h1>
         <Link
           href="/profile"
-          className="text-sm text-primary hover:underline"
+          className="text-sm text-surface-fg hover:underline"
         >
           My Profile
         </Link>
@@ -94,8 +94,8 @@ export default function OrdersPage() {
             }}
             className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
               filter === opt.value
-                ? "bg-primary text-white"
-                : "bg-surface-hover text-surface-muted hover:bg-gray-200"
+                ? "bg-page-fg text-page"
+                : "bg-surface-hover text-surface-muted hover:bg-surface-fg/15"
             }`}
           >
             {opt.label}
@@ -116,7 +116,7 @@ export default function OrdersPage() {
           </p>
           <Link
             href="/"
-            className="inline-block mt-4 px-6 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-hover"
+            className="inline-block mt-4 px-6 py-2 bg-page-fg text-page rounded-lg text-sm font-medium hover:opacity-90"
           >
             Browse Products
           </Link>
@@ -129,7 +129,7 @@ export default function OrdersPage() {
               <Link
                 key={order.id}
                 href={`/orders/${order.id}`}
-                className="flex items-center justify-between rounded-[20px] border border-surface-border bg-surface p-4 hover:border-primary/30 transition-colors"
+                className="flex items-center justify-between rounded-[20px] border border-surface-border bg-surface p-4 hover:border-surface-fg/30 transition-colors"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">

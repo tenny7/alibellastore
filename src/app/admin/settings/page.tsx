@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/admin/skeleton-loader";
-import { darkenHex } from "@/lib/utils";
+
 import toast from "react-hot-toast";
 
 export default function AdminSettingsPage() {
@@ -28,7 +28,6 @@ export default function AdminSettingsPage() {
   const [freeDeliveryThreshold, setFreeDeliveryThreshold] = useState("");
   const [taxPercentage, setTaxPercentage] = useState("");
   const [currencyCode, setCurrencyCode] = useState("RWF");
-  const [primaryColor, setPrimaryColor] = useState("#1A73E8");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -47,7 +46,6 @@ export default function AdminSettingsPage() {
         setFreeDeliveryThreshold(data.free_delivery_threshold ? String(data.free_delivery_threshold) : "");
         setTaxPercentage(data.tax_percentage ? String(data.tax_percentage) : "");
         setCurrencyCode(data.currency_code || "RWF");
-        setPrimaryColor(data.primary_color || "#1A73E8");
         setLoading(false);
       });
   }, []);
@@ -80,7 +78,6 @@ export default function AdminSettingsPage() {
         free_delivery_threshold: freeDeliveryThreshold ? Number(freeDeliveryThreshold) : null,
         tax_percentage: taxPercentage ? Number(taxPercentage) : 0,
         currency_code: currencyCode,
-        primary_color: primaryColor,
       }),
     });
 
@@ -88,10 +85,6 @@ export default function AdminSettingsPage() {
       const err = await res.json();
       toast.error(err.error || "Failed to save");
     } else {
-      // Apply brand color immediately via CSS variables
-      const root = document.documentElement;
-      root.style.setProperty("--brand-primary", primaryColor);
-      root.style.setProperty("--brand-primary-hover", darkenHex(primaryColor, 15));
       // Refresh server components so layout picks up new settings
       router.refresh();
       toast.success("Settings saved");
@@ -124,9 +117,9 @@ export default function AdminSettingsPage() {
 
       <div className="max-w-3xl space-y-6">
         {/* Branding */}
-        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-primary bg-surface p-5 lg:p-6">
+        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-cream/25 bg-surface p-5 lg:p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Store className="h-5 w-5 text-primary" />
+            <Store className="h-5 w-5 text-surface-fg" />
             <h2 className="font-display tracking-[-0.02em] text-base font-bold text-surface-fg">Branding</h2>
           </div>
           <div className="space-y-4">
@@ -167,7 +160,7 @@ export default function AdminSettingsPage() {
                   id="currencyCode"
                   value={currencyCode}
                   onChange={(e) => setCurrencyCode(e.target.value)}
-                  className="w-full rounded-[20px] border border-surface-border bg-surface px-3 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
+                  className="w-full rounded-[20px] border border-surface-border bg-surface px-3 py-2.5 text-sm focus:border-surface-fg focus:ring-1 focus:ring-surface-fg outline-none transition-colors"
                 >
                   <option value="RWF">RWF — Rwandan Franc</option>
                   <option value="USD">USD — US Dollar</option>
@@ -180,46 +173,14 @@ export default function AdminSettingsPage() {
                   <option value="ZAR">ZAR — South African Rand</option>
                 </select>
               </div>
-              <div>
-                <label htmlFor="primaryColor" className="block text-sm font-medium text-surface-fg mb-1.5">
-                  Brand Color
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    id="primaryColor"
-                    value={primaryColor}
-                    onChange={(e) => setPrimaryColor(e.target.value)}
-                    className="h-[42px] w-[42px] rounded-lg border border-surface-border cursor-pointer p-0.5"
-                  />
-                  <input
-                    type="text"
-                    value={primaryColor}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      if (/^#[0-9A-Fa-f]{0,6}$/.test(v)) setPrimaryColor(v);
-                    }}
-                    maxLength={7}
-                    className="flex-1 rounded-lg border border-surface-border px-3 py-2.5 text-sm font-mono focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder="#1A73E8"
-                  />
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <div
-                    className="h-6 w-6 rounded-full border border-gray-200"
-                    style={{ backgroundColor: primaryColor }}
-                  />
-                  <span className="text-xs text-surface-muted">Preview — buttons and links will use this color</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
         {/* Contact */}
-        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-[#16A34A] bg-surface p-5 lg:p-6">
+        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-cream/25 bg-surface p-5 lg:p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Phone className="h-5 w-5 text-[#16A34A]" />
+            <Phone className="h-5 w-5 text-surface-fg" />
             <h2 className="font-display tracking-[-0.02em] text-base font-bold text-surface-fg">Contact</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -241,9 +202,9 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Social Media */}
-        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-purple-500 bg-surface p-5 lg:p-6">
+        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-cream/25 bg-surface p-5 lg:p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Share2 className="h-5 w-5 text-purple-500" />
+            <Share2 className="h-5 w-5 text-surface-muted" />
             <h2 className="font-display tracking-[-0.02em] text-base font-bold text-surface-fg">Social Media</h2>
             <span className="text-xs text-surface-muted ml-1">(optional)</span>
           </div>
@@ -273,9 +234,9 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Delivery & Tax */}
-        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-[#D97706] bg-surface p-5 lg:p-6">
+        <div className="rounded-lg border border-surface-border border-t-[3px] border-t-cream/25 bg-surface p-5 lg:p-6">
           <div className="flex items-center gap-2 mb-4">
-            <Truck className="h-5 w-5 text-[#D97706]" />
+            <Truck className="h-5 w-5 text-surface-muted" />
             <h2 className="font-display tracking-[-0.02em] text-base font-bold text-surface-fg">Delivery & Tax</h2>
           </div>
           <div className="space-y-4">
@@ -306,7 +267,7 @@ export default function AdminSettingsPage() {
               placeholder="0"
             />
             {(deliveryFee || freeDeliveryThreshold || taxPercentage) && (
-              <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-sm text-amber-800">
+              <div className="rounded-md bg-surface-fg/[0.06] border border-surface-border p-3 text-sm text-surface-fg">
                 <p className="font-medium mb-1">Preview</p>
                 <ul className="space-y-0.5 text-xs">
                   {deliveryFee && Number(deliveryFee) > 0 && (

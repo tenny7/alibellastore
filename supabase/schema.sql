@@ -69,7 +69,10 @@ CREATE TABLE orders (
   status order_status NOT NULL DEFAULT 'pending',
   momo_transaction_id TEXT,
   momo_reference_id TEXT,
+  momo_reason TEXT,
   payment_status payment_status NOT NULL DEFAULT 'pending',
+  payment_method TEXT NOT NULL DEFAULT 'momo'
+    CHECK (payment_method IN ('momo', 'cod')),
   shipping_address TEXT NOT NULL,
   customer_phone TEXT NOT NULL,
   customer_name TEXT NOT NULL,
@@ -111,9 +114,21 @@ CREATE TABLE discounts (
 
 CREATE INDEX idx_products_category ON products(category_id);
 CREATE INDEX idx_products_status ON products(status);
+CREATE TABLE support_messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+  sender_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  sender_role TEXT NOT NULL CHECK (sender_role IN ('admin', 'customer')),
+  body TEXT NOT NULL CHECK (char_length(body) BETWEEN 1 AND 5000),
+  read_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE INDEX idx_orders_customer ON orders(customer_id);
+CREATE INDEX idx_support_messages_order ON support_messages(order_id, created_at);
 CREATE INDEX idx_orders_status ON orders(status);
 CREATE INDEX idx_orders_payment_status ON orders(payment_status);
+CREATE INDEX idx_orders_payment_method ON orders(payment_method);
 CREATE INDEX idx_cart_items_user ON cart_items(user_id);
 
 -- ==========================================
