@@ -117,6 +117,15 @@
 
 html {
   scroll-behavior: smooth;
+
+  /* Horizontal-overflow guard, set on the ROOT.
+     Setting overflow-x on body alone does nothing to body: per the CSS
+     overflow-propagation rule, when html is `visible` the body's value is
+     propagated to the viewport and body's own used value becomes `visible`.
+     So the guard has to live here.
+     `clip` rather than `hidden`: `hidden` makes this a scroll container,
+     which breaks the sticky header. `clip` does not. */
+  overflow-x: clip;
 }
 
 /* ─── Double-tap / double-click zoom ─────────────────────────────────

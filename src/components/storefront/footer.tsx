@@ -130,8 +130,10 @@ export function Footer({
 
       {/* Wordmark, as drawn */}
       {/* v2: outlined wordmark rather than a solid fill */}
+      {/* Clipped: the wordmark is deliberately oversized, so it must not be
+          allowed to widen the document. */}
       <div
-        className="dc-no-select my-4 font-display text-[clamp(40px,13vw,200px)] font-extrabold uppercase leading-[0.86] tracking-[-0.055em] text-transparent"
+        className="dc-no-select my-4 max-w-full overflow-hidden font-display text-[clamp(40px,13vw,200px)] font-extrabold uppercase leading-[0.86] tracking-[-0.055em] text-transparent"
         style={{ WebkitTextStroke: "1.2px color-mix(in oklab, var(--page-fg) 32%, transparent)" }}
       >
         {storeName.split(" ")[0]}

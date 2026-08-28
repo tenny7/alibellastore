@@ -19,7 +19,7 @@ export default async function StorefrontLayout({ children }: { children: React.R
   const cats = (categories ?? []) as Category[];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col overflow-x-clip">
       <CartHydration />
       <Header
         storeName={settings.store_name}
