@@ -32,6 +32,7 @@ export default async function StorefrontLayout({ children }: { children: React.R
         storeName={settings.store_name}
         storeDescription={settings.store_description}
         whatsappNumber={settings.whatsapp_number}
+        contactPhone={settings.contact_phone}
         instagramUrl={settings.instagram_url}
         facebookUrl={settings.facebook_url}
         twitterUrl={settings.twitter_url}

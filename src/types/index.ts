@@ -142,6 +142,8 @@ export interface SiteSettings {
   tax_percentage: number;
   currency_code: string;
   primary_color: string;
+  /** Shown as "Est. YYYY" in the landing hero; omitted when unset. */
+  founded_year: number | null;
   updated_at: string;
 }
 
@@ -155,4 +157,28 @@ export interface SupportMessage {
   body: string;
   read_at: string | null;
   created_at: string;
+}
+
+export interface Testimonial {
+  id: string;
+  author_name: string;
+  author_location: string | null;
+  context: string | null;
+  body: string;
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Admin-curated headline figures. `value` is text: real ones look like
+ *  "4h 12m" or "1.8%", not numbers. */
+export interface StoreMetric {
+  id: string;
+  label: string;
+  value: string;
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
 }

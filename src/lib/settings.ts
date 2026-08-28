@@ -17,6 +17,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   tax_percentage: 0,
   currency_code: "RWF",
   primary_color: "#1A73E8",
+  founded_year: null,
   updated_at: new Date().toISOString(),
 };
 

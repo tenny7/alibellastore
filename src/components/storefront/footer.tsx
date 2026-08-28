@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { Instagram, Facebook, Twitter, ShoppingBag, MessageCircle } from "lucide-react";
+import { Instagram, Facebook, Twitter, MessageCircle } from "lucide-react";
 import { FooterAccountLinks } from "./footer-account-links";
-import { usableDescription } from "@/lib/utils";
+import { NewsletterForm } from "./newsletter-form";
 import type { Category } from "@/types";
 
 interface FooterProps {
   storeName?: string;
   storeDescription?: string;
   whatsappNumber?: string;
+  contactPhone?: string;
   instagramUrl?: string | null;
   facebookUrl?: string | null;
   twitterUrl?: string | null;
@@ -15,139 +16,137 @@ interface FooterProps {
 }
 
 export function Footer({
-  storeName = "MoMo Commerce",
-  storeDescription,
+  storeName = "Alibella Stores",
   whatsappNumber,
+  contactPhone,
   instagramUrl,
   facebookUrl,
   twitterUrl,
   categories = [],
 }: FooterProps) {
   const hasSocials = instagramUrl || facebookUrl || twitterUrl;
+  const phone = contactPhone || whatsappNumber;
 
   return (
-    <footer className="mt-auto rounded-t-[40px] bg-ink text-cream">
-      {/* Main footer grid */}
-      <div className="mx-auto max-w-[1320px] px-6 pb-11 pt-14 md:px-10">
-        <div className="grid grid-cols-1 gap-10 border-b border-cream/[0.12] pb-11 sm:grid-cols-2 md:grid-cols-[minmax(0,1.6fr)_repeat(3,minmax(0,1fr))]">
-          {/* Brand */}
-          <div>
-            <Link href="/" className="mb-4 flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-cream">
-                <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
-              </span>
-              <span className="font-display text-lg font-bold tracking-[-0.02em] text-cream">
-                {storeName}
-              </span>
+    <footer className="mt-auto bg-page px-5 pb-7 pt-10 text-page-fg md:px-14 md:pt-[72px]">
+      <div className="grid items-end gap-6 border-b border-page-fg/[0.18] pb-9 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:gap-14">
+        <div>
+          <div className="mb-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/50">
+            One email a week. Restocks and price drops only.
+          </div>
+          <NewsletterForm />
+          {hasSocials && (
+            <div className="mt-6 flex items-center gap-2.5">
+              {instagramUrl && (
+                <a
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+              )}
+              {facebookUrl && (
+                <a
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+              )}
+              {twitterUrl && (
+                <a
+                  href={twitterUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="X"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                >
+                  <Twitter className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-5 font-mono text-[11px] uppercase tracking-[0.1em] sm:grid-cols-3">
+          <div className="grid content-start gap-2.5">
+            <Link href="/products" className="transition-colors hover:text-accent-text-text">
+              All products
             </Link>
-            <p className="max-w-[280px] font-display text-[26px] font-bold leading-[1.08] tracking-[-0.03em] text-cream">
-              Get the drop before it sells out.
-            </p>
-            <p className="mt-4 max-w-[320px] text-sm leading-relaxed text-cream/60">
-              {usableDescription(storeDescription) ??
-                "A short, considered catalogue — delivered across Rwanda."}
-            </p>
-            {hasSocials && (
-              <div className="mt-6 flex items-center gap-2.5">
-                {instagramUrl && (
-                  <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
-                    <Instagram className="h-5 w-5" />
-                  </a>
-                )}
-                {facebookUrl && (
-                  <a href={facebookUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
-                    <Facebook className="h-5 w-5" />
-                  </a>
-                )}
-                {twitterUrl && (
-                  <a href={twitterUrl} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-xl border border-cream/[0.14] text-cream/70 transition-colors hover:bg-cream/[0.08] hover:text-cream">
-                    <Twitter className="h-5 w-5" />
-                  </a>
-                )}
-              </div>
+            {categories.slice(0, 4).map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/products?category=${cat.slug}`}
+                className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </div>
+          <div className="grid content-start gap-2.5">
+            <Link href="/about" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+              About
+            </Link>
+            <Link
+              href="/return-policy"
+              className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+            >
+              Returns
+            </Link>
+            <Link href="/orders" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+              Track order
+            </Link>
+            {whatsappNumber && (
+              <a
+                href={`https://wa.me/${whatsappNumber}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-page-fg/70 transition-colors hover:text-accent-text-text"
+              >
+                <MessageCircle className="h-3 w-3" />
+                WhatsApp
+              </a>
+            )}
+            {phone && (
+              <a
+                href={`tel:+${phone}`}
+                className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+              >
+                +{phone}
+              </a>
             )}
           </div>
-
-          {/* Shop */}
-          <div>
-            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Shop</h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/products" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
-                  All Products
-                </Link>
-              </li>
-              {categories.slice(0, 5).map((cat) => (
-                <li key={cat.id}>
-                  <Link
-                    href={`/products?category=${cat.slug}`}
-                    className="text-[14.5px] text-cream/70 transition-colors hover:text-cream"
-                  >
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Support</h3>
-            <ul className="space-y-2.5">
-              <li>
-                <Link href="/about" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
-                  About Us
-                </Link>
-              </li>
-              {whatsappNumber && (
-                <li>
-                  <a
-                    href={`https://wa.me/${whatsappNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-[14.5px] text-cream/70 transition-colors hover:text-cream"
-                  >
-                    <MessageCircle className="h-3.5 w-3.5" />
-                    WhatsApp Support
-                  </a>
-                </li>
-              )}
-              <li>
-                <Link href="/orders" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
-                  Track Order
-                </Link>
-              </li>
-              <li>
-                <Link href="/return-policy" className="text-[14.5px] text-cream/70 transition-colors hover:text-cream">
-                  Returns & Refunds
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Account — auth-aware */}
-          <div>
-            <h3 className="mb-4 font-display text-xs font-bold uppercase tracking-[0.14em] text-cream/40">Account</h3>
+          <div className="grid content-start gap-2.5">
             <FooterAccountLinks />
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="mx-auto max-w-[1320px] px-6 md:px-10">
-        <div className="flex flex-col items-center justify-between gap-4 py-6 text-[13px] text-cream/45 sm:flex-row">
-          <p>
-            &copy; {new Date().getFullYear()} {storeName} · Kigali, Rwanda
-          </p>
-          <div className="flex items-center gap-[18px]">
-            <Link href="/privacy" className="transition-colors hover:text-cream">Privacy</Link>
-            <Link href="/terms" className="transition-colors hover:text-cream">Terms</Link>
-            <span className="flex items-center gap-1.5">
-              Pay with
-              <span className="rounded-md bg-cream px-2 py-0.5 text-[11px] font-bold text-ink">MoMo</span>
-            </span>
-          </div>
-        </div>
+      {/* Wordmark, as drawn */}
+      <div className="my-5 font-display text-[clamp(56px,15vw,240px)] font-extrabold uppercase leading-[0.84] tracking-[-0.055em]">
+        {storeName.split(" ")[0]}
+        <span className="text-accent">.</span>
+      </div>
+
+      <div className="flex flex-wrap justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/55">
+        <span>
+          &copy; {new Date().getFullYear()} {storeName} — Kigali, Rwanda
+        </span>
+        <span className="flex gap-4">
+          <Link href="/privacy" className="transition-colors hover:text-accent-text-text">
+            Privacy
+          </Link>
+          <Link href="/terms" className="transition-colors hover:text-accent-text-text">
+            Terms
+          </Link>
+          <span>Made in Rwanda</span>
+        </span>
       </div>
     </footer>
   );

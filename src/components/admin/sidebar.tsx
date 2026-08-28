@@ -15,6 +15,7 @@ import {
   Users,
   Banknote,
   MessageSquare,
+  FileText,
   ChevronsLeft,
   ChevronsRight,
 } from "lucide-react";
@@ -32,6 +33,7 @@ const navItems = [
   { href: "/admin/customers", label: "Customers", icon: Users },
   { href: "/admin/payouts", label: "Payouts", icon: Banknote },
   { href: "/admin/discounts", label: "Discounts", icon: Tag },
+  { href: "/admin/content", label: "Content", icon: FileText },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

@@ -121,35 +121,47 @@ export function Header({
 
   return (
     <>
-      {/* Announcement bar — design: ink bg, cream text, accent dot */}
-      <div className="flex items-center justify-center gap-2.5 bg-ink px-5 py-2.5 text-center text-[13px] font-medium leading-none text-cream">
-        <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-cream sm:block" />
-        <span>
-          {freeDeliveryThreshold
-            ? `Free delivery on orders over ${formatCurrency(Number(freeDeliveryThreshold), currencyCode)}`
-            : "Delivery across Rwanda"}
-        </span>
-        <span className="hidden opacity-40 sm:inline">·</span>
-        <span className="hidden font-bold sm:inline">Pay with MoMo</span>
+      {/* Marquee — policy statements only, per the Landing design */}
+      <div className="overflow-hidden whitespace-nowrap bg-ink py-2.5 text-cream">
+        <div
+          className="dc-marquee inline-flex gap-11 pr-11 font-mono text-[11px] uppercase tracking-[0.14em]"
+          style={{ animation: "marquee 34s linear infinite" }}
+        >
+          {[0, 1].map((dup) =>
+            [
+              freeDeliveryThreshold
+                ? `Free delivery over ${formatCurrency(Number(freeDeliveryThreshold), currencyCode)}`
+                : "Delivery across Rwanda",
+              "Pay with MoMo or cash on delivery",
+              "Dispatched from Kigali",
+              "7-day returns",
+            ].map((t) => (
+              <span key={`${dup}-${t}`} className="inline-flex items-center gap-11">
+                {t}
+                <span className="text-accent-text">✦</span>
+              </span>
+            ))
+          )}
+        </div>
       </div>
 
-      <header className="sticky top-0 z-40 bg-ink/90 text-cream backdrop-blur-[18px]">
-        <div className="mx-auto flex h-16 max-w-[1320px] items-center justify-between px-4 md:px-10">
+      <header className="sticky top-0 z-40 border-b border-page-fg/[0.12] bg-page/[0.82] text-page-fg backdrop-blur-[14px]">
+        <div className="flex h-16 items-center justify-between gap-6 px-5 md:px-14">
         {/* Logo */}
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-cream">
-            <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
-          </span>
-          <span className="font-display text-[19px] font-bold tracking-[-0.02em] text-cream">
+        <Link href="/" className="flex shrink-0 items-baseline gap-2">
+          <span className="font-display text-[22px] font-extrabold uppercase tracking-[-0.03em] text-page-fg">
             {storeName}
+          </span>
+          <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-page-fg/50 sm:inline">
+            Kigali
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 rounded-full border border-cream/[0.07] bg-cream/[0.05] p-[5px] md:flex">
+        <nav className="hidden items-center gap-6 font-mono text-[11px] uppercase tracking-[0.12em] md:flex">
           <Link
             href="/products"
-            className="rounded-full bg-cream px-[15px] py-2 text-sm font-medium leading-none text-ink transition-colors"
+            className="transition-colors hover:text-accent-text-text"
           >
             Shop
           </Link>
@@ -157,14 +169,14 @@ export function Header({
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="rounded-full px-[15px] py-2 text-sm font-medium leading-none text-cream/[0.66] transition-colors hover:bg-cream/[0.08] hover:text-cream"
+              className="text-page-fg/70 transition-colors hover:text-accent-text-text"
             >
               {cat.name}
             </Link>
           ))}
           <Link
             href="/about"
-            className="rounded-full px-[15px] py-2 text-sm font-medium leading-none text-cream/[0.66] transition-colors hover:bg-cream/[0.08] hover:text-cream"
+            className="text-page-fg/70 transition-colors hover:text-accent-text-text"
           >
             About
           </Link>
@@ -176,7 +188,7 @@ export function Header({
           {userRole === "admin" && (
             <Link
               href="/admin"
-              className="flex items-center gap-1.5 rounded-[10px] border border-cream/[0.12] px-3 py-2 text-xs font-bold text-cream transition-colors hover:bg-cream/[0.09]"
+              className="flex items-center gap-1.5 rounded-[10px] border border-page-fg/25 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-page-fg transition-colors hover:bg-page-fg/[0.06]"
             >
               <Shield className="h-3.5 w-3.5" />
               Admin
@@ -189,7 +201,7 @@ export function Header({
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             aria-label="Search products"
-            className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+            className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
           >
             <Search className="h-[17px] w-[17px]" />
           </button>
@@ -200,10 +212,12 @@ export function Header({
           {/* Cart */}
           <Link
             href="/cart"
-            className="flex h-[38px] items-center gap-2 rounded-xl bg-cream px-4 text-[13px] font-bold leading-none text-ink transition-opacity hover:opacity-90"
+            className="group flex items-center gap-2.5 rounded-full border border-page-fg bg-page-fg px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-page transition-colors hover:border-accent-text hover:bg-accent-text hover:text-cream"
           >
-            <ShoppingCart className="h-4 w-4" strokeWidth={2.2} />
-            <span>Cart{itemCount > 0 ? ` · ${itemCount}` : ""}</span>
+            <span>Bag</span>
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-text px-1 text-[11px] font-bold text-cream group-hover:bg-cream group-hover:text-accent-text-text-text">
+              {itemCount}
+            </span>
           </Link>
 
           {/* User */}
@@ -212,7 +226,7 @@ export function Header({
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 aria-label="Account menu"
-                className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+                className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
               >
                 <User className="h-[17px] w-[17px]" />
               </button>
@@ -264,7 +278,7 @@ export function Header({
             <Link
               href="/login"
               aria-label="Sign in"
-              className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-cream/[0.12] text-cream transition-colors hover:bg-cream/[0.09]"
+              className="flex h-[38px] w-[38px] items-center justify-center rounded-xl border border-page-fg/25 text-page-fg transition-colors hover:bg-page-fg/[0.06]"
             >
               <User className="h-[17px] w-[17px]" />
             </Link>
@@ -277,13 +291,13 @@ export function Header({
           <button
             onClick={() => { setSearchOpen(!searchOpen); setMenuOpen(false); }}
             aria-label="Search products"
-            className="p-2 text-cream/80"
+            className="p-2 text-page-fg/70"
           >
             <Search className="h-5 w-5" />
           </button>
           {user && <NotificationBell />}
           <Link href="/cart" aria-label="Cart" className="relative p-2">
-            <ShoppingCart className="h-5 w-5 text-cream/80" />
+            <ShoppingCart className="h-5 w-5 text-page-fg/70" />
             {itemCount > 0 && (
               <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-cream text-[10px] font-bold text-ink">
                 {itemCount}
@@ -296,9 +310,9 @@ export function Header({
             className="p-2"
           >
             {menuOpen ? (
-              <X className="h-5 w-5 text-cream/80" />
+              <X className="h-5 w-5 text-page-fg/70" />
             ) : (
-              <Menu className="h-5 w-5 text-cream/80" />
+              <Menu className="h-5 w-5 text-page-fg/70" />
             )}
           </button>
         </div>

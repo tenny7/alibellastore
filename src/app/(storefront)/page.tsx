@@ -2,18 +2,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getSiteSettings } from "@/lib/settings";
-import { ProductCard } from "@/components/storefront/product-card";
-import { formatCurrency } from "@/lib/utils";
-import { ArrowRight, Truck, RotateCcw, ShieldCheck } from "lucide-react";
-import type { Product, Category } from "@/types";
+import { formatCurrency, usableDescription } from "@/lib/utils";
+import { AddToBagButton } from "@/components/storefront/add-to-bag-button";
+import type { Product, Category, Testimonial, StoreMetric } from "@/types";
 
-// Reads live catalogue data, so it must not be frozen at build time.
 export const revalidate = 60;
+
+// Districts we name in the roll. Statements of reach, not metrics.
+const CITIES = ["Kigali", "Musanze", "Huye", "Rubavu", "Nyagatare"];
 
 export default async function HomePage() {
   const supabase = createAdminClient();
 
-  const [settings, { data: categories }, { data: newArrivals }] = await Promise.all([
+  const [settings, cats, prods, quotes, figures] = await Promise.all([
     getSiteSettings(),
     supabase.from("categories").select("*").is("parent_id", null).order("name").limit(5),
     supabase
@@ -22,256 +23,412 @@ export default async function HomePage() {
       .eq("status", "active")
       .order("created_at", { ascending: false })
       .limit(8),
+    // Both tables are optional: the sections hide until rows are published.
+    supabase.from("testimonials").select("*").eq("is_published", true).order("sort_order"),
+    supabase.from("store_metrics").select("*").eq("is_published", true).order("sort_order"),
   ]);
 
-  const cats = (categories ?? []) as Category[];
-  const products = (newArrivals ?? []) as Product[];
+  const categories = (cats.data ?? []) as Category[];
+  const products = (prods.data ?? []) as Product[];
+  const testimonial = ((quotes.data ?? []) as Testimonial[])[0] ?? null;
+  const metrics = (figures.data ?? []) as StoreMetric[];
 
-  // One cover image per category. Counts are deliberately not surfaced —
-  // catalogue size is our business, not the shopper's.
-  const { data: covers } = await supabase
-    .from("products")
-    .select("category_id, images")
-    .eq("status", "active");
-
-  const coverFor: Record<string, string | null> = {};
-  for (const cat of cats) coverFor[cat.id] = null;
-  for (const row of covers ?? []) {
-    if (row.category_id in coverFor && !coverFor[row.category_id] && row.images?.[0]) {
-      coverFor[row.category_id] = row.images[0];
-    }
-  }
-
-  const heroImages = products.map((p) => p.images?.[0]).filter(Boolean).slice(0, 2) as string[];
+  const cur = settings.currency_code;
   const freeOver = settings.free_delivery_threshold;
+  const heroShots = products.map((p) => p.images?.[0]).filter(Boolean).slice(0, 3) as string[];
 
-  const assurances = [
+  const promises = [
+    { tag: "Anywhere", title: "Across Rwanda", body: "Rider in Kigali, courier upcountry." },
+    { tag: "Payment", title: "MoMo or cash", body: "Pay on delivery if you'd rather see it first." },
+    { tag: "Returns", title: "7 days", body: "Changed your mind? Send it back." },
+    { tag: "Sourcing", title: "Checked by hand", body: "Nothing listed we wouldn't buy ourselves." },
+  ];
+
+  const steps = [
     {
-      icon: Truck,
-      title: "Delivered across Rwanda",
-      body: freeOver
-        ? `Free on orders over ${formatCurrency(Number(freeOver), settings.currency_code)}`
-        : "Same-day delivery in Kigali",
+      n: "01",
+      title: "Fill the basket across shelves",
+      body: "One order can hold a phone, a dress and a bag of coffee. We pack it together and you pay one delivery fee.",
+      meta: freeOver
+        ? `Delivery ${formatCurrency(Number(settings.delivery_fee), cur)} — free over ${formatCurrency(Number(freeOver), cur)}`
+        : `Delivery ${formatCurrency(Number(settings.delivery_fee), cur)}`,
     },
-    { icon: RotateCcw, title: "7-day returns", body: "Change your mind, send it back" },
-    { icon: ShieldCheck, title: "Secure checkout", body: "Mobile money or cash on delivery" },
+    {
+      n: "02",
+      title: "Pay the way you already pay",
+      body: "MTN Mobile Money at checkout, or cash to the rider at your gate. No card needed either way.",
+      meta: "MoMo · Cash on delivery",
+    },
+    {
+      n: "03",
+      title: "We pack it and bring it",
+      body: "Your order moves through packing and dispatch, and you can follow it from your account at any point.",
+      meta: "Track it from your orders page",
+    },
   ];
 
   return (
-    <div className="bg-page text-page-fg">
+    <div className="overflow-x-hidden bg-page text-page-fg">
       {/* ─── Hero ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-ink text-cream">
+      <section id="top" className="relative px-5 pt-10 md:px-14 md:pt-[92px]">
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-32 -top-48 h-[680px] w-[680px] rounded-full blur-[80px]"
+          className="pointer-events-none absolute inset-0"
           style={{
-            background: "radial-gradient(circle at 40% 40%, rgba(244,241,233,.09), transparent 65%)",
+            backgroundImage: "radial-gradient(color-mix(in oklab, var(--page-fg) 16%, transparent) 1px, transparent 1px)",
+            backgroundSize: "22px 22px",
+            maskImage: "linear-gradient(to bottom, #000, transparent 78%)",
+            WebkitMaskImage: "linear-gradient(to bottom, #000, transparent 78%)",
           }}
         />
-        <div className="relative mx-auto grid max-w-[1320px] items-center gap-14 px-6 py-20 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] md:px-10 md:py-32">
-          <div>
-            <p className="mb-7 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-cream/45">
-              {settings.store_name} · Kigali
-            </p>
-            <h1 className="mb-7 font-display text-[clamp(46px,7vw,92px)] font-bold leading-[0.93] tracking-[-0.045em] text-balance">
-              {settings.hero_title || (
-                <>
-                  Considered pieces,
-                  <br />
-                  <span className="font-normal italic text-cream/55">chosen well.</span>
-                </>
-              )}
-            </h1>
-            <p className="mb-10 max-w-[440px] text-[17px] leading-[1.65] text-cream/60">
-              {settings.hero_subtitle ||
-                "Clothing, electronics and home goods worth keeping — brought to your door anywhere in Rwanda."}
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href="/products"
-                className="group inline-flex h-[56px] items-center gap-3 rounded-full bg-cream px-8 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
-              >
-                Shop the collection
-                <ArrowRight
-                  className="h-[17px] w-[17px] transition-transform group-hover:translate-x-0.5"
-                  strokeWidth={2.4}
+
+        <div className="relative grid items-end gap-6 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:gap-14">
+          <div className="dc-rise" style={{ animation: "rise .7s cubic-bezier(.2,.8,.2,1) both" }}>
+            {/* Badge only appears with something real to say. */}
+            {(settings.founded_year || metrics[0]) && (
+              <div className="mb-5 flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/55">
+                <span
+                  className="dc-blink h-[7px] w-[7px] rounded-full bg-accent"
+                  style={{ animation: "blink 2.4s ease-in-out infinite" }}
                 />
-              </Link>
-              <Link
-                href="#collections"
-                className="inline-flex h-[56px] items-center rounded-full border border-cream/25 px-8 text-[15px] font-medium text-cream transition-colors hover:bg-cream/[0.07]"
+                <span>
+                  {[
+                    settings.founded_year ? `Est. ${settings.founded_year}` : null,
+                    metrics[0] ? `${metrics[0].value} ${metrics[0].label.toLowerCase()}` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" — ")}
+                </span>
+              </div>
+            )}
+
+            <h1 className="m-0 font-display text-[clamp(52px,9.6vw,168px)] font-extrabold leading-[0.82] tracking-[-0.05em] text-balance">
+              <span className="block">Everything</span>
+              <span
+                className="block text-transparent"
+                style={{ WebkitTextStroke: "2px var(--page-fg)" }}
               >
-                Browse collections
-              </Link>
+                good, in
+              </span>
+              <span className="block">
+                one{" "}
+                <span className="font-serif font-light italic tracking-[-0.01em] text-accent">
+                  shop.
+                </span>
+              </span>
+            </h1>
+
+            <div className="mt-6 flex flex-wrap items-end gap-5 pb-7 md:mt-10 md:gap-13 md:pb-14">
+              <p className="m-0 max-w-[34ch] text-[clamp(17px,1.5vw,21px)] leading-[1.5] text-page-fg/72">
+                {usableDescription(settings.store_description) ??
+                  "Clothing, electronics, gadgets and the food you actually miss — sourced in Kigali, carried to your door anywhere in Rwanda."}
+              </p>
+              <div className="flex gap-2.5">
+                <Link
+                  href="#index"
+                  className="inline-flex items-center gap-3 rounded-full bg-accent-text px-6 py-4 font-mono text-[11px] uppercase tracking-[0.14em] text-cream transition-colors hover:bg-ink"
+                >
+                  Shop the index <span>→</span>
+                </Link>
+                <Link
+                  href="#how"
+                  className="inline-flex items-center rounded-full border border-page-fg/30 px-6 py-4 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors hover:border-page-fg hover:bg-page-fg/[0.06]"
+                >
+                  How delivery works
+                </Link>
+              </div>
             </div>
           </div>
 
-          {/* Editorial pair, not a busy grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative aspect-[3/4] translate-y-6 overflow-hidden rounded-[28px] bg-ink-raised">
-              {heroImages[0] && (
-                <Image
-                  src={heroImages[0]}
-                  alt=""
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width:768px) 50vw, 30vw"
-                />
-              )}
-            </div>
-            <div className="relative aspect-[3/4] -translate-y-6 overflow-hidden rounded-[28px] bg-ink-raised">
-              {heroImages[1] && (
-                <Image
-                  src={heroImages[1]}
-                  alt=""
-                  fill
-                  className="object-cover"
-                  sizes="(max-width:768px) 50vw, 30vw"
-                />
-              )}
+          {/* Collage */}
+          <div
+            className="dc-rise relative h-[clamp(340px,42vw,560px)]"
+            style={{ animation: "rise .9s cubic-bezier(.2,.8,.2,1) both .12s" }}
+          >
+            <Plate
+              src={heroShots[0]}
+              className="bottom-[6%] left-0 h-[62%] w-[58%] -rotate-[5deg]"
+              shadow="18px 22px 0 color-mix(in oklab, var(--page-fg) 10%, transparent)"
+            />
+            <Plate
+              src={heroShots[1]}
+              className="right-[4%] top-0 h-[58%] w-[54%] rotate-[3.5deg]"
+              shadow="-14px 20px 0 var(--dc-accent)"
+            />
+            <Plate src={heroShots[2]} className="bottom-[4%] right-0 aspect-square w-[30%]" dark />
+            <div className="absolute left-[46%] top-[2%] z-[3] grid h-[clamp(96px,11vw,132px)] w-[clamp(96px,11vw,132px)] place-items-center rounded-full bg-ink text-center text-cream shadow-[0_10px_30px_rgba(20,17,14,.25)]">
+              <div
+                aria-hidden
+                className="dc-spin absolute inset-[6px] rounded-full border border-dashed border-cream/35"
+                style={{ animation: "spin 22s linear infinite" }}
+              />
+              <div className="font-mono text-[9px] uppercase leading-[1.6] tracking-[0.16em]">
+                Dispatched
+                <br />
+                from
+                <br />
+                <span className="text-accent-text">Kigali</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── Assurances ───────────────────────────────────────── */}
-      <section className="border-b border-page-fg/10 bg-page">
-        <div className="mx-auto grid max-w-[1320px] gap-8 px-6 py-12 md:grid-cols-3 md:px-10">
-          {assurances.map((a) => (
-            <div key={a.title} className="flex items-start gap-4">
-              <a.icon className="mt-0.5 h-[18px] w-[18px] shrink-0 text-page-fg/45" strokeWidth={1.8} />
+      {/* ─── Promises ─────────────────────────────────────────── */}
+      <section className="border-y border-page-fg/[0.16] bg-sand">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4">
+          {promises.map((p) => (
+            <div key={p.tag} className="border-l border-page-fg/[0.14] px-4 py-6 md:px-8">
+              <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent-text-text">
+                {p.tag}
+              </div>
+              <div className="mb-1 font-display text-[clamp(15px,1.3vw,18px)] font-semibold tracking-[-0.02em]">
+                {p.title}
+              </div>
+              <div className="text-[14px] leading-[1.45] text-page-fg/62">{p.body}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── The Index ────────────────────────────────────────── */}
+      <section id="index" className="px-5 py-12 md:px-14 md:py-24">
+        <div className="mb-7 flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/50">
+              02 — The Index
+            </div>
+            <h2 className="m-0 font-display text-[clamp(34px,4.6vw,74px)] font-extrabold leading-[0.92] tracking-[-0.04em]">
+              Pick a shelf.
+              <br />
+              <span className="font-serif font-light italic text-page-fg/48">
+                The shop follows.
+              </span>
+            </h2>
+          </div>
+        </div>
+
+        <div className="mb-7 flex flex-wrap gap-2">
+          <Link
+            href="/products"
+            className="rounded-full border border-page-fg bg-page-fg px-[18px] py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-page"
+          >
+            Everything
+          </Link>
+          {categories.map((c) => (
+            <Link
+              key={c.id}
+              href={`/products?category=${c.slug}`}
+              className="rounded-full border border-page-fg px-[18px] py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors hover:bg-page-fg hover:text-page"
+            >
+              {c.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Hairline grid, as drawn */}
+        <div className="grid gap-px border border-page-fg/[0.16] bg-page-fg/[0.16] [grid-template-columns:repeat(auto-fill,minmax(230px,1fr))]">
+          {products.map((item) => (
+            <article
+              key={item.id}
+              className="flex flex-col gap-3 bg-paper p-3.5 pb-[18px] transition-colors hover:bg-paper-raised"
+            >
+              <Link href={`/products/${item.id}`} className="relative block aspect-[4/5] bg-mist">
+                {item.images?.[0] && (
+                  <Image
+                    src={item.images[0]}
+                    alt={item.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width:640px) 100vw, 25vw"
+                  />
+                )}
+                {item.category && (
+                  <div className="pointer-events-none absolute left-2 top-2 bg-ink px-2 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-cream">
+                    {item.category.name}
+                  </div>
+                )}
+              </Link>
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="m-0 font-display text-[17px] font-semibold leading-[1.2] tracking-[-0.02em]">
+                  <Link href={`/products/${item.id}`}>{item.name}</Link>
+                </h3>
+                <div className="whitespace-nowrap font-mono text-[12px]">
+                  {formatCurrency(Number(item.price), cur)}
+                </div>
+              </div>
+              {item.description && (
+                <p className="m-0 line-clamp-2 text-[14px] leading-[1.45] text-page-fg/60">
+                  {item.description}
+                </p>
+              )}
+              <AddToBagButton product={item} />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── City roll ────────────────────────────────────────── */}
+      <div className="overflow-hidden whitespace-nowrap border-t border-page-fg/[0.16] bg-ink py-[18px] text-cream">
+        <div
+          className="dc-marquee inline-flex gap-10 pr-10 font-display text-[clamp(30px,5vw,76px)] font-extrabold tracking-[-0.04em]"
+          style={{ animation: "marquee 28s linear infinite" }}
+        >
+          {[0, 1].map((dup) =>
+            CITIES.map((city, i) => (
+              <span
+                key={`${dup}-${city}`}
+                className={i === 2 ? "text-accent" : i % 2 === 1 ? "text-transparent" : undefined}
+                style={
+                  i % 2 === 1 && i !== 2
+                    ? { WebkitTextStroke: "1.5px rgba(244,241,232,.55)" }
+                    : undefined
+                }
+              >
+                {city}
+              </span>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* ─── How it works ─────────────────────────────────────── */}
+      <section
+        id="how"
+        className="grid items-start gap-7 px-5 py-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:gap-[72px] md:px-14 md:py-24"
+      >
+        <div className="md:sticky md:top-24">
+          <div className="mb-3 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/50">
+            03 — How it works
+          </div>
+          <h2 className="m-0 mb-4 font-display text-[clamp(32px,4vw,62px)] font-extrabold leading-[0.94] tracking-[-0.04em]">
+            Order today.
+            <br />
+            Unbox soon.
+          </h2>
+          <p className="m-0 max-w-[38ch] text-[17px] leading-[1.55] text-page-fg/70">
+            No app, no account gymnastics. Pick, pay the way you already pay, and a rider takes it
+            from there.
+          </p>
+        </div>
+        <div className="flex flex-col">
+          {steps.map((st) => (
+            <div
+              key={st.n}
+              className="grid grid-cols-[56px_1fr] gap-4 border-t border-page-fg/[0.18] py-7 md:grid-cols-[88px_1fr] md:gap-8"
+            >
+              <div
+                className="font-display text-[52px] font-extrabold leading-none tracking-[-0.05em] text-transparent"
+                style={{ WebkitTextStroke: "1.5px var(--page-fg)" }}
+              >
+                {st.n}
+              </div>
               <div>
-                <div className="text-[14.5px] font-bold text-page-fg">{a.title}</div>
-                <div className="mt-1 text-[13.5px] text-page-fg/55">{a.body}</div>
+                <h3 className="m-0 mb-2 font-display text-[clamp(20px,2vw,27px)] font-semibold tracking-[-0.03em]">
+                  {st.title}
+                </h3>
+                <p className="m-0 mb-2.5 max-w-[52ch] text-[16px] leading-[1.55] text-page-fg/68">
+                  {st.body}
+                </p>
+                <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent-text-text">
+                  {st.meta}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── Collections ──────────────────────────────────────── */}
-      {cats.length > 0 && (
-        <section id="collections" className="mx-auto max-w-[1320px] px-6 py-20 md:px-10 md:py-28">
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+      {/* ─── Story — only with real content behind it ──────────── */}
+      {(testimonial || metrics.length > 0) && (
+        <section
+          id="story"
+          className="bg-ink px-5 py-14 text-cream md:px-14 md:py-[110px]"
+        >
+          <div className="grid items-center gap-7 md:grid-cols-[minmax(0,1fr)_minmax(0,0.62fr)] md:gap-[72px]">
             <div>
-              <p className="mb-4 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-page-fg/45">
-                Collections
-              </p>
-              <h2 className="font-display text-[clamp(30px,3.4vw,44px)] font-bold leading-[1.05] tracking-[-0.035em]">
-                Shop by category
-              </h2>
-            </div>
-            <Link
-              href="/products"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-page-fg/60 transition-colors hover:text-page-fg"
-            >
-              Browse all products
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
+              <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.2em] text-cream/50">
+                04 — Why people stay
+              </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {cats.map((cat, i) => (
-              <Link
-                key={cat.id}
-                href={`/products?category=${cat.slug}`}
-                className={`group relative block overflow-hidden rounded-[28px] bg-field ${
-                  i === 0 ? "sm:col-span-2 sm:aspect-[2/1]" : "aspect-[4/5]"
-                }`}
-              >
-                {coverFor[cat.id] && (
+              {testimonial ? (
+                <>
+                  <blockquote className="m-0 font-serif text-[clamp(26px,3.4vw,52px)] font-light leading-[1.12] tracking-[-0.02em]">
+                    &ldquo;{testimonial.body}&rdquo;
+                  </blockquote>
+                  <div className="mt-6 flex items-center gap-3.5 font-mono text-[11px] uppercase tracking-[0.14em] text-cream/68">
+                    <span className="h-px w-[34px] bg-accent" />
+                    <span>
+                      {[testimonial.author_name, testimonial.author_location, testimonial.context]
+                        .filter(Boolean)
+                        .join(" — ")}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <blockquote className="m-0 font-serif text-[clamp(26px,3.4vw,52px)] font-light leading-[1.12] tracking-[-0.02em]">
+                  One basket for the phone charger, the dress and the coffee.{" "}
+                  <span className="italic text-accent-text">That&apos;s the whole idea.</span>
+                </blockquote>
+              )}
+
+              {metrics.length > 0 && (
+                <div className="mt-8 flex flex-wrap justify-start gap-x-10 gap-y-6 md:mt-14 md:gap-x-14">
+                  {metrics.map((k) => (
+                    <div key={k.id}>
+                      <div className="font-display text-[clamp(30px,3.6vw,54px)] font-extrabold leading-none tracking-[-0.04em]">
+                        {k.value}
+                      </div>
+                      <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-cream/55">
+                        {k.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="relative aspect-[4/5] border border-cream/20 p-2.5">
+              <div className="relative h-full w-full bg-ink-raised">
+                {heroShots[0] && (
                   <Image
-                    src={coverFor[cat.id] as string}
-                    alt={cat.name}
+                    src={heroShots[0]}
+                    alt=""
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    sizes={i === 0 ? "(max-width:768px) 100vw, 66vw" : "(max-width:768px) 100vw, 33vw"}
+                    className="object-cover"
+                    sizes="(max-width:768px) 100vw, 35vw"
                   />
                 )}
-                <div
-                  className="pointer-events-none absolute inset-x-0 bottom-0 p-7"
-                  style={{
-                    background: "linear-gradient(to top,rgba(16,14,27,.82),rgba(16,14,27,0))",
-                  }}
-                >
-                  <div className="font-display text-[24px] font-bold tracking-[-0.025em] text-cream">
-                    {cat.name}
-                  </div>
-                  <div className="mt-1.5 inline-flex items-center gap-1.5 text-[13px] text-cream/70">
-                    Shop now
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ─── New arrivals ─────────────────────────────────────── */}
-      {products.length > 0 && (
-        <section className="border-t border-page-fg/10">
-          <div className="mx-auto max-w-[1320px] px-6 py-20 md:px-10 md:py-28">
-            <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <p className="mb-4 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-page-fg/45">
-                  Just in
-                </p>
-                <h2 className="font-display text-[clamp(30px,3.4vw,44px)] font-bold leading-[1.05] tracking-[-0.035em]">
-                  New arrivals
-                </h2>
               </div>
-              <Link
-                href="/products"
-                className="group inline-flex items-center gap-2 text-sm font-medium text-page-fg/60 transition-colors hover:text-page-fg"
-              >
-                View all
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  currencyCode={settings.currency_code}
-                />
-              ))}
             </div>
           </div>
         </section>
       )}
+    </div>
+  );
+}
 
-      {/* ─── Closing band ─────────────────────────────────────── */}
-      <section className="px-6 pb-24 md:px-10">
-        <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[36px] bg-ink px-8 py-20 text-center text-cream md:px-16 md:py-24">
-          <p className="mb-6 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-cream/45">
-            {settings.store_name}
-          </p>
-          <h2 className="mx-auto mb-6 max-w-[620px] font-display text-[clamp(28px,3.4vw,46px)] font-bold leading-[1.08] tracking-[-0.035em]">
-            Curated in Kigali.
-            <br />
-            Delivered across Rwanda.
-          </h2>
-          <p className="mx-auto mb-10 max-w-[440px] text-[16.5px] leading-[1.65] text-cream/60">
-            {settings.store_description && settings.store_description !== "Ecommerce"
-              ? settings.store_description
-              : "A short, considered catalogue — restocked as we find pieces worth carrying."}
-          </p>
-          <Link
-            href="/products"
-            className="group inline-flex h-[56px] items-center gap-3 rounded-full bg-cream px-8 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
-          >
-            Start shopping
-            <ArrowRight
-              className="h-[17px] w-[17px] transition-transform group-hover:translate-x-0.5"
-              strokeWidth={2.4}
-            />
-          </Link>
-        </div>
-      </section>
+function Plate({
+  src,
+  className,
+  shadow,
+  dark = false,
+}: {
+  src?: string;
+  className: string;
+  shadow?: string;
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`absolute border border-page-fg/[0.18] p-2.5 ${
+        dark ? "bg-ink" : "bg-paper-raised"
+      } ${className}`}
+      style={shadow ? { boxShadow: shadow } : undefined}
+    >
+      <div className="relative h-full w-full bg-mist">
+        {src && <Image src={src} alt="" fill className="object-cover" sizes="30vw" />}
+      </div>
     </div>
   );
 }

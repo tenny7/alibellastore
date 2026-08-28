@@ -8,8 +8,9 @@
    --danger / --danger-fg, reserved for destructive and failed states.
    Buttons invert automatically via --page-fg on --page-bg. */
 @theme inline {
-  --font-sans: var(--font-dm-sans);
-  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-newsreader);
+  --font-serif: var(--font-newsreader);
+  --font-display: var(--font-bricolage);
   --font-mono: var(--font-jetbrains-mono);
 
   --color-cream: var(--dc-cream);
@@ -18,6 +19,10 @@
   --color-ink-raised: var(--dc-ink-raised);
   --color-sand: var(--dc-sand);
   --color-mist: var(--dc-mist);
+  --color-accent: var(--dc-accent);
+  --color-accent-text: var(--accent-text);
+  --color-paper: var(--dc-paper);
+  --color-paper-raised: var(--dc-paper-raised);
   --color-danger: var(--danger);
   --color-danger-fg: var(--danger-fg);
 
@@ -45,14 +50,25 @@
   :root {
     /* ── The two colours. Everything else is a tint of one of them. ──
        Matching Ajabu Lighting: achromatic, with a single destructive red. */
-    --dc-cream: #F4F1E9;      /* light end */
-    --dc-ink: #100E1B;        /* dark end */
+    --dc-cream: #F4F1E8;      /* light end */
+    --dc-ink: #14110E;        /* dark end */
 
     /* Steps between them — not new colours */
-    --dc-ink-deep: #0B0A12;   /* admin / night canvas */
-    --dc-ink-raised: #1B182B; /* raised surface on dark */
-    --dc-sand: #E6E1D5;       /* cream, one step down */
-    --dc-mist: #EDE9DF;       /* cream, half a step down */
+    --dc-ink-deep: #0C0A08;   /* admin / night canvas */
+    --dc-ink-raised: #201C17; /* raised surface on dark */
+    --dc-sand: #EDE9DC;       /* banded strip */
+    --dc-mist: #EFEBDE;       /* image field */
+    --dc-paper: #F9F7F0;      /* card */
+    --dc-paper-raised: #FFFDF7; /* card, hovered / lifted */
+
+    /* The one accent. Load-bearing in the Landing design: section numbers,
+       the delivery badge, link hovers, outlined type. Design alternates:
+       #1F7A5A forest · #2438D8 ink-blue · #C79A2B gold */
+    --dc-accent: #E3350D;
+    /* The vermilion clears the 3:1 large-text bar but not 4.5:1, so small
+       accent text and small-label CTAs use a darkened variant. Verified:
+       5.10:1 on cream, 4.74:1 on sand. */
+    --accent-text: #C12D0B;
 
 
     /* Storefront page surfaces (light) */
@@ -63,7 +79,7 @@
     --field-bg: var(--dc-mist);
 
     /* The only chromatic values in the system, for destructive states. */
-    --danger: #A8321F;
+    --danger: #B32D0B;
     --danger-fg: var(--dc-cream);
 
     /* Light surface (storefront) */
@@ -91,7 +107,11 @@
   --card-bg: var(--dc-ink);
   --card-border: rgba(244, 241, 233, 0.09);
   --field-bg: var(--dc-ink-raised);
-  --danger: #F08A7A;
+  --dc-paper: var(--dc-ink);
+  --dc-paper-raised: var(--dc-ink-raised);
+  /* On dark the variant lightens instead: 4.84:1 on ink, 5.08:1 on ink-deep. */
+  --accent-text: #F23A10;
+  --danger: #FF7A55;
   --danger-fg: var(--dc-ink);
 
   --surface-canvas: var(--dc-ink-deep);
@@ -206,3 +226,21 @@ body {
 .dc-when-dark { display: none; }
 .dc-night .dc-when-dark { display: block; }
 .dc-night .dc-when-light { display: none; }
+
+/* ─── Landing design motion ──────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-marquee, .dc-spin, .dc-rise, .dc-blink { animation: none !important; }
+}
+
+::selection { background: var(--dc-accent); color: var(--dc-cream); }
