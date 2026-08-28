@@ -266,7 +266,7 @@ export default function CheckoutPage() {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-between rounded-[12px] border border-cream/20 bg-surface-fg/10 px-3 py-2.5">
+                  <div className="flex items-center justify-between rounded-[12px] border border-page-fg/20 bg-surface-fg/10 px-3 py-2.5">
                     <div className="flex items-center gap-2">
                       <Tag className="h-4 w-4 text-surface-fg" />
                       <span className="text-sm font-medium text-surface-fg">
@@ -340,22 +340,22 @@ export default function CheckoutPage() {
               return (
                 <div key={s.key} className="flex items-center">
                   <div className="flex flex-col items-center gap-1">
-                    <div
+                                        <div
                       className={cn(
-                        "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
+                        "flex h-[22px] w-[22px] items-center justify-center rounded-full border font-mono text-[10px] transition-colors",
                         isCompleted
-                          ? "bg-page-fg text-page"
+                          ? "border-page-fg/75 text-page-fg/75"
                           : isCurrent
-                            ? "bg-ink text-cream"
-                            : "bg-surface-hover text-surface-muted"
+                            ? "border-accent text-accent"
+                            : "border-page-fg/35 text-page-fg/35"
                       )}
                     >
                       {isCompleted ? <Check className="h-4 w-4" /> : s.number}
                     </div>
                     <span
                       className={cn(
-                        "text-xs font-medium hidden sm:block",
-                        isCurrent ? "text-surface-fg" : "text-surface-muted"
+                        "hidden font-mono text-[11px] uppercase tracking-[0.14em] sm:block",
+                        isCurrent ? "text-accent" : isCompleted ? "text-page-fg/75" : "text-page-fg/35"
                       )}
                     >
                       {s.label}
@@ -365,7 +365,7 @@ export default function CheckoutPage() {
                     <div
                       className={cn(
                         "w-16 sm:w-24 h-0.5 mx-2 sm:mx-3",
-                        i < currentStepIdx ? "bg-page-fg" : "bg-surface-border"
+                        i < currentStepIdx ? "bg-page-fg/50" : "bg-surface-border"
                       )}
                     />
                   )}

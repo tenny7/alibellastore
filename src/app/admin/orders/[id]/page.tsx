@@ -223,7 +223,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                 {order.momo_reason && (
                   <div>
                     <dt className="text-surface-muted">MTN reason</dt>
-                    <dd className="font-mono text-xs break-all text-cream/70">
+                    <dd className="font-mono text-xs break-all text-page-fg/70">
                       {order.momo_reason}
                     </dd>
                   </div>

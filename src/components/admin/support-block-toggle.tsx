@@ -35,7 +35,7 @@ export function SupportBlockToggle({ userId, blocked }: { userId: string; blocke
       disabled={busy}
       className={
         blocked
-          ? "inline-flex h-[38px] shrink-0 items-center gap-2 rounded-xl border border-cream/[0.14] px-4 text-[13px] font-bold text-cream/75 transition-colors hover:bg-cream/[0.08] disabled:opacity-50"
+          ? "inline-flex h-[38px] shrink-0 items-center gap-2 rounded-xl border border-page-fg/[0.14] px-4 text-[13px] font-bold text-page-fg/75 transition-colors hover:bg-page-fg/[0.08] disabled:opacity-50"
           : "inline-flex h-[38px] shrink-0 items-center gap-2 rounded-xl border border-danger/30 px-4 text-[13px] font-bold text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
       }
     >

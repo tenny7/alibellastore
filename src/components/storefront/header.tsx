@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  ShoppingBag,
   ShoppingCart,
   User,
   Menu,
@@ -17,7 +16,7 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { useCartStore } from "@/store/cart-store";
 import { createClient } from "@/lib/supabase/client";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { NotificationBell } from "@/components/storefront/notification-bell";
 import { ThemeToggle } from "@/components/storefront/theme-toggle";
 import type { User as UserType } from "@supabase/supabase-js";
@@ -26,17 +25,11 @@ import type { Category } from "@/types";
 interface HeaderProps {
   storeName?: string;
   categories?: Category[];
-  /** Real free-delivery threshold from site settings. The design hardcoded
-   *  30,000, which was simply wrong for this store. */
-  freeDeliveryThreshold?: number | null;
-  currencyCode?: string;
 }
 
 export function Header({
   storeName = "MoMo Commerce",
   categories = [],
-  freeDeliveryThreshold = null,
-  currencyCode = "RWF",
 }: HeaderProps) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -121,30 +114,6 @@ export function Header({
 
   return (
     <>
-      {/* Marquee — policy statements only, per the Landing design */}
-      <div className="overflow-hidden whitespace-nowrap bg-ink py-2.5 text-cream">
-        <div
-          className="dc-marquee inline-flex gap-11 pr-11 font-mono text-[11px] uppercase tracking-[0.14em]"
-          style={{ animation: "marquee 34s linear infinite" }}
-        >
-          {[0, 1].map((dup) =>
-            [
-              freeDeliveryThreshold
-                ? `Free delivery over ${formatCurrency(Number(freeDeliveryThreshold), currencyCode)}`
-                : "Delivery across Rwanda",
-              "Pay with MoMo or cash on delivery",
-              "Dispatched from Kigali",
-              "7-day returns",
-            ].map((t) => (
-              <span key={`${dup}-${t}`} className="inline-flex items-center gap-11">
-                {t}
-                <span className="text-accent-text">✦</span>
-              </span>
-            ))
-          )}
-        </div>
-      </div>
-
       <header className="sticky top-0 z-40 border-b border-page-fg/[0.12] bg-page/[0.82] text-page-fg backdrop-blur-[14px]">
         <div className="flex h-16 items-center justify-between gap-6 px-5 md:px-14">
         {/* Logo */}
@@ -161,7 +130,7 @@ export function Header({
         <nav className="hidden items-center gap-6 font-mono text-[11px] uppercase tracking-[0.12em] md:flex">
           <Link
             href="/products"
-            className="transition-colors hover:text-accent-text-text"
+            className="transition-colors hover:text-accent"
           >
             Shop
           </Link>
@@ -169,14 +138,14 @@ export function Header({
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+              className="text-page-fg/70 transition-colors hover:text-accent"
             >
               {cat.name}
             </Link>
           ))}
           <Link
             href="/about"
-            className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+            className="text-page-fg/70 transition-colors hover:text-accent"
           >
             About
           </Link>
@@ -212,10 +181,10 @@ export function Header({
           {/* Cart */}
           <Link
             href="/cart"
-            className="group flex items-center gap-2.5 rounded-full border border-page-fg bg-page-fg px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-page transition-colors hover:border-accent-text hover:bg-accent-text hover:text-cream"
+            className="flex items-center gap-2.5 rounded-full border border-page-fg/[0.28] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.12em] text-page-fg transition-colors hover:border-accent hover:text-accent"
           >
             <span>Bag</span>
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-text px-1 text-[11px] font-bold text-cream group-hover:bg-cream group-hover:text-accent-text-text-text">
+            <span className="inline-flex h-[19px] min-w-[19px] items-center justify-center rounded-full bg-accent px-1 text-[10px] text-accent-fg">
               {itemCount}
             </span>
           </Link>
@@ -231,15 +200,15 @@ export function Header({
                 <User className="h-[17px] w-[17px]" />
               </button>
               {dropdownOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-cream/[0.12] bg-ink-raised py-1.5 shadow-[0_18px_44px_rgba(11,10,18,.5)]">
-                  <div className="border-b border-cream/[0.1] px-4 py-2.5 text-xs text-cream/50">
+                <div className="absolute right-0 z-50 mt-2 w-52 rounded-2xl border border-page-fg/[0.12] bg-well py-1.5 shadow-[0_18px_44px_rgba(11,10,18,.5)]">
+                  <div className="border-b border-page-fg/[0.1] px-4 py-2.5 text-xs text-page-fg/50">
                     {user.email && !user.email.endsWith("@phone.local")
                       ? user.email
                       : user.user_metadata?.phone || "My Account"}
                   </div>
                   <Link
                     href="/profile"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                     onClick={() => setDropdownOpen(false)}
                   >
                     <UserCircle className="h-4 w-4" />
@@ -247,7 +216,7 @@ export function Header({
                   </Link>
                   <Link
                     href="/orders"
-                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                     onClick={() => setDropdownOpen(false)}
                   >
                     <Package className="h-4 w-4" />
@@ -256,17 +225,17 @@ export function Header({
                   {userRole === "admin" && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                      className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                       onClick={() => setDropdownOpen(false)}
                     >
                       <Shield className="h-4 w-4" />
                       Admin Panel
                     </Link>
                   )}
-                  <div className="my-1 border-t border-cream/[0.1]" />
+                  <div className="my-1 border-t border-page-fg/[0.1]" />
                   <button
                     onClick={handleLogout}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-cream/75 transition-colors hover:bg-cream/[0.07] hover:text-cream"
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-page-fg/75 transition-colors hover:bg-page-fg/[0.07] hover:text-page-fg"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out
@@ -299,7 +268,7 @@ export function Header({
           <Link href="/cart" aria-label="Cart" className="relative p-2">
             <ShoppingCart className="h-5 w-5 text-page-fg/70" />
             {itemCount > 0 && (
-              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-cream text-[10px] font-bold text-ink">
+              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-page-fg text-[10px] font-bold text-page">
                 {itemCount}
               </span>
             )}
@@ -321,7 +290,7 @@ export function Header({
       {/* Search bar (slides down) */}
       <div
         className={cn(
-          "overflow-hidden border-t border-cream/[0.1] bg-ink transition-all duration-200",
+          "overflow-hidden border-t border-page-fg/[0.1] bg-page transition-all duration-200",
           searchOpen ? "max-h-16" : "max-h-0"
         )}
       >
@@ -332,11 +301,11 @@ export function Header({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products..."
-            className="flex-1 rounded-xl border border-cream/20 bg-cream/[0.06] px-4 py-2.5 text-sm text-cream placeholder:text-cream/40 focus:border-accent focus:outline-none"
+            className="flex-1 rounded-xl border border-page-fg/20 bg-page-fg/[0.06] px-4 py-2.5 text-sm text-page-fg placeholder:text-page-fg/40 focus:border-accent focus:outline-none"
           />
           <button
             type="submit"
-            className="rounded-xl bg-cream px-5 py-2.5 text-sm font-bold text-ink transition-opacity hover:opacity-90"
+            className="rounded-xl bg-page-fg px-5 py-2.5 text-sm font-bold text-page transition-opacity hover:opacity-90"
           >
             Search
           </button>
@@ -346,7 +315,7 @@ export function Header({
       {/* Mobile menu */}
       <div
         className={cn(
-          "overflow-hidden border-t border-cream/[0.1] bg-ink transition-all duration-200 md:hidden",
+          "overflow-hidden border-t border-page-fg/[0.1] bg-page transition-all duration-200 md:hidden",
           menuOpen ? "max-h-[500px]" : "max-h-0"
         )}
       >
@@ -355,7 +324,7 @@ export function Header({
           {userRole === "admin" && (
             <Link
               href="/admin"
-              className="mb-2 flex items-center gap-2 rounded-xl bg-cream px-3 py-2.5 text-sm font-bold text-ink"
+              className="mb-2 flex items-center gap-2 rounded-xl bg-page-fg px-3 py-2.5 text-sm font-bold text-page"
               onClick={() => setMenuOpen(false)}
             >
               <Shield className="h-4 w-4" />
@@ -364,7 +333,7 @@ export function Header({
           )}
           <Link
             href="/products"
-            className="block rounded-xl px-3 py-2.5 text-sm font-medium text-cream hover:bg-cream/[0.07]"
+            className="block rounded-xl px-3 py-2.5 text-sm font-medium text-page-fg hover:bg-page-fg/[0.07]"
             onClick={() => setMenuOpen(false)}
           >
             All Products
@@ -373,7 +342,7 @@ export function Header({
             <Link
               key={cat.id}
               href={`/products?category=${cat.slug}`}
-              className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+              className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
               onClick={() => setMenuOpen(false)}
             >
               {cat.name}
@@ -381,36 +350,36 @@ export function Header({
           ))}
           <Link
             href="/about"
-            className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+            className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
             onClick={() => setMenuOpen(false)}
           >
             About
           </Link>
 
-          <div className="my-2 border-t border-cream/[0.1]" />
+          <div className="my-2 border-t border-page-fg/[0.1]" />
 
           {user ? (
             <>
-              <Link href="/profile" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+              <Link href="/profile" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                 My Profile
               </Link>
-              <Link href="/orders" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+              <Link href="/orders" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                 My Orders
               </Link>
               {userRole === "admin" && (
-                <Link href="/admin" className="block rounded-xl px-3 py-2.5 text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream" onClick={() => setMenuOpen(false)}>
+                <Link href="/admin" className="block rounded-xl px-3 py-2.5 text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg" onClick={() => setMenuOpen(false)}>
                   Admin Panel
                 </Link>
               )}
               <button
                 onClick={() => { handleLogout(); setMenuOpen(false); }}
-                className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-cream/70 hover:bg-cream/[0.07] hover:text-cream"
+                className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-page-fg/70 hover:bg-page-fg/[0.07] hover:text-page-fg"
               >
                 Sign Out
               </button>
             </>
           ) : (
-            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-cream hover:bg-cream/[0.07]" onClick={() => setMenuOpen(false)}>
+            <Link href="/login" className="block rounded-xl px-3 py-2.5 text-sm font-bold text-page-fg hover:bg-page-fg/[0.07]" onClick={() => setMenuOpen(false)}>
               Sign In
             </Link>
           )}

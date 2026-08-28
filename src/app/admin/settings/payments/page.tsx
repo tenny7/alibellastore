@@ -11,15 +11,15 @@ type State = "ok" | "warn" | "bad";
 function Row({ label, value, state, note }: { label: string; value: string; state: State; note?: string }) {
   const Icon = state === "ok" ? CheckCircle2 : state === "warn" ? AlertTriangle : XCircle;
   const tone =
-    state === "ok" ? "text-cream" : state === "warn" ? "text-cream/70" : "text-danger";
+    state === "ok" ? "text-page-fg" : state === "warn" ? "text-page-fg/70" : "text-danger";
   return (
-    <div className="flex items-start gap-3 border-b border-cream/[0.07] px-5 py-4 last:border-0">
+    <div className="flex items-start gap-3 border-b border-page-fg/[0.07] px-5 py-4 last:border-0">
       <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${tone}`} />
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium text-cream">{label}</div>
-        {note && <div className="mt-1 text-[12.5px] leading-relaxed text-cream/45">{note}</div>}
+        <div className="text-sm font-medium text-page-fg">{label}</div>
+        {note && <div className="mt-1 text-[12.5px] leading-relaxed text-page-fg/45">{note}</div>}
       </div>
-      <div className="shrink-0 font-mono text-[12.5px] text-cream/70">{value}</div>
+      <div className="shrink-0 font-mono text-[12.5px] text-page-fg/70">{value}</div>
     </div>
   );
 }
@@ -52,18 +52,18 @@ export default async function PaymentSettingsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-cream">
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-page-fg">
           Payment settings
         </h1>
-        <p className="mt-1.5 text-sm text-cream/50">
+        <p className="mt-1.5 text-sm text-page-fg/50">
           Read-only view of the MoMo configuration this deployment is running with. Values live in
           environment variables; secrets are never shown here.
         </p>
       </div>
 
-      <div className="mb-5 rounded-[20px] border border-cream/[0.09] bg-ink">
-        <div className="border-b border-cream/[0.09] px-5 py-4">
-          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">
+      <div className="mb-5 rounded-[20px] border border-page-fg/[0.09] bg-page">
+        <div className="border-b border-page-fg/[0.09] px-5 py-4">
+          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-page-fg">
             MTN Mobile Money
           </h2>
         </div>
@@ -111,9 +111,9 @@ export default async function PaymentSettingsPage() {
         />
       </div>
 
-      <div className="mb-5 rounded-[20px] border border-cream/[0.09] bg-ink">
-        <div className="border-b border-cream/[0.09] px-5 py-4">
-          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">
+      <div className="mb-5 rounded-[20px] border border-page-fg/[0.09] bg-page">
+        <div className="border-b border-page-fg/[0.09] px-5 py-4">
+          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-page-fg">
             Database migrations
           </h2>
         </div>
@@ -131,22 +131,22 @@ export default async function PaymentSettingsPage() {
         />
       </div>
 
-      <div className="rounded-[20px] border border-cream/[0.09] bg-ink p-5">
-        <h2 className="mb-3 font-display text-lg font-bold tracking-[-0.02em] text-cream">
+      <div className="rounded-[20px] border border-page-fg/[0.09] bg-page p-5">
+        <h2 className="mb-3 font-display text-lg font-bold tracking-[-0.02em] text-page-fg">
           Going to production
         </h2>
-        <ul className="space-y-2 text-[13.5px] leading-relaxed text-cream/60">
-          <li>· Set <code className="font-mono text-cream/80">MOMO_ENVIRONMENT=production</code> and turn mock mode off.</li>
-          <li>· Provision a production API user with <code className="font-mono text-cream/80">providerCallbackHost=alibellastore.com</code>.</li>
+        <ul className="space-y-2 text-[13.5px] leading-relaxed text-page-fg/60">
+          <li>· Set <code className="font-mono text-page-fg/80">MOMO_ENVIRONMENT=production</code> and turn mock mode off.</li>
+          <li>· Provision a production API user with <code className="font-mono text-page-fg/80">providerCallbackHost=alibellastore.com</code>.</li>
           <li>· Confirm the production collection host and target-environment value with MTN.</li>
-          <li>· Set a real <code className="font-mono text-cream/80">MOMO_WEBHOOK_SECRET</code>.</li>
+          <li>· Set a real <code className="font-mono text-page-fg/80">MOMO_WEBHOOK_SECRET</code>.</li>
         </ul>
-        <p className="mt-4 text-[13px] text-cream/45">
+        <p className="mt-4 text-[13px] text-page-fg/45">
           Full checklist in <code className="font-mono">docs/mtn-momo-integration-playbook.md</code> §8.
         </p>
         <Link
           href="/admin/settings"
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-cream transition-colors hover:text-cream"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-page-fg transition-colors hover:text-page-fg"
         >
           Back to settings <ExternalLink className="h-3.5 w-3.5" />
         </Link>

@@ -42,8 +42,8 @@ export default async function AdminPayoutsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-cream">MoMo payouts</h1>
-        <p className="mt-1.5 text-sm text-cream/50">
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-page-fg">MoMo payouts</h1>
+        <p className="mt-1.5 text-sm text-page-fg/50">
           Collected via MTN Mobile Money, net of the {(MOMO_FEE_RATE * 100).toFixed(2)}% VAT-inclusive
           collections fee.
         </p>
@@ -56,9 +56,9 @@ export default async function AdminPayoutsPage() {
         <StatsCard title="Failed / timed out" value={String(failed.length)} icon={AlertTriangle} color="danger" />
       </div>
 
-      <div className="rounded-[20px] border border-cream/[0.09] bg-ink">
-        <div className="border-b border-cream/[0.09] px-4 py-4 lg:px-6">
-          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">Collected payments</h2>
+      <div className="rounded-[20px] border border-page-fg/[0.09] bg-page">
+        <div className="border-b border-page-fg/[0.09] px-4 py-4 lg:px-6">
+          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-page-fg">Collected payments</h2>
         </div>
 
         {collected.length > 0 ? (
@@ -81,17 +81,17 @@ export default async function AdminPayoutsPage() {
                   return (
                     <TableRow key={o.id}>
                       <TableCell>
-                        <a href={`/admin/orders/${o.id}`} className="font-mono text-[13px] font-medium text-cream hover:text-cream">
+                        <a href={`/admin/orders/${o.id}`} className="font-mono text-[13px] font-medium text-page-fg hover:text-page-fg">
                           {o.order_number}
                         </a>
                       </TableCell>
-                      <TableCell className="font-mono text-[13px] text-cream/60">
+                      <TableCell className="font-mono text-[13px] text-page-fg/60">
                         {o.momo_transaction_id ?? "—"}
                       </TableCell>
                       <TableCell className="font-mono">{formatCurrency(g, cur)}</TableCell>
-                      <TableCell className="font-mono text-cream/50">−{formatCurrency(f, cur)}</TableCell>
-                      <TableCell className="font-mono font-medium text-cream">{formatCurrency(g - f, cur)}</TableCell>
-                      <TableCell className="font-mono text-xs text-cream/45">
+                      <TableCell className="font-mono text-page-fg/50">−{formatCurrency(f, cur)}</TableCell>
+                      <TableCell className="font-mono font-medium text-page-fg">{formatCurrency(g - f, cur)}</TableCell>
+                      <TableCell className="font-mono text-xs text-page-fg/45">
                         {new Date(o.created_at).toLocaleDateString()}
                       </TableCell>
                     </TableRow>
@@ -101,11 +101,11 @@ export default async function AdminPayoutsPage() {
             </Table>
           </div>
         ) : (
-          <div className="px-6 py-12 text-center text-cream/45">No collected payments yet.</div>
+          <div className="px-6 py-12 text-center text-page-fg/45">No collected payments yet.</div>
         )}
       </div>
 
-      <p className="mt-4 text-xs leading-relaxed text-cream/40">
+      <p className="mt-4 text-xs leading-relaxed text-page-fg/40">
         Net figures are an estimate computed from MTN&apos;s published {(MOMO_FEE_RATE * 100).toFixed(2)}%
         collections rate. Reconcile against your MTN settlement statement before drawing down — this page
         does not read MTN&apos;s ledger.

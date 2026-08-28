@@ -41,10 +41,10 @@ export default async function AdminDashboard() {
     <div>
       {/* Welcome header */}
       <div className="mb-6">
-        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-cream">
+        <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-page-fg">
           Welcome back, {firstName}
         </h1>
-        <p className="mt-1.5 text-sm text-cream/50">
+        <p className="mt-1.5 text-sm text-page-fg/50">
           Here&apos;s what&apos;s happening with your store today.
         </p>
       </div>
@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
 
       {/* Quick actions */}
       <div className="mb-8">
-        <h2 className="mb-3 font-display text-[11px] font-medium uppercase tracking-[0.14em] text-cream/45">Quick Actions</h2>
+        <h2 className="mb-3 font-display text-[11px] font-medium uppercase tracking-[0.14em] text-page-fg/45">Quick Actions</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <QuickActionButton href="/admin/products/new" icon={Plus} label="Add Product" description="Create a new listing" />
           <QuickActionButton href="/admin/categories" icon={FolderTree} label="Categories" description="Manage categories" />
@@ -69,10 +69,10 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent orders */}
-      <div className="rounded-[20px] border border-cream/[0.09] bg-ink">
-        <div className="flex items-center justify-between border-b border-cream/[0.09] px-4 py-4 lg:px-6">
-          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-cream">Recent Orders</h2>
-          <Link href="/admin/orders" className="text-sm font-medium text-cream transition-colors hover:text-cream">
+      <div className="rounded-[20px] border border-page-fg/[0.09] bg-page">
+        <div className="flex items-center justify-between border-b border-page-fg/[0.09] px-4 py-4 lg:px-6">
+          <h2 className="font-display text-lg font-bold tracking-[-0.02em] text-page-fg">Recent Orders</h2>
+          <Link href="/admin/orders" className="text-sm font-medium text-page-fg transition-colors hover:text-page-fg">
             View all
           </Link>
         </div>
@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
                   {recentOrders.map((order) => (
                     <TableRow key={order.id}>
                       <TableCell>
-                        <Link href={`/admin/orders/${order.id}`} className="font-mono text-[13px] font-medium text-cream transition-colors hover:text-cream">
+                        <Link href={`/admin/orders/${order.id}`} className="font-mono text-[13px] font-medium text-page-fg transition-colors hover:text-page-fg">
                           {order.order_number}
                         </Link>
                       </TableCell>
@@ -108,7 +108,7 @@ export default async function AdminDashboard() {
                       <TableCell>
                         <PaymentStatusBadge status={order.payment_status} />
                       </TableCell>
-                      <TableCell className="font-mono text-xs text-cream/45">
+                      <TableCell className="font-mono text-xs text-page-fg/45">
                         {new Date(order.created_at).toLocaleDateString()}
                       </TableCell>
                     </TableRow>
@@ -118,26 +118,26 @@ export default async function AdminDashboard() {
             </div>
 
             {/* Mobile cards */}
-            <div className="divide-y divide-cream/[0.07] lg:hidden">
+            <div className="divide-y divide-page-fg/[0.07] lg:hidden">
               {recentOrders.map((order) => (
                 <Link
                   key={order.id}
                   href={`/admin/orders/${order.id}`}
-                  className="block px-4 py-3.5 transition-colors hover:bg-cream/[0.04]"
+                  className="block px-4 py-3.5 transition-colors hover:bg-page-fg/[0.04]"
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-mono text-[13px] font-medium text-cream">
+                    <span className="font-mono text-[13px] font-medium text-page-fg">
                       {order.order_number}
                     </span>
                     <OrderStatusBadge status={order.status} />
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-cream/50">
+                    <span className="text-page-fg/50">
                       {(order.customer as { name: string })?.name ?? "—"}
                     </span>
                     <span className="font-medium">{formatCurrency(Number(order.total), settings.currency_code)}</span>
                   </div>
-                  <p className="mt-1 font-mono text-xs text-cream/40">
+                  <p className="mt-1 font-mono text-xs text-page-fg/40">
                     {new Date(order.created_at).toLocaleDateString()}
                   </p>
                 </Link>
@@ -145,7 +145,7 @@ export default async function AdminDashboard() {
             </div>
           </>
         ) : (
-          <div className="px-6 py-12 text-center text-cream/45">
+          <div className="px-6 py-12 text-center text-page-fg/45">
             No orders yet.
           </div>
         )}

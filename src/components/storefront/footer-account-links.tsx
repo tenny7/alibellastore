@@ -19,7 +19,7 @@ export function FooterAccountLinks() {
     return (
       <ul className="space-y-2.5">
         <li>
-          <Link href="/profile" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+          <Link href="/profile" className="text-page-fg/70 transition-colors hover:text-accent">
             My Profile
           </Link>
         </li>
@@ -31,12 +31,12 @@ export function FooterAccountLinks() {
     return (
       <ul className="space-y-2.5">
         <li>
-          <Link href="/profile" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+          <Link href="/profile" className="text-page-fg/70 transition-colors hover:text-accent">
             My Profile
           </Link>
         </li>
         <li>
-          <Link href="/orders" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+          <Link href="/orders" className="text-page-fg/70 transition-colors hover:text-accent">
             My Orders
           </Link>
         </li>
@@ -47,12 +47,12 @@ export function FooterAccountLinks() {
   return (
     <ul className="space-y-2.5">
       <li>
-        <Link href="/login" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+        <Link href="/login" className="text-page-fg/70 transition-colors hover:text-accent">
           Sign In
         </Link>
       </li>
       <li>
-        <Link href="/signup" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+        <Link href="/signup" className="text-page-fg/70 transition-colors hover:text-accent">
           Create Account
         </Link>
       </li>

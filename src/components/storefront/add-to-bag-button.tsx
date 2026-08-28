@@ -23,7 +23,7 @@ export function AddToBagButton({ product }: { product: Product }) {
 
   if (outOfStock) {
     return (
-      <span className="mt-auto cursor-not-allowed rounded-full border border-page-fg/25 px-3.5 py-2.5 text-center font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/40">
+      <span className="flex min-h-[44px] flex-1 cursor-not-allowed items-center justify-center rounded-full border border-page-fg/20 px-3.5 font-mono text-[10px] uppercase tracking-[0.12em] text-page-fg/40">
         Out of stock
       </span>
     );
@@ -33,7 +33,7 @@ export function AddToBagButton({ product }: { product: Product }) {
     <button
       type="button"
       onClick={add}
-      className="mt-auto cursor-pointer rounded-full border border-page-fg bg-transparent px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg transition-colors hover:border-accent-text hover:bg-accent-text hover:text-cream"
+      className="flex min-h-[44px] flex-1 cursor-pointer items-center justify-center rounded-full border border-page-fg/[0.24] bg-transparent px-3.5 font-mono text-[10px] uppercase tracking-[0.12em] text-page-fg transition-colors hover:border-accent hover:bg-accent hover:text-accent-fg"
     >
       Add to bag +
     </button>

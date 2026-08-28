@@ -54,7 +54,7 @@ export function NewsletterForm() {
       <button
         type="submit"
         disabled={busy}
-        className="shrink-0 cursor-pointer border-none bg-transparent font-mono text-[11px] uppercase tracking-[0.14em] text-accent-text transition-opacity hover:opacity-70 disabled:opacity-40"
+        className="shrink-0 cursor-pointer border-none bg-transparent font-mono text-[11px] uppercase tracking-[0.14em] text-accent transition-opacity hover:opacity-70 disabled:opacity-40"
       >
         {busy ? "…" : "Join →"}
       </button>

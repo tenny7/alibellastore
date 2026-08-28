@@ -48,21 +48,21 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "hidden shrink-0 flex-col border-r border-cream/[0.08] bg-ink text-cream transition-all duration-300 lg:flex",
+        "hidden shrink-0 flex-col border-r border-page-fg/[0.08] bg-page text-page-fg transition-all duration-300 lg:flex",
         collapsed ? "w-[72px]" : "w-[248px]"
       )}
     >
       {/* Header */}
       <div className={cn("flex items-center gap-2.5 px-4 py-5", collapsed && "justify-center px-3")}>
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-cream">
-          <ShoppingBag className="h-[17px] w-[17px] text-ink" strokeWidth={2.2} />
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-page-fg">
+          <ShoppingBag className="h-[17px] w-[17px] text-page" strokeWidth={2.2} />
         </span>
         {!collapsed && (
           <div className="min-w-0 flex-1">
             <h1 className="truncate font-display text-base font-bold leading-none tracking-[-0.02em]">
               {storeName}
             </h1>
-            <p className="mt-1.5 text-[11px] leading-none text-cream/45">Admin</p>
+            <p className="mt-1.5 text-[11px] leading-none text-page-fg/45">Admin</p>
           </div>
         )}
       </div>
@@ -82,8 +82,8 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
                 "group relative flex h-10 items-center gap-[11px] rounded-[11px] text-sm font-medium transition-all",
                 collapsed ? "justify-center px-0" : "px-3",
                 isActive
-                  ? "bg-cream text-ink"
-                  : "text-cream/60 hover:bg-cream/[0.07] hover:text-cream"
+                  ? "bg-page-fg text-page"
+                  : "text-page-fg/60 hover:bg-page-fg/[0.07] hover:text-page-fg"
               )}
             >
               {/* Design uses a dot, not a rail */}
@@ -91,7 +91,7 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
                 <span
                   className={cn(
                     "h-[7px] w-[7px] shrink-0 rounded-full transition-colors",
-                    isActive ? "bg-ink" : "bg-cream/25 group-hover:bg-cream/50"
+                    isActive ? "bg-page" : "bg-page-fg/25 group-hover:bg-page-fg/50"
                   )}
                 />
               )}
@@ -105,7 +105,7 @@ export function Sidebar({ storeName = "MoMo Commerce" }: SidebarProps) {
       {/* Collapse toggle */}
       <button
         onClick={toggleCollapsed}
-        className="flex items-center justify-center gap-2 border-t border-cream/[0.08] py-3 text-sm text-cream/50 transition-colors hover:bg-cream/[0.06] hover:text-cream"
+        className="flex items-center justify-center gap-2 border-t border-page-fg/[0.08] py-3 text-sm text-page-fg/50 transition-colors hover:bg-page-fg/[0.06] hover:text-page-fg"
       >
         {collapsed ? (
           <ChevronsRight className="h-4 w-4" />

@@ -75,7 +75,7 @@ export default async function AboutPage() {
   return (
     <div className="bg-page text-page-fg">
       {/* ─── Hero ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-ink text-cream">
+      <section className="relative overflow-hidden bg-page text-page-fg">
         <div
           aria-hidden
           className="pointer-events-none absolute -right-40 -top-52 h-[640px] w-[640px] rounded-full blur-[90px]"
@@ -84,15 +84,15 @@ export default async function AboutPage() {
           }}
         />
         <div className="relative mx-auto max-w-[1320px] px-6 py-20 md:px-10 md:py-32">
-          <p className="mb-7 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-cream/45">
+          <p className="mb-7 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-page-fg/45">
             About us
           </p>
           <h1 className="max-w-[820px] font-display text-[clamp(40px,6vw,80px)] font-bold leading-[0.95] tracking-[-0.045em] text-balance">
             A short catalogue,
             <br />
-            <span className="font-normal italic text-cream/55">chosen carefully.</span>
+            <span className="font-normal italic text-page-fg/55">chosen carefully.</span>
           </h1>
-          <p className="mt-8 max-w-[540px] text-[17.5px] leading-[1.65] text-cream/60">
+          <p className="mt-8 max-w-[540px] text-[17.5px] leading-[1.65] text-page-fg/60">
             {description ??
               `${settings.store_name} is an online shop based in Kigali. We carry a deliberately small range — clothing, electronics, home goods and everyday essentials — and deliver it anywhere in Rwanda.`}
           </p>
@@ -136,7 +136,7 @@ export default async function AboutPage() {
               {images.slice(0, 4).map((src, i) => (
                 <div
                   key={src}
-                  className={`relative overflow-hidden rounded-[24px] bg-field ${
+                  className={`relative overflow-hidden rounded-[24px] bg-well ${
                     i % 2 === 0 ? "aspect-[4/5]" : "aspect-[4/5] md:translate-y-8"
                   }`}
                 >
@@ -201,10 +201,10 @@ export default async function AboutPage() {
 
       {/* ─── Contact ──────────────────────────────────────────── */}
       <section className="px-6 pb-24 md:px-10">
-        <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[36px] bg-ink px-8 py-20 text-cream md:px-16 md:py-24">
+        <div className="mx-auto max-w-[1320px] overflow-hidden rounded-[36px] bg-page px-8 py-20 text-page-fg md:px-16 md:py-24">
           <div className="grid gap-12 md:grid-cols-2 md:items-center">
             <div>
-              <p className="mb-5 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-cream/45">
+              <p className="mb-5 font-display text-[11.5px] font-medium uppercase tracking-[0.22em] text-page-fg/45">
                 Get in touch
               </p>
               <h2 className="mb-5 font-display text-[clamp(28px,3.2vw,44px)] font-bold leading-[1.08] tracking-[-0.035em]">
@@ -212,7 +212,7 @@ export default async function AboutPage() {
                 <br />
                 you buy?
               </h2>
-              <p className="max-w-[400px] text-[16.5px] leading-[1.65] text-cream/60">
+              <p className="max-w-[400px] text-[16.5px] leading-[1.65] text-page-fg/60">
                 Message us on WhatsApp or call — we answer during business hours. If you already have
                 an order, use the thread on that order and we&apos;ll pick it up there.
               </p>
@@ -223,21 +223,21 @@ export default async function AboutPage() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex h-[56px] items-center justify-center gap-3 rounded-full bg-cream px-8 text-[15px] font-bold text-ink transition-opacity hover:opacity-90"
+                className="group inline-flex h-[56px] items-center justify-center gap-3 rounded-full bg-page-fg px-8 text-[15px] font-bold text-page transition-opacity hover:opacity-90"
               >
                 <MessageCircle className="h-[18px] w-[18px]" />
                 Chat on WhatsApp
               </a>
               <a
                 href={`tel:+${settings.contact_phone}`}
-                className="inline-flex h-[56px] items-center justify-center gap-3 rounded-full border border-cream/25 px-8 text-[15px] font-medium text-cream transition-colors hover:bg-cream/[0.07]"
+                className="inline-flex h-[56px] items-center justify-center gap-3 rounded-full border border-page-fg/25 px-8 text-[15px] font-medium text-page-fg transition-colors hover:bg-page-fg/[0.07]"
               >
                 <Phone className="h-[17px] w-[17px]" />
                 +{settings.contact_phone}
               </a>
               <Link
                 href="/products"
-                className="group mt-2 inline-flex items-center gap-2 text-sm font-medium text-cream/60 transition-colors hover:text-cream md:justify-end"
+                className="group mt-2 inline-flex items-center gap-2 text-sm font-medium text-page-fg/60 transition-colors hover:text-page-fg md:justify-end"
               >
                 Browse the shop
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

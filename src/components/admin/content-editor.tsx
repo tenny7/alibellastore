@@ -57,7 +57,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
   return (
     <div className="space-y-3">
       {rows.length === 0 && !adding && (
-        <p className="rounded-[18px] border border-cream/[0.12] bg-cream/[0.04] p-4 text-[13px] leading-relaxed text-cream/60">
+        <p className="rounded-[18px] border border-page-fg/[0.12] bg-page-fg/[0.04] p-4 text-[13px] leading-relaxed text-page-fg/60">
           {emptyHint}
         </p>
       )}
@@ -66,12 +66,12 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
         const id = row.id as string;
         const published = Boolean(row.is_published);
         return (
-          <div key={id} className="rounded-[18px] border border-cream/[0.09] bg-ink p-4">
+          <div key={id} className="rounded-[18px] border border-page-fg/[0.09] bg-page p-4">
             <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1 space-y-1">
                 {fields.map((f) => (
-                  <p key={f.key} className="truncate text-[13.5px] text-cream/75">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-cream/40">
+                  <p key={f.key} className="truncate text-[13.5px] text-page-fg/75">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.12em] text-page-fg/40">
                       {f.label}:{" "}
                     </span>
                     {String(row[f.key] ?? "—")}
@@ -89,8 +89,8 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
                   }}
                   className={`inline-flex h-9 items-center gap-1.5 rounded-[10px] border px-3 text-[12px] font-bold transition-colors disabled:opacity-50 ${
                     published
-                      ? "border-transparent bg-cream text-ink"
-                      : "border-cream/[0.16] text-cream/70 hover:bg-cream/[0.08]"
+                      ? "border-transparent bg-page-fg text-page"
+                      : "border-page-fg/[0.16] text-page-fg/70 hover:bg-page-fg/[0.08]"
                   }`}
                 >
                   {published ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
@@ -116,7 +116,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
       })}
 
       {adding ? (
-        <div className="space-y-3 rounded-[18px] border border-cream/[0.12] bg-ink p-4">
+        <div className="space-y-3 rounded-[18px] border border-page-fg/[0.12] bg-page p-4">
           {fields.map((f) =>
             f.textarea ? (
               <textarea
@@ -125,7 +125,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
                 value={draft[f.key] ?? ""}
                 onChange={(e) => setDraft({ ...draft, [f.key]: e.target.value })}
                 placeholder={f.placeholder}
-                className="w-full resize-none rounded-[12px] border border-cream/[0.14] bg-cream/[0.05] px-3.5 py-2.5 text-sm text-cream placeholder:text-cream/35 focus:border-cream/40 focus:outline-none"
+                className="w-full resize-none rounded-[12px] border border-page-fg/[0.14] bg-page-fg/[0.05] px-3.5 py-2.5 text-sm text-page-fg placeholder:text-page-fg/35 focus:border-page-fg/40 focus:outline-none"
               />
             ) : (
               <input
@@ -133,7 +133,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
                 value={draft[f.key] ?? ""}
                 onChange={(e) => setDraft({ ...draft, [f.key]: e.target.value })}
                 placeholder={f.placeholder}
-                className="w-full rounded-[12px] border border-cream/[0.14] bg-cream/[0.05] px-3.5 py-2.5 text-sm text-cream placeholder:text-cream/35 focus:border-cream/40 focus:outline-none"
+                className="w-full rounded-[12px] border border-page-fg/[0.14] bg-page-fg/[0.05] px-3.5 py-2.5 text-sm text-page-fg placeholder:text-page-fg/35 focus:border-page-fg/40 focus:outline-none"
               />
             )
           )}
@@ -142,7 +142,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
               type="button"
               onClick={create}
               disabled={busy === "new"}
-              className="inline-flex h-10 items-center gap-2 rounded-[12px] bg-cream px-4 text-[13px] font-bold text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="inline-flex h-10 items-center gap-2 rounded-[12px] bg-page-fg px-4 text-[13px] font-bold text-page transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
               Save
@@ -153,7 +153,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
                 setAdding(false);
                 setDraft({});
               }}
-              className="inline-flex h-10 items-center rounded-[12px] border border-cream/[0.16] px-4 text-[13px] font-medium text-cream/70 transition-colors hover:bg-cream/[0.08]"
+              className="inline-flex h-10 items-center rounded-[12px] border border-page-fg/[0.16] px-4 text-[13px] font-medium text-page-fg/70 transition-colors hover:bg-page-fg/[0.08]"
             >
               Cancel
             </button>
@@ -163,7 +163,7 @@ export function ContentEditor({ endpoint, rows, fields, emptyHint, addLabel }: P
         <button
           type="button"
           onClick={() => setAdding(true)}
-          className="inline-flex h-10 items-center gap-2 rounded-[12px] border border-cream/[0.16] px-4 text-[13px] font-bold text-cream/75 transition-colors hover:bg-cream/[0.08]"
+          className="inline-flex h-10 items-center gap-2 rounded-[12px] border border-page-fg/[0.16] px-4 text-[13px] font-bold text-page-fg/75 transition-colors hover:bg-page-fg/[0.08]"
         >
           <Plus className="h-4 w-4" />
           {addLabel}

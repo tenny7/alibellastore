@@ -24,8 +24,6 @@ export default async function StorefrontLayout({ children }: { children: React.R
       <Header
         storeName={settings.store_name}
         categories={cats}
-        freeDeliveryThreshold={settings.free_delivery_threshold}
-        currencyCode={settings.currency_code}
       />
       <main className="flex-1">{children}</main>
       <Footer

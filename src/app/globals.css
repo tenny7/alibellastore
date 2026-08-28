@@ -1,34 +1,34 @@
 @import "tailwindcss";
 
 /* ─── Alibella design system ──────────────────────────────────────────
-   Imported from Claude Design project "Shop redesign with modern colors"
-   (Alibella Storefront / Shop v2 Hybrid / Admin .dc.html).
-   Reduced to two colours — ink and cream — after the Ajabu Lighting
-   reference, which is fully achromatic. The only chromatic values are
-   --danger / --danger-fg, reserved for destructive and failed states.
-   Buttons invert automatically via --page-fg on --page-bg. */
+   Implements "Alibella Store v2" from the Claude Design project
+   "Editorial ecommerce redesign". The design is DARK-FIRST: #171614 with
+   #EDE7DC type and a terracotta accent. Light is the opt-in variant,
+   applied by the theme toggle as .dc-light on <html>.
+
+   Accent #C9825C reaches 5.88:1 on the page, so unlike the previous
+   vermilion it is safe for small text as well as display. The design's
+   per-category accents (sage/steel/mauve/clay) all clear 4.5:1 too. */
 @theme inline {
   --font-sans: var(--font-newsreader);
   --font-serif: var(--font-newsreader);
   --font-display: var(--font-bricolage);
   --font-mono: var(--font-jetbrains-mono);
 
-  --color-cream: var(--dc-cream);
-  --color-ink: var(--dc-ink);
-  --color-ink-deep: var(--dc-ink-deep);
-  --color-ink-raised: var(--dc-ink-raised);
-  --color-sand: var(--dc-sand);
-  --color-mist: var(--dc-mist);
-  --color-accent: var(--dc-accent);
-  --color-accent-text: var(--accent-text);
-  --color-paper: var(--dc-paper);
-  --color-paper-raised: var(--dc-paper-raised);
+  --color-page: var(--page-bg);
+  --color-page-fg: var(--page-fg);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-well: var(--well-bg);
+  --color-drawer: var(--drawer-bg);
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-hairline: var(--hairline);
   --color-danger: var(--danger);
   --color-danger-fg: var(--danger-fg);
 
-  /* Surface-relative tokens: shared primitives (components/ui/*) render
-     correctly on the light storefront and the dark admin without forking.
-     Admin flips them by carrying .dc-dark on its root. */
+  /* Surface-relative tokens: components/ui/* render correctly on the
+     storefront and in the admin without forking. */
   --color-canvas: var(--surface-canvas);
   --color-surface: var(--surface-bg);
   --color-surface-fg: var(--surface-fg);
@@ -36,91 +36,83 @@
   --color-surface-border: var(--surface-border);
   --color-surface-input: var(--surface-input);
   --color-surface-hover: var(--surface-hover);
-
-  /* Page-level semantics for the storefront. These flip with .dc-night
-     so the shop has a dark mode; the raw palette above never moves. */
-  --color-page: var(--page-bg);
-  --color-page-fg: var(--page-fg);
-  --color-card: var(--card-bg);
-  --color-card-border: var(--card-border);
-  --color-field: var(--field-bg);
 }
 
 @layer base {
   :root {
-    /* ── The two colours. Everything else is a tint of one of them. ──
-       Matching Ajabu Lighting: achromatic, with a single destructive red. */
-    --dc-cream: #F4F1E8;      /* light end */
-    --dc-ink: #14110E;        /* dark end */
+    /* ── Store v2 defaults (dark) ── */
+    --page-bg: #171614;
+    --page-fg: #EDE7DC;
+    --well-bg: #1E1C19;      /* image wells */
+    --drawer-bg: #1B1917;    /* cart drawer */
+    --card-bg: rgba(237, 231, 220, 0.03);
+    --card-border: rgba(237, 231, 220, 0.12);
+    --hairline: rgba(237, 231, 220, 0.1);
 
-    /* Steps between them — not new colours */
-    --dc-ink-deep: #0C0A08;   /* admin / night canvas */
-    --dc-ink-raised: #201C17; /* raised surface on dark */
-    --dc-sand: #EDE9DC;       /* banded strip */
-    --dc-mist: #EFEBDE;       /* image field */
-    --dc-paper: #F9F7F0;      /* card */
-    --dc-paper-raised: #FFFDF7; /* card, hovered / lifted */
+    --accent: #C9825C;
+    --accent-fg: #171614;    /* type sitting on an accent fill */
 
-    /* The one accent. Load-bearing in the Landing design: section numbers,
-       the delivery badge, link hovers, outlined type. Design alternates:
-       #1F7A5A forest · #2438D8 ink-blue · #C79A2B gold */
-    --dc-accent: #E3350D;
-    /* The vermilion clears the 3:1 large-text bar but not 4.5:1, so small
-       accent text and small-label CTAs use a darkened variant. Verified:
-       5.10:1 on cream, 4.74:1 on sand. */
-    --accent-text: #C12D0B;
+    --danger: #FF7A55;
+    --danger-fg: #171614;
 
-
-    /* Storefront page surfaces (light) */
-    --page-bg: var(--dc-cream);
-    --page-fg: var(--dc-ink);
-    --card-bg: #ffffff;
-    --card-border: rgba(16, 14, 27, 0.09);
-    --field-bg: var(--dc-mist);
-
-    /* The only chromatic values in the system, for destructive states. */
-    --danger: #B32D0B;
-    --danger-fg: var(--dc-cream);
-
-    /* Light surface (storefront) */
-    --surface-canvas: var(--dc-cream);
-    --surface-bg: #ffffff;
-    --surface-fg: var(--dc-ink);
-    --surface-muted: rgba(16, 14, 27, 0.60);
-    --surface-border: rgba(16, 14, 27, 0.12);
-    --surface-input: #ffffff;
-    --surface-hover: rgba(16, 14, 27, 0.04);
-
+    /* shared primitives, dark */
+    --surface-canvas: #121110;
+    --surface-bg: #1E1C19;
+    --surface-fg: #EDE7DC;
+    --surface-muted: rgba(237, 231, 220, 0.6);
+    --surface-border: rgba(237, 231, 220, 0.16);
+    --surface-input: rgba(237, 231, 220, 0.04);
+    --surface-hover: rgba(237, 231, 220, 0.06);
   }
 }
 
-/* ── Dark surfaces ────────────────────────────────────────────────────
-   .dc-night  storefront dark theme, set on <html> by the theme toggle
-   .dc-dark   the admin, which is dark in either theme
-   One block for both so they cannot drift apart. The shop's permanently
-   dark sections (header, hero, footer) sit at --dc-ink and therefore read
-   as raised panels above the deeper canvas. */
-.dc-night,
-.dc-dark {
-  --page-bg: var(--dc-ink-deep);
-  --page-fg: var(--dc-cream);
-  --card-bg: var(--dc-ink);
-  --card-border: rgba(244, 241, 233, 0.09);
-  --field-bg: var(--dc-ink-raised);
-  --dc-paper: var(--dc-ink);
-  --dc-paper-raised: var(--dc-ink-raised);
-  /* On dark the variant lightens instead: 4.84:1 on ink, 5.08:1 on ink-deep. */
-  --accent-text: #F23A10;
-  --danger: #FF7A55;
-  --danger-fg: var(--dc-ink);
+/* ── Light variant, opted into via the toggle ──
+   The terracotta is only 2.72:1 on cream, so light mode darkens it to
+   #915E42 (4.81:1) rather than carrying an unreadable accent. */
+.dc-light {
+  --page-bg: #F4F1E8;
+  --page-fg: #14110E;
+  --well-bg: #EFEBDE;
+  --drawer-bg: #FFFDF7;
+  --card-bg: #FFFDF7;
+  --card-border: rgba(20, 17, 14, 0.12);
+  --hairline: rgba(20, 17, 14, 0.12);
 
-  --surface-canvas: var(--dc-ink-deep);
-  --surface-bg: var(--dc-ink);
-  --surface-fg: var(--dc-cream);
-  --surface-muted: rgba(244, 241, 233, 0.5);
-  --surface-border: rgba(244, 241, 233, 0.12);
-  --surface-input: rgba(244, 241, 233, 0.06);
-  --surface-hover: rgba(244, 241, 233, 0.06);
+  --accent: #915E42;
+  --accent-fg: #F4F1E8;
+
+  --danger: #B32D0B;
+  --danger-fg: #F4F1E8;
+
+  --surface-canvas: #F4F1E8;
+  --surface-bg: #FFFDF7;
+  --surface-fg: #14110E;
+  --surface-muted: rgba(20, 17, 14, 0.6);
+  --surface-border: rgba(20, 17, 14, 0.14);
+  --surface-input: #FFFDF7;
+  --surface-hover: rgba(20, 17, 14, 0.04);
+}
+
+/* The admin is dark regardless of the storefront's theme. */
+.dc-dark {
+  --page-bg: #121110;
+  --page-fg: #EDE7DC;
+  --card-bg: #1E1C19;
+  --card-border: rgba(237, 231, 220, 0.12);
+  --hairline: rgba(237, 231, 220, 0.1);
+  --well-bg: #1E1C19;
+  --accent: #C9825C;
+  --accent-fg: #171614;
+  --danger: #FF7A55;
+  --danger-fg: #171614;
+
+  --surface-canvas: #121110;
+  --surface-bg: #1E1C19;
+  --surface-fg: #EDE7DC;
+  --surface-muted: rgba(237, 231, 220, 0.6);
+  --surface-border: rgba(237, 231, 220, 0.16);
+  --surface-input: rgba(237, 231, 220, 0.04);
+  --surface-hover: rgba(237, 231, 220, 0.06);
 }
 
 /* Prevent double-tap/double-click zoom on all elements */
@@ -132,9 +124,11 @@ html {
 body {
   background: var(--page-bg);
   color: var(--page-fg);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans), Georgia, serif;
   -webkit-font-smoothing: antialiased;
 }
+
+::selection { background: var(--accent); color: var(--accent-fg); }
 
 @keyframes pop {
   0% {
@@ -223,9 +217,10 @@ body {
 
 /* Theme-toggle icon swap — driven by the <html> class so the button needs no
    React state and cannot mismatch during hydration. */
-.dc-when-dark { display: none; }
-.dc-night .dc-when-dark { display: block; }
-.dc-night .dc-when-light { display: none; }
+/* Dark is the default, so the "switch to light" icon shows by default. */
+.dc-when-light { display: none; }
+.dc-light .dc-when-light { display: block; }
+.dc-light .dc-when-dark { display: none; }
 
 /* ─── Landing design motion ──────────────────────────────────────── */
 @keyframes marquee {
@@ -241,6 +236,22 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .dc-marquee, .dc-spin, .dc-rise, .dc-blink { animation: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
 }
 
 ::selection { background: var(--dc-accent); color: var(--dc-cream); }
+
+/* ─── Store v2 scroll reveal ──────────────────────────────────────────
+   The design drives this with an IntersectionObserver. CSS does it with
+   no JS and no layout thrash, and degrades to visible if unsupported. */
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 22%;
+  }
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(26px); }
+    to   { opacity: 1; transform: none; }
+  }
+}

@@ -19,11 +19,11 @@ export default async function AdminSupportPage() {
     return (
       <div>
         <Header />
-        <div className="flex gap-3 rounded-[18px] border border-cream/[0.12] bg-cream/[0.04] p-4">
-          <Info className="mt-0.5 h-4 w-4 shrink-0 text-cream/60" />
-          <p className="text-[13px] leading-relaxed text-cream/60">
+        <div className="flex gap-3 rounded-[18px] border border-page-fg/[0.12] bg-page-fg/[0.04] p-4">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-page-fg/60" />
+          <p className="text-[13px] leading-relaxed text-page-fg/60">
             Messaging isn&apos;t available yet. Apply{" "}
-            <code className="rounded bg-cream/[0.08] px-1.5 py-0.5 font-mono text-[12px] text-cream/80">
+            <code className="rounded bg-page-fg/[0.08] px-1.5 py-0.5 font-mono text-[12px] text-page-fg/80">
               supabase/migrations/20260828_support_messages.sql
             </code>{" "}
             to create the support tables.
@@ -67,40 +67,40 @@ export default async function AdminSupportPage() {
       <Header />
 
       {sorted.length === 0 ? (
-        <p className="rounded-[20px] border border-cream/[0.09] bg-ink px-6 py-12 text-center text-cream/45">
+        <p className="rounded-[20px] border border-page-fg/[0.09] bg-page px-6 py-12 text-center text-page-fg/45">
           No customer messages yet.
         </p>
       ) : (
-        <div className="divide-y divide-cream/[0.07] overflow-hidden rounded-[20px] border border-cream/[0.09] bg-ink">
+        <div className="divide-y divide-page-fg/[0.07] overflow-hidden rounded-[20px] border border-page-fg/[0.09] bg-page">
           {sorted.map(([orderId, { last, unread }]) => {
             const order = orders.get(orderId);
             return (
               <Link
                 key={orderId}
                 href={`/admin/support/${orderId}`}
-                className="flex items-start gap-4 px-5 py-4 transition-colors hover:bg-cream/[0.04]"
+                className="flex items-start gap-4 px-5 py-4 transition-colors hover:bg-page-fg/[0.04]"
               >
-                <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-cream/40" />
+                <MessageSquare className="mt-0.5 h-4 w-4 shrink-0 text-page-fg/40" />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2.5">
-                    <span className="font-mono text-[13px] font-medium text-cream">
+                    <span className="font-mono text-[13px] font-medium text-page-fg">
                       {order?.order_number ?? "—"}
                     </span>
-                    <span className="truncate text-[13px] text-cream/60">
+                    <span className="truncate text-[13px] text-page-fg/60">
                       {order?.customer_name ?? ""}
                     </span>
                     {unread > 0 && (
-                      <span className="rounded-full bg-cream px-2 py-0.5 font-mono text-[11px] font-bold text-ink">
+                      <span className="rounded-full bg-page-fg px-2 py-0.5 font-mono text-[11px] font-bold text-page">
                         {unread} new
                       </span>
                     )}
                   </div>
-                  <p className="mt-1.5 truncate text-[13px] text-cream/50">
+                  <p className="mt-1.5 truncate text-[13px] text-page-fg/50">
                     {last.sender_role === "admin" ? "You: " : ""}
                     {last.body}
                   </p>
                 </div>
-                <span className="shrink-0 font-mono text-[11.5px] text-cream/35">
+                <span className="shrink-0 font-mono text-[11.5px] text-page-fg/35">
                   {new Date(last.created_at).toLocaleDateString()}
                 </span>
               </Link>
@@ -115,8 +115,8 @@ export default async function AdminSupportPage() {
 function Header() {
   return (
     <div className="mb-6">
-      <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-cream">Support</h1>
-      <p className="mt-1.5 text-sm text-cream/50">
+      <h1 className="font-display text-[28px] font-bold tracking-[-0.03em] text-page-fg">Support</h1>
+      <p className="mt-1.5 text-sm text-page-fg/50">
         Customer messages, grouped by order. Newest first.
       </p>
     </div>

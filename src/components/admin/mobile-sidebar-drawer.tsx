@@ -74,7 +74,7 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
 
       {/* Drawer */}
       <aside
-        className="dc-dark absolute bottom-0 left-0 top-0 flex w-[280px] flex-col bg-ink text-cream"
+        className="dc-dark absolute bottom-0 left-0 top-0 flex w-[280px] flex-col bg-page text-page-fg"
         style={{ animation: "slideInLeft 0.25s ease-out" }}
       >
         {/* Header */}
@@ -85,7 +85,7 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
           </div>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-1.5 rounded-lg text-surface-muted hover:text-cream hover:bg-surface/10 transition-colors"
+            className="p-1.5 rounded-lg text-surface-muted hover:text-page-fg hover:bg-surface/10 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -104,8 +104,8 @@ export function MobileSidebarDrawer({ storeName = "MoMo Commerce" }: MobileSideb
                 className={cn(
                   "flex items-center gap-3 px-5 py-3 text-sm transition-colors relative",
                   isActive
-                    ? "text-cream bg-cream/10"
-                    : "text-surface-muted hover:text-cream hover:bg-surface/5"
+                    ? "text-page-fg bg-page-fg/10"
+                    : "text-surface-muted hover:text-page-fg hover:bg-surface/5"
                 )}
               >
                 {isActive && (

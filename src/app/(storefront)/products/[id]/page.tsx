@@ -153,25 +153,28 @@ export default async function ProductDetailPage({ params }: Props) {
 
         {/* Details */}
         <div>
-          {product.category && (
-            <Link
-              href={`/products?category=${product.category.slug}`}
-              className="inline-block text-xs font-medium text-surface-fg bg-surface-fg/10 px-2.5 py-1 rounded-md mb-3 hover:bg-surface-fg/15 transition-colors"
-            >
-              {product.category.name}
-            </Link>
-          )}
+          <div className="mb-3.5 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+            {product.category ? (
+              <Link href={`/products?category=${product.category.slug}`} className="hover:underline">
+                {product.category.name}
+              </Link>
+            ) : (
+              "Catalogue"
+            )}
+            {" — "}
+            {product.status === "out_of_stock" ? "out of stock" : "in stock"}
+          </div>
 
-          <h1 className="font-display tracking-[-0.03em] text-2xl md:text-3xl font-bold text-surface-fg mb-3">
+          <h1 className="m-0 mb-3.5 font-display text-[clamp(30px,4.2vw,60px)] font-extrabold leading-[0.96] tracking-[-0.04em]">
             {product.name}
           </h1>
 
-          <p className="text-2xl font-bold text-surface-fg mb-6">
+          <p className="mb-5 font-mono text-[18px]">
             {formatCurrency(Number(product.price), settings.currency_code)}
           </p>
 
           {product.description && (
-            <p className="text-surface-muted leading-relaxed mb-8">
+            <p className="mb-6 max-w-[46ch] text-[clamp(16px,1.4vw,19px)] leading-[1.65] text-page-fg/70">
               {product.description}
             </p>
           )}
@@ -182,12 +185,50 @@ export default async function ProductDetailPage({ params }: Props) {
               name={product.name}
               price={Number(product.price)}
               image={product.images?.[0] ?? ""}
+              currencyCode={settings.currency_code}
             />
           </div>
 
+          {/* Details table. The design lists per-product specs (storage,
+              battery, warranty); `products` has no field for those, so these
+              rows come from what the schema really knows. */}
+          <div className="mb-6 border-t border-hairline">
+            {[
+              { k: "Category", v: product.category?.name ?? "Uncategorised" },
+              { k: "Price", v: formatCurrency(Number(product.price), settings.currency_code) },
+              {
+                k: "Availability",
+                v: product.status === "out_of_stock" ? "Out of stock" : "In stock",
+              },
+              {
+                k: "Delivery",
+                v:
+                  deliveryFee === 0
+                    ? "Free on this order"
+                    : freeThreshold && freeThreshold > 0
+                      ? `${formatCurrency(deliveryFee, settings.currency_code)} · free above ${formatCurrency(freeThreshold, settings.currency_code)}`
+                      : formatCurrency(deliveryFee, settings.currency_code),
+              },
+              { k: "Returns", v: "7 days from delivery" },
+            ].map((row) => (
+              <div
+                key={row.k}
+                className="flex justify-between gap-4 border-b border-hairline py-3.5"
+              >
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/50">
+                  {row.k}
+                </span>
+                <span className="text-right text-[15px]">{row.v}</span>
+              </div>
+            ))}
+          </div>
+
           {/* Delivery info banner */}
-          <div className="flex items-start gap-3 mb-6 rounded-[14px] border border-cream/20 bg-cream/[0.06] p-3.5">
-            <Truck className="mt-0.5 h-5 w-5 shrink-0 text-surface-fg" />
+          <div
+            className="mb-6 flex items-start gap-3 rounded-[14px] border border-page-fg/[0.14] p-4"
+            style={{ background: "color-mix(in oklab, var(--accent) 8%, transparent)" }}
+          >
+            <Truck className="mt-0.5 h-[18px] w-[18px] shrink-0 text-accent" strokeWidth={1.8} />
             <div className="text-sm text-surface-fg">
               {deliveryFee === 0 ? (
                 <p className="font-medium text-surface-fg">Free delivery on all orders</p>

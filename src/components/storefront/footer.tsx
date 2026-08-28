@@ -28,8 +28,8 @@ export function Footer({
   const phone = contactPhone || whatsappNumber;
 
   return (
-    <footer className="mt-auto bg-page px-5 pb-7 pt-10 text-page-fg md:px-14 md:pt-[72px]">
-      <div className="grid items-end gap-6 border-b border-page-fg/[0.18] pb-9 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:gap-14">
+    <footer className="mt-auto border-t border-hairline bg-page px-4 pb-6 pt-8 text-page-fg md:px-11 md:pt-16">
+      <div className="grid items-end gap-5 pb-[30px] [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] md:gap-14">
         <div>
           <div className="mb-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/50">
             One email a week. Restocks and price drops only.
@@ -43,7 +43,7 @@ export function Footer({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent"
                 >
                   <Instagram className="h-4 w-4" />
                 </a>
@@ -54,7 +54,7 @@ export function Footer({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent"
                 >
                   <Facebook className="h-4 w-4" />
                 </a>
@@ -65,7 +65,7 @@ export function Footer({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="X"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent-text-text"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-page-fg/20 text-page-fg/70 transition-colors hover:border-accent hover:text-accent"
                 >
                   <Twitter className="h-4 w-4" />
                 </a>
@@ -76,30 +76,30 @@ export function Footer({
 
         <div className="grid grid-cols-2 gap-5 font-mono text-[11px] uppercase tracking-[0.1em] sm:grid-cols-3">
           <div className="grid content-start gap-2.5">
-            <Link href="/products" className="transition-colors hover:text-accent-text-text">
+            <Link href="/products" className="transition-colors hover:text-accent">
               All products
             </Link>
             {categories.slice(0, 4).map((cat) => (
               <Link
                 key={cat.id}
                 href={`/products?category=${cat.slug}`}
-                className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+                className="text-page-fg/70 transition-colors hover:text-accent"
               >
                 {cat.name}
               </Link>
             ))}
           </div>
           <div className="grid content-start gap-2.5">
-            <Link href="/about" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+            <Link href="/about" className="text-page-fg/70 transition-colors hover:text-accent">
               About
             </Link>
             <Link
               href="/return-policy"
-              className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+              className="text-page-fg/70 transition-colors hover:text-accent"
             >
               Returns
             </Link>
-            <Link href="/orders" className="text-page-fg/70 transition-colors hover:text-accent-text-text">
+            <Link href="/orders" className="text-page-fg/70 transition-colors hover:text-accent">
               Track order
             </Link>
             {whatsappNumber && (
@@ -107,7 +107,7 @@ export function Footer({
                 href={`https://wa.me/${whatsappNumber}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-page-fg/70 transition-colors hover:text-accent-text-text"
+                className="inline-flex items-center gap-1.5 text-page-fg/70 transition-colors hover:text-accent"
               >
                 <MessageCircle className="h-3 w-3" />
                 WhatsApp
@@ -116,7 +116,7 @@ export function Footer({
             {phone && (
               <a
                 href={`tel:+${phone}`}
-                className="text-page-fg/70 transition-colors hover:text-accent-text-text"
+                className="text-page-fg/70 transition-colors hover:text-accent"
               >
                 +{phone}
               </a>
@@ -129,9 +129,12 @@ export function Footer({
       </div>
 
       {/* Wordmark, as drawn */}
-      <div className="my-5 font-display text-[clamp(56px,15vw,240px)] font-extrabold uppercase leading-[0.84] tracking-[-0.055em]">
+      {/* v2: outlined wordmark rather than a solid fill */}
+      <div
+        className="my-4 font-display text-[clamp(40px,13vw,200px)] font-extrabold uppercase leading-[0.86] tracking-[-0.055em] text-transparent"
+        style={{ WebkitTextStroke: "1.2px color-mix(in oklab, var(--page-fg) 32%, transparent)" }}
+      >
         {storeName.split(" ")[0]}
-        <span className="text-accent">.</span>
       </div>
 
       <div className="flex flex-wrap justify-between gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-page-fg/55">
@@ -139,10 +142,10 @@ export function Footer({
           &copy; {new Date().getFullYear()} {storeName} — Kigali, Rwanda
         </span>
         <span className="flex gap-4">
-          <Link href="/privacy" className="transition-colors hover:text-accent-text-text">
+          <Link href="/privacy" className="transition-colors hover:text-accent">
             Privacy
           </Link>
-          <Link href="/terms" className="transition-colors hover:text-accent-text-text">
+          <Link href="/terms" className="transition-colors hover:text-accent">
             Terms
           </Link>
           <span>Made in Rwanda</span>

@@ -39,7 +39,7 @@ export default async function AdminSupportThreadPage({ params }: Props) {
     <div>
       <Link
         href="/admin/support"
-        className="mb-5 inline-flex items-center gap-1.5 text-sm text-cream/55 transition-colors hover:text-cream"
+        className="mb-5 inline-flex items-center gap-1.5 text-sm text-page-fg/55 transition-colors hover:text-page-fg"
       >
         <ChevronLeft className="h-4 w-4" />
         All conversations
@@ -47,12 +47,12 @@ export default async function AdminSupportThreadPage({ params }: Props) {
 
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-[26px] font-bold tracking-[-0.03em] text-cream">
+          <h1 className="font-display text-[26px] font-bold tracking-[-0.03em] text-page-fg">
             {o.customer_name}
           </h1>
-          <p className="mt-1.5 font-mono text-[13px] text-cream/50">
+          <p className="mt-1.5 font-mono text-[13px] text-page-fg/50">
             {o.customer_phone} · order{" "}
-            <Link href={`/admin/orders/${o.id}`} className="text-cream underline">
+            <Link href={`/admin/orders/${o.id}`} className="text-page-fg underline">
               {o.order_number}
             </Link>{" "}
             · {formatCurrency(Number(o.total), settings.currency_code)}
