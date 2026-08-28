@@ -80,13 +80,13 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             href={f.value ? `/admin/orders?status=${f.value}` : "/admin/orders"}
             className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium border transition-all ${
               (status ?? "") === f.value
-                ? "bg-page-fg text-white border-surface-fg shadow-sm"
+                ? "bg-page-fg text-page border-surface-fg shadow-sm"
                 : "bg-surface text-surface-muted border-surface-border hover:border-surface-border hover:bg-surface-hover"
             }`}
           >
             {f.label}
             <span className={`ml-1.5 text-xs ${
-              (status ?? "") === f.value ? "text-white/70" : "text-surface-muted"
+              (status ?? "") === f.value ? "text-page/70" : "text-surface-muted"
             }`}>
               {f.count}
             </span>

@@ -10,7 +10,7 @@ export default function ProductNotFound() {
       </p>
       <Link
         href="/products"
-        className="inline-flex items-center justify-center px-6 py-3 bg-page-fg text-white font-semibold rounded-lg hover:opacity-90 transition-colors text-sm"
+        className="inline-flex items-center justify-center px-6 py-3 bg-page-fg text-page font-semibold rounded-lg hover:opacity-90 transition-colors text-sm"
       >
         Browse Products
       </Link>

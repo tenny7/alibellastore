@@ -105,7 +105,7 @@ export function Topbar({ user }: TopbarProps) {
           onClick={() => setDropdownOpen(!dropdownOpen)}
           className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-cream/[0.07] transition-colors"
         >
-          <div className="h-8 w-8 rounded-full bg-page-fg flex items-center justify-center text-white text-sm font-medium">
+          <div className="h-8 w-8 rounded-full bg-page-fg flex items-center justify-center text-page text-sm font-medium">
             {user.name.charAt(0).toUpperCase()}
           </div>
           <span className="hidden max-w-[120px] truncate text-sm font-medium text-cream sm:block">

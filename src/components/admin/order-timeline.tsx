@@ -55,9 +55,9 @@ export function OrderTimeline({ currentStatus, className }: OrderTimelineProps) 
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-full shrink-0 transition-colors",
                   isComplete
-                    ? "bg-surface-fg text-white"
+                    ? "bg-surface-fg text-surface"
                     : isCurrent
-                    ? "bg-page-fg text-white"
+                    ? "bg-page-fg text-page"
                     : "bg-surface-hover text-surface-muted"
                 )}
               >

@@ -64,7 +64,7 @@ export function AddToCartButton({ productId, name, price, image }: AddToCartButt
         </button>
         <button
           onClick={handleBuyNow}
-          className="flex-1 flex items-center justify-center gap-2 bg-page-fg text-white font-semibold px-6 py-3.5 rounded-lg hover:opacity-90 transition-colors text-sm"
+          className="flex-1 flex items-center justify-center gap-2 bg-page-fg text-page font-semibold px-6 py-3.5 rounded-lg hover:opacity-90 transition-colors text-sm"
         >
           <Zap className="h-5 w-5" />
           Buy Now

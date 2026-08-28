@@ -66,7 +66,7 @@ export function ImageUploader({ images, onChange }: ImageUploaderProps) {
             <button
               type="button"
               onClick={() => handleRemove(index)}
-              className="absolute top-1 right-1 bg-danger text-white rounded-full p-0.5 hover:bg-danger"
+              className="absolute top-1 right-1 bg-danger text-danger-fg rounded-full p-0.5 hover:bg-danger"
             >
               <X className="h-3 w-3" />
             </button>

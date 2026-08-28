@@ -94,7 +94,7 @@ export default function OrdersPage() {
             }}
             className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
               filter === opt.value
-                ? "bg-page-fg text-white"
+                ? "bg-page-fg text-page"
                 : "bg-surface-hover text-surface-muted hover:bg-surface-fg/15"
             }`}
           >
@@ -116,7 +116,7 @@ export default function OrdersPage() {
           </p>
           <Link
             href="/"
-            className="inline-block mt-4 px-6 py-2 bg-page-fg text-white rounded-lg text-sm font-medium hover:opacity-90"
+            className="inline-block mt-4 px-6 py-2 bg-page-fg text-page rounded-lg text-sm font-medium hover:opacity-90"
           >
             Browse Products
           </Link>

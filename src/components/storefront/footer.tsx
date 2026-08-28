@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Instagram, Facebook, Twitter, ShoppingBag, MessageCircle } from "lucide-react";
 import { FooterAccountLinks } from "./footer-account-links";
+import { usableDescription } from "@/lib/utils";
 import type { Category } from "@/types";
 
 interface FooterProps {
@@ -43,7 +44,8 @@ export function Footer({
               Get the drop before it sells out.
             </p>
             <p className="mt-4 max-w-[320px] text-sm leading-relaxed text-cream/60">
-              {storeDescription || "Your trusted online store. Quality products with secure MoMo payments."}
+              {usableDescription(storeDescription) ??
+                "A short, considered catalogue — delivered across Rwanda."}
             </p>
             {hasSocials && (
               <div className="mt-6 flex items-center gap-2.5">

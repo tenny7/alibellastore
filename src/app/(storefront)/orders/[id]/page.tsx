@@ -133,7 +133,7 @@ export default async function OrderDetailPage({ params }: Props) {
                   <div
                     className={`flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full border-2 transition-colors ${
                       isActive
-                        ? "bg-page-fg border-surface-fg text-white"
+                        ? "bg-page-fg border-surface-fg text-page"
                         : "bg-surface border-surface-border text-surface-muted"
                     }`}
                   >

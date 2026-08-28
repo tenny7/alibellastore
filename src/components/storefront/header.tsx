@@ -17,7 +17,7 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { useCartStore } from "@/store/cart-store";
 import { createClient } from "@/lib/supabase/client";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { NotificationBell } from "@/components/storefront/notification-bell";
 import { ThemeToggle } from "@/components/storefront/theme-toggle";
 import type { User as UserType } from "@supabase/supabase-js";
@@ -26,9 +26,18 @@ import type { Category } from "@/types";
 interface HeaderProps {
   storeName?: string;
   categories?: Category[];
+  /** Real free-delivery threshold from site settings. The design hardcoded
+   *  30,000, which was simply wrong for this store. */
+  freeDeliveryThreshold?: number | null;
+  currencyCode?: string;
 }
 
-export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderProps) {
+export function Header({
+  storeName = "MoMo Commerce",
+  categories = [],
+  freeDeliveryThreshold = null,
+  currencyCode = "RWF",
+}: HeaderProps) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -115,7 +124,11 @@ export function Header({ storeName = "MoMo Commerce", categories = [] }: HeaderP
       {/* Announcement bar — design: ink bg, cream text, accent dot */}
       <div className="flex items-center justify-center gap-2.5 bg-ink px-5 py-2.5 text-center text-[13px] font-medium leading-none text-cream">
         <span className="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-cream sm:block" />
-        <span>Free delivery in Kigali on orders over 30,000 RWF</span>
+        <span>
+          {freeDeliveryThreshold
+            ? `Free delivery on orders over ${formatCurrency(Number(freeDeliveryThreshold), currencyCode)}`
+            : "Delivery across Rwanda"}
+        </span>
         <span className="hidden opacity-40 sm:inline">·</span>
         <span className="hidden font-bold sm:inline">Pay with MoMo</span>
       </div>

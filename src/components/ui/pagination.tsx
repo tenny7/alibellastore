@@ -59,7 +59,7 @@ export function Pagination({ currentPage, totalPages, baseUrl, searchParams = {}
             className={cn(
               "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
               currentPage === page
-                ? "bg-page-fg text-white"
+                ? "bg-page-fg text-page"
                 : "text-surface-muted hover:bg-surface-hover"
             )}
           >

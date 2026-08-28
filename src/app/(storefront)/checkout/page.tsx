@@ -422,7 +422,7 @@ export default function CheckoutPage() {
               <div className="rounded-[22px] border border-surface-border bg-surface p-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-surface-fg text-white">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-surface-fg text-surface">
                       <Check className="h-3.5 w-3.5" />
                     </div>
                     <h2 className="font-display tracking-[-0.02em] font-bold text-surface-fg">Where should it go?</h2>
