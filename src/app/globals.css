@@ -156,6 +156,11 @@ body {
   color: var(--page-fg);
   font-family: var(--font-sans), Georgia, serif;
   -webkit-font-smoothing: antialiased;
+
+  /* Site-wide guard against sideways scroll from decorative overflow.
+     `clip` rather than `hidden` on purpose: `hidden` makes this a scroll
+     container, which silently breaks the sticky header. `clip` does not. */
+  overflow-x: clip;
 }
 
 ::selection { background: var(--accent); color: var(--accent-fg); }

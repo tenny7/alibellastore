@@ -88,9 +88,9 @@ export default async function HomePage() {
     : null;
 
   return (
-    <div className="bg-page text-page-fg">
+    <div className="overflow-x-clip bg-page text-page-fg">
       {/* ─── Hero ─────────────────────────────────────────────── */}
-      <section id="top" className="relative border-b border-hairline px-4 pb-7 pt-9 md:px-11 md:pb-14 md:pt-[92px]">
+      <section id="top" className="relative overflow-hidden border-b border-hairline px-4 pb-7 pt-9 md:px-11 md:pb-14 md:pt-[92px]">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
@@ -111,7 +111,7 @@ export default async function HomePage() {
           }}
         />
 
-        <div className="relative grid items-center gap-6 [grid-template-columns:repeat(auto-fit,minmax(320px,1fr))] md:gap-14">
+        <div className="relative grid items-center gap-6 [grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr))] md:gap-14">
           <div className="dc-rise" style={{ animation: "rise .75s cubic-bezier(.2,.8,.2,1) both" }}>
             {/* Badge appears only with something real behind it. */}
             {(settings.founded_year || metrics[0]) && (
@@ -246,7 +246,7 @@ export default async function HomePage() {
       {/* ─── Promises ─────────────────────────────────────────── */}
       <section
         data-reveal="1"
-        className="grid border-b border-hairline [grid-template-columns:repeat(auto-fit,minmax(230px,1fr))]"
+        className="grid border-b border-hairline [grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr))]"
       >
         {promises.map((p) => (
           <div key={p.tag} className="border-l border-hairline px-4 py-6 md:px-8">
@@ -295,7 +295,7 @@ export default async function HomePage() {
           ))}
         </div>
 
-        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(224px,1fr))]">
+        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(min(224px,100%),1fr))]">
           {products.map((item) => (
             <article
               key={item.id}
@@ -361,7 +361,7 @@ export default async function HomePage() {
           Order today.{" "}
           <span className="font-serif font-light italic text-accent">Unbox soon.</span>
         </h2>
-        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]">
+        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))]">
           {steps.map((st) => (
             <div key={st.n} className="rounded-2xl border border-card-border bg-card p-[22px]">
               <div
@@ -387,7 +387,7 @@ export default async function HomePage() {
         <section
           id="story"
           data-reveal="1"
-          className="grid items-center gap-6 border-t border-hairline px-4 py-10 [grid-template-columns:repeat(auto-fit,minmax(300px,1fr))] md:gap-14 md:px-11 md:py-[88px]"
+          className="grid items-center gap-6 border-t border-hairline px-4 py-10 [grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr))] md:gap-14 md:px-11 md:py-[88px]"
         >
           <div>
             <div className="mb-5 font-mono text-[10px] uppercase tracking-[0.18em] text-page-fg/[0.55]">

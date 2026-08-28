@@ -29,7 +29,7 @@ export function Footer({
 
   return (
     <footer className="mt-auto border-t border-hairline bg-page px-4 pb-6 pt-8 text-page-fg md:px-11 md:pt-16">
-      <div className="grid items-end gap-5 pb-[30px] [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] md:gap-14">
+      <div className="grid items-end gap-5 pb-[30px] [grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))] md:gap-14">
         <div>
           <div className="mb-3.5 font-mono text-[11px] uppercase tracking-[0.2em] text-page-fg/50">
             One email a week. Restocks and price drops only.
