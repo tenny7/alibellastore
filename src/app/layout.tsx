@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Newsreader, JetBrains_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ui/toast-provider";
 import { ThemeScript } from "@/components/storefront/theme-toggle";
@@ -31,6 +31,22 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
   display: "swap",
 });
+
+// Single viewport declaration. There were two <meta name="viewport"> tags —
+// one hand-written here, one from Next — which browsers resolve
+// unpredictably and which caused the double-tap zoom/jump.
+//
+// maximumScale is deliberately NOT set: capping it blocks pinch-zoom, which
+// fails WCAG 1.4.4. Double-tap zoom is suppressed with touch-action instead,
+// which leaves pinch-zoom working.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#171614" },
+    { media: "(prefers-color-scheme: light)", color: "#F4F1E8" },
+  ],
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -71,7 +87,6 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <ThemeScript />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </head>
       <body
         className={`${bricolage.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans antialiased`}

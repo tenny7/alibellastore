@@ -131,7 +131,7 @@ export function Footer({
       {/* Wordmark, as drawn */}
       {/* v2: outlined wordmark rather than a solid fill */}
       <div
-        className="my-4 font-display text-[clamp(40px,13vw,200px)] font-extrabold uppercase leading-[0.86] tracking-[-0.055em] text-transparent"
+        className="dc-no-select my-4 font-display text-[clamp(40px,13vw,200px)] font-extrabold uppercase leading-[0.86] tracking-[-0.055em] text-transparent"
         style={{ WebkitTextStroke: "1.2px color-mix(in oklab, var(--page-fg) 32%, transparent)" }}
       >
         {storeName.split(" ")[0]}

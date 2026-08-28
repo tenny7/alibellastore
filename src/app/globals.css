@@ -115,10 +115,40 @@
   --surface-hover: rgba(237, 231, 220, 0.06);
 }
 
-/* Prevent double-tap/double-click zoom on all elements */
 html {
-  touch-action: manipulation;
   scroll-behavior: smooth;
+}
+
+/* ─── Double-tap / double-click zoom ─────────────────────────────────
+   touch-action is NOT an inherited property, so setting it only on <html>
+   left inner elements zooming on double-tap. "manipulation" keeps panning
+   and pinch-zoom while dropping double-tap-zoom and the 300ms tap delay,
+   so this does not cost accessibility the way maximum-scale=1 did. */
+html,
+body {
+  touch-action: manipulation;
+}
+
+a,
+button,
+label,
+summary,
+select,
+input,
+textarea,
+[role="button"],
+[role="tab"],
+[onclick] {
+  touch-action: manipulation;
+}
+
+/* Decorative type only — double-clicking a scrolling marquee or the giant
+   outlined wordmark selected text and shifted the page. Product names,
+   prices and copy stay selectable. */
+.dc-marquee,
+.dc-no-select {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
